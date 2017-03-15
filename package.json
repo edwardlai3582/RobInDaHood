@@ -1,0 +1,26 @@
+{
+  "name": "robindahood",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "electron": "^1.6.2",
+    "foreman": "^2.0.0",
+    "react-scripts": "0.9.5"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0"
+  },
+  "main": "src/electron-starter.js",
+  "homepage": "./",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "dev": "nf start"
+  }
+}
