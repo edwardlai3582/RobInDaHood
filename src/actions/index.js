@@ -2,7 +2,52 @@ export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_REDDIT = 'SELECT_REDDIT'
 export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
+////////////////////////////////////////////////////////
+export const ADD_TOKEN = 'ADD_TOKEN'
+export const DELETE_TOKEN = 'DELETE_TOKEN'
+export const ASKING_TOKEN = 'ASKING_TOKEN'
+export const ASKING_TOKEN_FAIL = 'ASKING_TOKEN_FAIL'
 
+export const askingTokenFail = () => ({
+  type: ASKING_TOKEN_FAIL
+})
+
+export const askingToken = () => ({
+  type: ASKING_TOKEN
+})
+
+export const addToken = token => ({
+  type: ADD_TOKEN,
+  token
+})
+
+export const deleteToken = () => ({
+  type: DELETE_TOKEN
+})
+
+export const askToken = (username, password) => dispatch => {
+  dispatch(askingToken)
+  ///*
+  return fetch(`https://api.robinhood.com/api-token-auth/`, {
+    method: 'POST',
+    headers: new Headers({'content-type': 'application/json', 'Accept': 'application/json'}),
+
+    body: JSON.stringify({username: username, password: password})
+  })
+    .then(response => {console.log(response)})
+    .catch(function(reason) {
+      console.log(reason);
+    });
+    /*
+    .then(json => {
+      console.log(json)
+    } ) //dispatch(addToken(json)
+
+    */
+    //*/
+}
+
+//////////////////////////////////////////////////////
 export const selectReddit = reddit => ({
   type: SELECT_REDDIT,
   reddit

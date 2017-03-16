@@ -1,8 +1,40 @@
 import { combineReducers } from 'redux'
 import {
   SELECT_REDDIT, INVALIDATE_REDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS
+  REQUEST_POSTS, RECEIVE_POSTS,
+  ADD_TOKEN, DELETE_TOKEN, ASKING_TOKEN, ASKING_TOKEN_FAIL
 } from '../actions'
+
+const tokenReducer = (state = {
+  isAsking: false,
+  token: ""
+}, action) => {
+  switch (action.type) {
+    case ASKING_TOKEN:
+      return {
+        ...state,
+        isAsking: true
+      }
+    case ASKING_TOKEN_FAIL:
+      return {
+        ...state,
+        isAsking: false
+      }
+    case ADD_TOKEN:
+      return {
+        ...state,
+        isAsking: false,
+        token: action.token
+      }
+    case ADD_TOKEN:
+      return {
+        ...state,
+        token: ""
+      }
+    default:
+      return state
+  }
+}
 
 const selectedReddit = (state = 'reactjs', action) => {
   switch (action.type) {
@@ -59,7 +91,8 @@ const postsByReddit = (state = { }, action) => {
 
 const rootReducer = combineReducers({
   postsByReddit,
-  selectedReddit
+  selectedReddit,
+  tokenReducer
 })
 
 export default rootReducer
