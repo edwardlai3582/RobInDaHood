@@ -3,13 +3,19 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_REDDIT = 'SELECT_REDDIT'
 export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
 ////////////////////////////////////////////////////////
+export const RESET_TOKEN_ERROR = 'RESET_TOKEN_ERROR'
 export const ADD_TOKEN = 'ADD_TOKEN'
 export const DELETE_TOKEN = 'DELETE_TOKEN'
 export const ASKING_TOKEN = 'ASKING_TOKEN'
-export const ASKING_TOKEN_FAIL = 'ASKING_TOKEN_FAIL'
+export const ASKING_TOKEN_FAILED = 'ASKING_TOKEN_FAILED'
 
-export const askingTokenFail = () => ({
-  type: ASKING_TOKEN_FAIL
+export const resetTokenError = () => ({
+  type: RESET_TOKEN_ERROR
+})
+
+export const askingTokenFailed = (error) => ({
+  type: ASKING_TOKEN_FAILED,
+  error
 })
 
 export const askingToken = () => ({
@@ -26,25 +32,26 @@ export const deleteToken = () => ({
 })
 
 export const askToken = (username, password) => dispatch => {
-  dispatch(askingToken)
-  ///*
+  dispatch(askingToken());
   return fetch(`https://api.robinhood.com/api-token-auth/`, {
     method: 'POST',
     headers: new Headers({'content-type': 'application/json', 'Accept': 'application/json'}),
-
     body: JSON.stringify({username: username, password: password})
   })
-    .then(response => {console.log(response)})
-    .catch(function(reason) {
-      console.log(reason);
-    });
-    /*
-    .then(json => {
-      console.log(json)
-    } ) //dispatch(addToken(json)
-
-    */
-    //*/
+  .then(response => response.json())
+  .then(jsonResult => {
+    console.log(jsonResult);
+    if(jsonResult.hasOwnProperty("token")){
+      dispatch(addToken(jsonResult.token));
+    }
+    else {
+      dispatch(askingTokenFailed(jsonResult[Object.keys(jsonResult)[0]][0]));
+    }
+  })
+  .catch(function(reason) {
+    console.log(reason);
+    dispatch(askingTokenFailed(reason));
+  });
 }
 
 //////////////////////////////////////////////////////

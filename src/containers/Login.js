@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { askToken } from '../actions'
+import { askToken, resetTokenError } from '../actions'
 
-
-class App extends Component {
+class Login extends Component {
   static propTypes = {
+    error: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     isAsking: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
+    this.props.dispatch(resetTokenError())
     //dispatch(fetchPostsIfNeeded(selectedReddit))
   }
 
@@ -31,21 +31,21 @@ class App extends Component {
     }
     */
   }
-  handleUsernameChange= event =>{
+  handleUsernameChange = event => {
     this.setState({username: event.target.value});
   }
-  handlePasswordChange= event =>{
+  handlePasswordChange = event => {
     this.setState({password: event.target.value});
   }
 
-  handleSubmit= event => {
+  handleSubmit = event => {
     event.preventDefault();
     console.log(this.state.username+", "+ this.state.password);
     this.props.dispatch(askToken(this.state.username, this.state.password));
   }
 
   render() {
-    //const { token } = this.props
+    const { isAsking, error } = this.props
     //const isEmpty = posts.length === 0
     return (
       <div>
@@ -58,8 +58,9 @@ class App extends Component {
             password:
             <input type="text" value={this.state.password} onChange={this.handlePasswordChange} />
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value={isAsking?"loging":"submitt"} />
         </form>
+        {error}
       </div>
     )
   }
@@ -70,16 +71,19 @@ const mapStateToProps = state => {
 
   const {
     isAsking,
+    error,
     token
-  } = token || {
+  } = tokenReducer || {
     isAsking: false,
+    error:"",
     token: ""
   }
 
   return {
     isAsking,
+    error,
     token
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(Login)
