@@ -6,10 +6,10 @@ import thunk from 'redux-thunk'
 import {persistStore, autoRehydrate} from 'redux-persist'
 import {REHYDRATE} from 'redux-persist/constants'
 import createActionBuffer from 'redux-action-buffer'
-//import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import reducer from './reducers'
 
-import First from './containers/First'
+import App from './containers/App'
 
 const middleware = [ thunk ]
 /*
@@ -36,14 +36,9 @@ persistStore(store)
 
 render(
   <Provider store={store}>
-    <First />
+    <Router>
+      <Route exact path="/" component={App} />
+    </Router>
   </Provider>,
   document.getElementById('root')
 )
-/*
-<Router history={browserHistory}>
-  <Route path="/" component={App}>
-    <IndexRoute component={App}/>
-  </Route>
-</Router>
-*/

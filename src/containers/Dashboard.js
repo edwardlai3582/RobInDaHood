@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { deleteToken } from '../actions'
+import { deleteToken, askAccount } from '../actions'
 
 
 class Dashboard extends Component {
@@ -16,18 +16,17 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    //const { dispatch } = this.props
-    //dispatch(fetchPostsIfNeeded(selectedReddit))
+    const { dispatch } = this.props
+    dispatch(askAccount());
   }
 
   logout = () => { this.props.dispatch(deleteToken()) }
 
   render() {
-    const { token } = this.props
+    //const { token } = this.props
     //const isEmpty = posts.length === 0
     return (
       <div>
-        <p>{token}</p>
         <button onClick={this.logout}>
           logout
         </button>
@@ -37,20 +36,10 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer } = state
+  const { accountReducer } = state
+  const { isAsking, token } = accountReducer || { isAsking: false, token: "" }
 
-  const {
-    isAsking,
-    token
-  } = tokenReducer || {
-    isAsking: false,
-    token: ""
-  }
-
-  return {
-    isAsking,
-    token
-  }
+  return { isAsking, token }
 }
 
 export default connect(mapStateToProps)(Dashboard)
