@@ -1,18 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Francois+One');
 
 .loginWrapper {
+  position: absolute;
   width: 240px;
-  margin: 0 auto;
+  margin: 0 auto ;
+  padding: 30px;
   text-align: left;
-  background-color: none;
+  background-color: black;
+  border-radius: 5%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .loginTitle {
   font-family: 'Francois One', sans-serif;
   font-size:2.5rem;
   text-align: center;
-  padding: 50px 0 30px;
-  color: #EBB03F;
+  padding: 10px 0 40px;
+  color:  var(--main-color);/*#EBB03F;*/
 }
 
 .loginError {
@@ -27,10 +33,10 @@
   height: 24px;
   margin: 10px;
   cursor: pointer;
-  background-color: #EBB03F;
+  background-color: var(--main-color);/*#EBB03F;*/
   border-width: 1px;
   border-style: solid;
-  border-color: #EBB03F;
+  border-color: var(--main-color);/*#EBB03F;*/
   border-radius: 5px;
   font-weight: bold;
 }

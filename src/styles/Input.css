@@ -9,10 +9,10 @@
 
 .loginInput {
   background-color: black;
-  color: #EBB03F;
+  color: var(--main-color);/*#EBB03F;*/
   border-width: 1px;
   border-style: solid;
-  border-color: #EBB03F;
+  border-color: var(--main-color);/*#EBB03F;*/
   border-radius: 5px;
   padding: 3px 5px;
   margin: 10px 0;

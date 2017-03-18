@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { deleteToken, askAccount } from '../actions'
 
 
-class Dashboard extends Component {
+class DashboardPage extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
     isAsking: PropTypes.bool.isRequired,
@@ -42,4 +42,4 @@ const mapStateToProps = state => {
   return { isAsking, token }
 }
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps)(DashboardPage)

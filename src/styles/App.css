@@ -52,8 +52,14 @@ html, body {
   width: 100%;
   height: 100%;
   background-color: black;
+	background-image: url('./eprint_1024x1024.png');
+	background-size:cover;
   color: white;
   text-align: center;
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
+}
+
+:root {
+  --main-color: #40C9BD;
 }

@@ -4,7 +4,7 @@ import { askToken, resetTokenError } from '../actions'
 import Input from '../components/Input'
 import '../styles/Login.css'
 
-class Login extends Component {
+class LoginPage extends Component {
   static propTypes = {
     error: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
@@ -103,4 +103,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps)(LoginPage)

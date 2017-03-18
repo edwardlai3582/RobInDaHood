@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Login from './Login'
-import Dashboard from './Dashboard'
+import LoginPage from './LoginPage'
+import DashboardPage from './DashboardPage'
 import '../styles/App.css'
 
 class First extends Component {
@@ -28,7 +28,7 @@ class First extends Component {
     //const isEmpty = posts.length === 0
     return (
       <div>
-        {token? <Dashboard />: <Login />}
+        {token? <DashboardPage />: <LoginPage />}
       </div>
     )
   }
