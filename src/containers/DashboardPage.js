@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { deleteToken, askAccount } from '../actions'
-
+import Dashboard from '../components/Dashboard'
 
 class DashboardPage extends Component {
   static propTypes = {
@@ -27,14 +27,16 @@ class DashboardPage extends Component {
     //const isEmpty = posts.length === 0
     return (
       <div>
-        <button onClick={this.logout}>
-          logout
-        </button>
+        <Dashboard />
       </div>
     )
   }
 }
-
+/*
+<button onClick={this.logout}>
+  logout
+</button>
+*/
 const mapStateToProps = state => {
   const { accountReducer } = state
   const { isAsking, token } = accountReducer || { isAsking: false, token: "" }

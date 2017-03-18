@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { askToken, resetTokenError } from '../actions'
 import Input from '../components/Input'
-import '../styles/Login.css'
+import '../styles/LoginPage.css'
 
 class LoginPage extends Component {
   static propTypes = {

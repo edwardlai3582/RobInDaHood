@@ -1,0 +1,30 @@
+.dbContainer {
+  width: 100%;
+  height: 100%;
+}
+ .dbLeftPanel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 800px;
+  background-color: var(--main-color);
+  overflow: hidden;
+}
+.dbRightPanel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 800px;
+  background-color: grey;
+  color: white;
+}
+.dbDrag {
+  position: absolute;
+  left: -4px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: w-resize;
+}
