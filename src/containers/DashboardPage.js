@@ -27,7 +27,10 @@ class DashboardPage extends Component {
     //const isEmpty = posts.length === 0
     return (
       <div>
-        <Dashboard />
+        <Dashboard>
+          <div>left</div>
+          <div>right</div>
+        </Dashboard>
       </div>
     )
   }

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import '../styles/Dashboard.css'
 
 class Dashboard extends Component {
@@ -39,16 +39,18 @@ class Dashboard extends Component {
   }
 
   render() {
+    const children = React.Children.toArray(this.props.children);
+    const left = children[0];
+    const right = children[1];
+
     return (
       <div className="dbContainer" ref={(div) => { this.dbContainer = div; }}>
         <div className="dbLeftPanel" ref={(div) => { this.dbLeftPanel = div; }}>
-          left content!
+          {left}
         </div>
         <div className="dbRightPanel" ref={(div) => { this.dbRightPanel = div; }}>
             <div className="dbDrag" ref={(div) => { this.dbDrag = div; }}></div>
-            <div>
-              right content!
-            </div>
+            {right}
         </div>
       </div>
     )
