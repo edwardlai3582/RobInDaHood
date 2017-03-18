@@ -60,6 +60,7 @@ class LoginPage extends Component {
     //const isEmpty = posts.length === 0
     return (
       <div className="loginWrapper">
+        <div className="loginLogo" />
         <h1 className="loginTitle">ROBINDAHOOD</h1>
         <div className="loginError">{error}</div>
         <form onSubmit={this.handleSubmit}>

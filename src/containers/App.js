@@ -4,7 +4,7 @@ import LoginPage from './LoginPage'
 import DashboardPage from './DashboardPage'
 import '../styles/App.css'
 
-class First extends Component {
+class App extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -48,4 +48,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(First)
+export default connect(mapStateToProps)(App)

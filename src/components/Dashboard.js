@@ -23,13 +23,14 @@ class Dashboard extends Component {
       if (!this.state.isResizing){
         return;
       }
-      let offsetRight = this.dbContainer.getBoundingClientRect().width - (e.clientX - this.dbContainer.offsetLeft);
-      if(offsetRight > 1000 || offsetRight<400){
+
+      if(e.clientX > 800 || e.clientX<100){
         return;
       }
       else {
-        this.dbLeftPanel.style.right = offsetRight + "px";
-        this.dbRightPanel.style.width = offsetRight + "px";
+        this.dbLeftPanel.style.width = e.clientX + "px";
+        this.dbRightPanel.style.width = (this.dbContainer.getBoundingClientRect().width-e.clientX) + "px";
+        this.dbRightPanel.style.left = e.clientX + "px";
       }
     });
 
@@ -56,7 +57,5 @@ class Dashboard extends Component {
     )
   }
 }
-
-
 
 export default Dashboard

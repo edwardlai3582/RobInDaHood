@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {persistStore, autoRehydrate} from 'redux-persist'
 import {REHYDRATE} from 'redux-persist/constants'
 import createActionBuffer from 'redux-action-buffer'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+//import { BrowserRouter as Router, Route } from 'react-router-dom'
 import reducer from './reducers'
 
 import App from './containers/App'
@@ -36,9 +36,7 @@ persistStore(store)
 
 render(
   <Provider store={store}>
-    <Router>
-      <Route exact path="/" component={App} />
-    </Router>
+    <App />
   </Provider>,
   document.getElementById('root')
 )

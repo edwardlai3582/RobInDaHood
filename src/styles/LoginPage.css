@@ -13,11 +13,22 @@
   transform: translate(-50%, -50%);
 }
 
+.loginLogo {
+  position: absolute;
+  top: 34px;
+  left: 103px;
+  width: 14px;
+  height: 19px;
+  background-image: url(./logo.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
 .loginTitle {
   font-family: 'Francois One', sans-serif;
   font-size:2.5rem;
   text-align: center;
-  padding: 10px 0 40px;
+  padding: 20px 0 20px;
   color:  var(--main-color);/*#EBB03F;*/
 }
 

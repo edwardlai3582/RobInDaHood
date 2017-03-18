@@ -1,6 +1,7 @@
 .dbContainer {
   width: 100%;
   height: 100%;
+  cursor: default;
 }
 
 .dbLeftPanel {
@@ -8,8 +9,8 @@
   left: 0;
   top: 0;
   bottom: 0;
-  right: 900px;
-  background-color: black;
+  width: 150px;
+  background-color: blue;
   color: var(--main-color);
   overflow-x: hidden;
   overflow-y: scroll;
@@ -21,11 +22,11 @@
 }
 
 .dbRightPanel {
+  width: calc(100% - 150px);
   position: absolute;
-  right: 0;
+  left: 150px;
   top: 0;
   bottom: 0;
-  width: 900px;
   background-color: black;
   color: white;
 }
@@ -37,4 +38,5 @@
   bottom: 0;
   width: 8px;
   cursor: w-resize;
+  background-color: red;
 }
