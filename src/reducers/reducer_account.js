@@ -3,34 +3,37 @@ import {
 } from '../actions'
 
 const accountReducer = (state = {
-  isAsking: false,
+  isAskingAccount: false,
   error: "",
-  account: ""
+  account: undefined,
+  accountNumber: ""
 }, action) => {
   switch (action.type) {
     case ASKING_ACCOUNT:
       return {
         ...state,
         error: "",
-        isAsking: true
+        isAskingAccount: true
       }
     case ASKING_ACCOUNT_FAILED:
       return {
         ...state,
-        isAsking: false,
+        isAskingAccount: false,
         error: action.error,
         account: undefined
       }
     case ADD_ACCOUNT:
       return {
         ...state,
-        isAsking: false,
-        account: action.account
+        isAskingAccount: false,
+        account: action.account,
+        accountNumber: action.account.account_number
       }
     case DELETE_ACCOUNT:
       return {
         ...state,
-        account: ""
+        account: undefined,
+        accountNumber: ""
       }
     default:
       return state

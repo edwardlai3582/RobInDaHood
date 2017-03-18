@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
-import { deleteToken, askAccount } from '../actions'
+import { deleteToken, askAccount, askWatchlists, askInstrument } from '../actions'
 import Dashboard from '../components/Dashboard'
 
 const customStyles = {
@@ -18,7 +18,9 @@ const customStyles = {
 class DashboardPage extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
-    isAsking: PropTypes.bool.isRequired,
+    accountNumber: PropTypes.string.isRequired,
+    watchlists: PropTypes.array.isRequired,
+    instruments: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -48,14 +50,25 @@ class DashboardPage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(askAccount());
+    dispatch(askWatchlists());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.watchlists.length !== this.props.watchlists.length){
+      nextProps.watchlists.forEach((instrument)=>{
+        this.props.dispatch(askInstrument(instrument.instrument));
+      });
+    }
   }
 
   logout = () => { this.props.dispatch(deleteToken()) }
 
   render() {
-    //const { token } = this.props
-    //const isEmpty = posts.length === 0
-    //this.logout
+    const { watchlists, instruments } = this.props
+    let qwatchlists = watchlists.map((instrument)=>{
+      return(<div key={instrument.instrument}>{instruments[instrument.instrument].symbol}</div>)
+    });
+
     return (
       <div>
         <Dashboard>
@@ -63,6 +76,7 @@ class DashboardPage extends Component {
             <button onClick={this.openModal}>
               logout
             </button>
+            {qwatchlists}
           </div>
           <div>right</div>
         </Dashboard>
@@ -85,10 +99,13 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer } = state
-  const { isAsking, token } = tokenReducer || { isAsking: false, token: "" }
+  const { tokenReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
+  const { token } = tokenReducer || { token: "" }
+  const { accountNumber } = accountReducer || { account: "" }
+  const { watchlists } = watchlistsReducer || { watchlists: []}
+  const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { isAsking, token }
+  return { token, accountNumber, watchlists, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)

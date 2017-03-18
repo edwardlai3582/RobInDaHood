@@ -8,7 +8,7 @@ class LoginPage extends Component {
   static propTypes = {
     error: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
-    isAsking: PropTypes.bool.isRequired,
+    isAskingToken: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -56,7 +56,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { isAsking, error } = this.props
+    const { isAskingToken, error } = this.props
     //const isEmpty = posts.length === 0
     return (
       <div className="loginWrapper">
@@ -66,7 +66,7 @@ class LoginPage extends Component {
         <form onSubmit={this.handleSubmit}>
           <Input type="text" focus={true} label="USERNAME" value={this.state.username} message={this.state.unMessage} onChange={this.handleUsernameChange}/>
           <Input type="password" focus={false} label="PASSWORD" value={this.state.password} message={this.state.pwMessage} onChange={this.handlePasswordChange}/>
-          <input className="loginSubmit" type="submit" value={isAsking?"LOADING...":"LOG IN"} disabled={isAsking}/>
+          <input className="loginSubmit" type="submit" value={isAskingToken?"LOADING...":"LOG IN"} disabled={isAskingToken}/>
         </form>
       </div>
     )
@@ -88,17 +88,17 @@ const mapStateToProps = state => {
   const { tokenReducer } = state
 
   const {
-    isAsking,
+    isAskingToken,
     error,
     token
   } = tokenReducer || {
-    isAsking: false,
+    isAskingToken: false,
     error:"",
     token: ""
   }
 
   return {
-    isAsking,
+    isAskingToken,
     error,
     token
   }

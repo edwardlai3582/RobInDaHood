@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux'
 import tokenReducer from './reducer_token'
 import accountReducer from './reducer_account'
+import watchlistsReducer from './reducer_watchlists'
+import instrumentsReducer from './reducer_instruments'
 
 const rootReducer = combineReducers({
   tokenReducer,
-  accountReducer
+  accountReducer,
+  watchlistsReducer,
+  instrumentsReducer
 })
 
 export default rootReducer

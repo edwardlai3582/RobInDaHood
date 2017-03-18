@@ -3,7 +3,7 @@ import {
 } from '../actions'
 
 const tokenReducer = (state = {
-  isAsking: false,
+  isAskingToken: false,
   error: "",
   token: ""
 }, action) => {
@@ -12,24 +12,24 @@ const tokenReducer = (state = {
       return {
         ...state,
         error:"",
-        isAsking: false
+        isAskingToken: false
       }
     case ASKING_TOKEN:
       return {
         ...state,
         error:"",
-        isAsking: true
+        isAskingToken: true
       }
     case ASKING_TOKEN_FAILED:
       return {
         ...state,
         error: action.error,
-        isAsking: false
+        isAskingToken: false
       }
     case ADD_TOKEN:
       return {
         ...state,
-        isAsking: false,
+        isAskingToken: false,
         token: `Token ${action.token}`
       }
     case DELETE_TOKEN:
