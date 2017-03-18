@@ -8,4 +8,4 @@ https://medium.freecodecamp.com/building-an-electron-application-with-create-rea
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ### todos
-- [ ] scrollbar styles
+- [ ] scrollbar styles https://css-tricks.com/almanac/properties/s/scrollbar/
