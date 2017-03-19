@@ -10,3 +10,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### todos
 - [ ] scrollbar styles https://css-tricks.com/almanac/properties/s/scrollbar/
 - [ ] keypress next, hilight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
+- [ ] z-index of modal and tabs
