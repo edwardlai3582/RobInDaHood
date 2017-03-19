@@ -26,8 +26,7 @@ const customStyles = {
 class DashboardPage extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
-    tabs: PropTypes.array.isRequired,
-    selectedTab: PropTypes.string.isRequired,
+    //tabs: PropTypes.array.isRequired,
     accountNumber: PropTypes.string.isRequired,
     watchlists: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
@@ -78,20 +77,17 @@ class DashboardPage extends Component {
     console.log(data);
     ////////////
     // key must be unique
-    const key = 'newTab_' + Date.now();
+    //const key = 'newTab_' + Date.now();
+    const key = data.symbol;
     let newTab = {
-      key:key,
+      key: key,
       title: data.symbol,
       type: "instrument",
       url: data.url
-    }/*(<Tab key={key} title='untitled'>
-                    <div>
-                      <h1>{data.symbol}</h1>
-                    </div>
-                  </Tab>);*/
-    let newTabs = this.props.tabs.concat([newTab]);
+    }
 
-    this.props.dispatch(addTab(key, newTabs));
+    //let newTabs = this.props.tabs[key] = newTab;
+    this.props.dispatch(addTab(key, newTab));
   }
 
   render() {
@@ -133,14 +129,14 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
+  const { tokenReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
   const { token } = tokenReducer || { token: "" }
-  const { tabs, selectedTab } = tabsReducer || { tabs: [], selectedTab: "" }
+  //const { tabs } = tabsReducer || { tabs: [] }
   const { accountNumber } = accountReducer || { account: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, tabs, selectedTab, accountNumber, watchlists, instruments}
+  return { token, accountNumber, watchlists, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)

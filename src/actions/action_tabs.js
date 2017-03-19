@@ -1,21 +1,27 @@
 ////////////TABS
 export const ADD_TAB = 'ADD_TAB'
 export const DELETE_TAB = 'DELETE_TAB'
+export const SELECT_TAB = 'SELECT_TAB'
 export const REORDER_TAB = 'REORDER_TAB'
 
-export const addTab = (currentTab, currentTabs) => ({
+export const addTab = (currentKey, newTab) => ({
   type: ADD_TAB,
-  currentTab,
-  currentTabs
+  currentKey,
+  newTab
 })
 
-export const deleteTab = (currentTabs) => ({
+export const deleteTab = (deletedKey, currentKeys) => ({
   type: DELETE_TAB,
-  currentTabs
+  deletedKey,
+  currentKeys
 })
 
-export const reorderTab = (currentTab, currentTabs) => ({
+export const selectTab = (currentKey) => ({
+  type: SELECT_TAB,
+  currentKey
+})
+
+export const reorderTab = (currentKeys) => ({
   type: REORDER_TAB,
-  currentTab,
-  currentTabs
+  currentKeys
 })

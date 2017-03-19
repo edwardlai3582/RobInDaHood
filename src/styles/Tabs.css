@@ -1,3 +1,7 @@
 .rdTabAddButton {
   display: none;
 }
+
+.myTab {
+  margin-left: 0;
+}

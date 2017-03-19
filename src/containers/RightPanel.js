@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Tab, Tabs} from 'react-draggable-tab'
-import { deleteTab, reorderTab } from '../actions'
+import { deleteTab, reorderTab, selectTab } from '../actions'
 import '../styles/Tabs.css'
 import Instrument from './Instrument'
 
@@ -38,92 +38,49 @@ const tabsStyles = {
 
 class RightPanel extends Component {
   static propTypes = {
-    tabs: PropTypes.array.isRequired,
-    selectedTab: PropTypes.string.isRequired,
+    tabs: PropTypes.object.isRequired,
+    keys: PropTypes.array.isRequired,
+    //selectedTab: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      tabs:[]
-    }
-    /*
-    this.state = {
-      tabs:[
-        (<Tab key={'tab0'} title={'tab 1'}>
-          <div>
-            <h1>This tab can close</h1>
-          </div>
-        </Tab>),
-        (<Tab key={'tab1'} title={'Tab 2'} >
-          <div>
-            <h1>This is tab3</h1>
-          </div>
-        </Tab>),
-        (<Tab key={'tab2'} title={'3ndTab Too long Toooooooooooooooooo long'}>
-          <div>
-            <pre>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-            </pre>
-          </div>
-        </Tab>)
-      ]
-    };
-    */
+    this.state = { };
   }
+
   handleTabSelect = (e, key, currentTabs) => {
-    console.log('handleTabSelect key:', key);
-    //this.props.dispatch(reorderTab(key, currentTabs));
-    //this.setState({selectedTab: key, tabs: currentTabs});
+    this.props.dispatch(selectTab(key));
   }
 
   handleTabClose = (e, key, currentTabs) =>  {
-    console.log('tabClosed key:', key);
-    //this.props.dispatch(deleteTab(currentTabs));
-    //this.setState({tabs: currentTabs});
+    let newKeys = currentTabs.map( tab => tab.key );
+    this.props.dispatch(deleteTab(key, newKeys));
   }
 
   handleTabPositionChange = (e, key, currentTabs) => {
-    console.log('tabPositionChanged key:', key);
-    //this.props.dispatch(reorderTab(key, currentTabs));
-    //this.setState({tabs: currentTabs});
-  }
-
-  handleTabAddButtonClick(e, currentTabs) {
-    // key must be unique
-    /*
-    const key = 'newTab_' + Date.now();
-    let newTab = (<Tab key={key} title='untitled'>
-                    <div>
-                      <h1>New Empty Tab</h1>
-                    </div>
-                  </Tab>);
-    let newTabs = currentTabs.concat([newTab]);
-
-    this.setState({
-      tabs: newTabs,
-      selectedTab: key
-    });
-    */
+    console.log('handleTabPositionChange currentTabs:', currentTabs);
+    let newKeys = currentTabs.map( tab => tab.key );
+    this.props.dispatch(reorderTab(newKeys));
   }
 
   render() {
-    let newTabs = this.props.tabs.map((tab)=>{
-      if(tab.type === "instrument"){
-        return (<Tab key={tab.key} title={tab.title}><Instrument url={tab.url} /></Tab>);
+    const { tabs, keys, selectedKey } = this.props;
+    let newTabs = keys.map((key)=>{
+      if(tabs[key].type === "instrument"){
+        return (<Tab key={tabs[key].key} title={tabs[key].title}><Instrument url={tabs[key].url} /></Tab>);
       }
       else{
-        return (<Tab key={tab.key} title={tab.title}><div>NOTHING HERE</div></Tab>);
+        return (<Tab key={tabs[key].key} title={tabs[key].title}><div>NOTHING HERE</div></Tab>);
       }
     });
 
     return (
       <Tabs
-        selectedTab={this.props.selectedTab?this.props.selectedTab:"tab0"}
-        onTabSelect={this.handleTabSelect.bind(this)}
-        onTabClose={this.handleTabClose.bind(this)}
-        onTabAddButtonClick={this.handleTabAddButtonClick.bind(this)}
-        onTabPositionChange={this.handleTabPositionChange.bind(this)}
+        selectedTab={selectedKey}
+        onTabSelect={this.handleTabSelect}
+        onTabClose={this.handleTabClose}
+        onTabPositionChange={this.handleTabPositionChange}
         tabsClassNames={tabsClassNames}
         tabsStyles={tabsStyles}
         tabs={newTabs}
@@ -134,9 +91,9 @@ class RightPanel extends Component {
 
 const mapStateToProps = state => {
   const { tabsReducer } = state
-  const { tabs, selectedTab } = tabsReducer || { tabs: [], selectedTab:"" }
+  const { tabs, keys, selectedKey } = tabsReducer || { tabs: {}, keys:[], selectedKey:"noTAbKey" }
 
-  return { tabs, selectedTab }
+  return { tabs, keys, selectedKey }
 }
 
 export default connect(mapStateToProps)(RightPanel)
