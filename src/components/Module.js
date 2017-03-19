@@ -7,19 +7,26 @@ class Module extends Component {
     this.state={
 
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount(){
 
   }
 
+  handleClick = event => {
+    this.props.callback(this.props.moduleData[event.target.id]);
+  }
+
   render() {
-    
+    let data = this.props.moduleData.map((instrument, index) => {
+      return(<div  key={index} id={index} onClick={this.handleClick}>{instrument.symbol}</div>)
+    });
 
     return (
       <div>
-        <div>{moduleName}</div>
-
+        <div>{this.props.moduleName}</div>
+        {data}
       </div>
     )
   }

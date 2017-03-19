@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { deleteToken, askAccount, askWatchlists, askInstrument } from '../actions'
 import Dashboard from '../components/Dashboard'
+import Module from '../components/Module'
+import RightPanel from './RightPanel'
 
 const customStyles = {
   content : {
@@ -32,6 +34,7 @@ class DashboardPage extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.addTab = this.addTab.bind(this);
   }
   openModal() {
     this.setState({modalIsOpen: true});
@@ -63,10 +66,18 @@ class DashboardPage extends Component {
 
   logout = () => { this.props.dispatch(deleteToken()) }
 
+  addTab = (data) => {
+    console.log(data);
+  }
+
   render() {
     const { watchlists, instruments } = this.props
-    let qwatchlists = watchlists.map((instrument)=>{
-      return(<div key={instrument.instrument}>{instruments[instrument.instrument].symbol}</div>)
+    let watchlistData = watchlists.map((instrument)=>{
+      return {
+        url: instrument.instrument,
+        symbol: instruments[instrument.instrument].symbol,
+        type: 'watchlist'
+      };
     });
 
     return (
@@ -76,9 +87,9 @@ class DashboardPage extends Component {
             <button onClick={this.openModal}>
               logout
             </button>
-            {qwatchlists}
+            <Module moduleName="WATCHLIST" moduleData={watchlistData} callback={this.addTab} />
           </div>
-          <div>right</div>
+          <RightPanel />
         </Dashboard>
 
         <Modal
@@ -88,7 +99,6 @@ class DashboardPage extends Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
-
           <p ref="subtitle">Are you sure you want to log out?</p>
           <button onClick={this.closeModal}>CANCEL</button>
           <button ref="logoutButton" onClick={this.logout}>LOG OUT</button>

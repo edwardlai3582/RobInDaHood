@@ -28,7 +28,7 @@ class App extends Component {
     //const isEmpty = posts.length === 0
     return (
       <div>
-        {token? <DashboardPage />: <LoginPage />}
+        {(token === "")? <LoginPage /> : <DashboardPage />}
       </div>
     )
   }
