@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {Tab, Tabs} from 'react-draggable-tab'
 import { deleteTab, reorderTab } from '../actions'
 import '../styles/Tabs.css'
+import Instrument from './Instrument'
 
 const tabsClassNames = {
   tabWrapper: 'myWrapper',
@@ -18,19 +19,20 @@ const tabsClassNames = {
 const tabsStyles = {
   tabWrapper: {
     position: 'relative',
-    top: '5px',
+    top: '0px',
     height: 'auto',
-    marginTop: '0px'
+    marginTop: '0px',
+    backgroundColor: 'green'
   },
   tabBar: {},
   tabTitle: {},
   tabCloseIcon: {},
   tab: {backgroundImage: 'linear-gradient(#343434, #222222)'},
-  tabBefore: {backgroundImage: 'linear-gradient(#343434, #222222)'},
-  tabAfter: {backgroundImage: 'linear-gradient(#343434, #222222)'},
+  tabBefore: {display:'none'},//backgroundImage: 'linear-gradient(#343434, #222222)'
+  tabAfter: {display:'none'},
   tabActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
-  tabBeforeActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
-  tabAfterActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
+  tabBeforeActive: {display:'none'},//backgroundImage: 'linear-gradient(#454545, #333333)'
+  tabAfterActive: {display:'none'},
   tabBarAfter: {height:'0px'}
 };
 
@@ -107,12 +109,17 @@ class RightPanel extends Component {
 
   render() {
     let newTabs = this.props.tabs.map((tab)=>{
-      return (<Tab key={tab.key} title={tab.title}><div>{tab.title}</div></Tab>)
+      if(tab.type === "instrument"){
+        return (<Tab key={tab.key} title={tab.title}><Instrument url={tab.url} /></Tab>);
+      }
+      else{
+        return (<Tab key={tab.key} title={tab.title}><div>NOTHING HERE</div></Tab>);
+      }
     });
 
     return (
       <Tabs
-        selectedTab={this.props.selectedTab ? this.props.selectedTab : "tab1"}
+        selectedTab={this.props.selectedTab?this.props.selectedTab:"tab0"}
         onTabSelect={this.handleTabSelect.bind(this)}
         onTabClose={this.handleTabClose.bind(this)}
         onTabAddButtonClick={this.handleTabAddButtonClick.bind(this)}

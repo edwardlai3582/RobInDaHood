@@ -80,7 +80,9 @@ class DashboardPage extends Component {
     const key = 'newTab_' + Date.now();
     let newTab = {
       key:key,
-      title: data.symbol
+      title: data.symbol,
+      type: "instrument",
+      url: data.url
     }/*(<Tab key={key} title='untitled'>
                     <div>
                       <h1>{data.symbol}</h1>
