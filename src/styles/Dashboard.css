@@ -10,7 +10,7 @@
   top: 0;
   bottom: 0;
   width: 150px;
-  background-color: blue;
+  background-color: black;
   color: var(--main-color);
   overflow-x: hidden;
   overflow-y: scroll;
@@ -27,7 +27,7 @@
   left: 150px;
   top: 0;
   bottom: 0;
-  background-color: black;
+  background-color: none;
   color: white;
 }
 
@@ -38,5 +38,5 @@
   bottom: 0;
   width: 8px;
   cursor: w-resize;
-  background-color: red;
+  background-color: none;
 }

@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
-import { deleteToken, askAccount, askWatchlists, askInstrument } from '../actions'
+import { deleteToken,
+         askAccount,
+         askWatchlists,
+         askInstrument,
+         addTab,
+       } from '../actions'
 import Dashboard from '../components/Dashboard'
 import Module from '../components/Module'
 import RightPanel from './RightPanel'
@@ -20,6 +25,8 @@ const customStyles = {
 class DashboardPage extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
+    tabs: PropTypes.array.isRequired,
+    selectedTab: PropTypes.string.isRequired,
     accountNumber: PropTypes.string.isRequired,
     watchlists: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
@@ -34,7 +41,7 @@ class DashboardPage extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.addTab = this.addTab.bind(this);
+    this.handleaddTab = this.handleaddTab.bind(this);
   }
   openModal() {
     this.setState({modalIsOpen: true});
@@ -66,8 +73,22 @@ class DashboardPage extends Component {
 
   logout = () => { this.props.dispatch(deleteToken()) }
 
-  addTab = (data) => {
+  handleaddTab = (data) => {
     console.log(data);
+    ////////////
+    // key must be unique
+    const key = 'newTab_' + Date.now();
+    let newTab = {
+      key:key,
+      title: data.symbol
+    }/*(<Tab key={key} title='untitled'>
+                    <div>
+                      <h1>{data.symbol}</h1>
+                    </div>
+                  </Tab>);*/
+    let newTabs = this.props.tabs.concat([newTab]);
+
+    this.props.dispatch(addTab(key, newTabs));
   }
 
   render() {
@@ -87,7 +108,7 @@ class DashboardPage extends Component {
             <button onClick={this.openModal}>
               logout
             </button>
-            <Module moduleName="WATCHLIST" moduleData={watchlistData} callback={this.addTab} />
+            <Module moduleName="WATCHLIST" moduleData={watchlistData} callback={this.handleaddTab} />
           </div>
           <RightPanel />
         </Dashboard>
@@ -109,13 +130,14 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
+  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
   const { token } = tokenReducer || { token: "" }
+  const { tabs, selectedTab } = tabsReducer || { tabs: [], selectedTab: "" }
   const { accountNumber } = accountReducer || { account: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, accountNumber, watchlists, instruments}
+  return { token, tabs, selectedTab, accountNumber, watchlists, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)

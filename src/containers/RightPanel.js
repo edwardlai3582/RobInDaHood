@@ -1,10 +1,52 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Tab, Tabs} from 'react-draggable-tab'
+import { deleteTab, reorderTab } from '../actions'
+import '../styles/Tabs.css'
+
+const tabsClassNames = {
+  tabWrapper: 'myWrapper',
+  tabBar: 'myTabBar',
+  tabBarAfter: 'myTabBarAfter',
+  tab:      'myTab',
+  tabTitle: 'myTabTitle',
+  tabCloseIcon: 'tabCloseIcon',
+  tabBefore: 'myTabBefore',
+  tabAfter: 'myTabAfter'
+};
+
+const tabsStyles = {
+  tabWrapper: {
+    position: 'relative',
+    top: '5px',
+    height: 'auto',
+    marginTop: '0px'
+  },
+  tabBar: {},
+  tabTitle: {},
+  tabCloseIcon: {},
+  tab: {backgroundImage: 'linear-gradient(#343434, #222222)'},
+  tabBefore: {backgroundImage: 'linear-gradient(#343434, #222222)'},
+  tabAfter: {backgroundImage: 'linear-gradient(#343434, #222222)'},
+  tabActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
+  tabBeforeActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
+  tabAfterActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
+  tabBarAfter: {height:'0px'}
+};
 
 class RightPanel extends Component {
+  static propTypes = {
+    tabs: PropTypes.array.isRequired,
+    selectedTab: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props);
+    this.state = {
+      tabs:[]
+    }
+    /*
     this.state = {
       tabs:[
         (<Tab key={'tab0'} title={'tab 1'}>
@@ -25,24 +67,29 @@ class RightPanel extends Component {
         </Tab>)
       ]
     };
+    */
   }
-  handleTabSelect(e, key, currentTabs) {
+  handleTabSelect = (e, key, currentTabs) => {
     console.log('handleTabSelect key:', key);
-    this.setState({selectedTab: key, tabs: currentTabs});
+    //this.props.dispatch(reorderTab(key, currentTabs));
+    //this.setState({selectedTab: key, tabs: currentTabs});
   }
 
-  handleTabClose(e, key, currentTabs) {
+  handleTabClose = (e, key, currentTabs) =>  {
     console.log('tabClosed key:', key);
-    this.setState({tabs: currentTabs});
+    //this.props.dispatch(deleteTab(currentTabs));
+    //this.setState({tabs: currentTabs});
   }
 
-  handleTabPositionChange(e, key, currentTabs) {
+  handleTabPositionChange = (e, key, currentTabs) => {
     console.log('tabPositionChanged key:', key);
-    this.setState({tabs: currentTabs});
+    //this.props.dispatch(reorderTab(key, currentTabs));
+    //this.setState({tabs: currentTabs});
   }
 
   handleTabAddButtonClick(e, currentTabs) {
     // key must be unique
+    /*
     const key = 'newTab_' + Date.now();
     let newTab = (<Tab key={key} title='untitled'>
                     <div>
@@ -55,26 +102,39 @@ class RightPanel extends Component {
       tabs: newTabs,
       selectedTab: key
     });
+    */
   }
+
   render() {
+    let newTabs = this.props.tabs.map((tab)=>{
+      return (<Tab key={tab.key} title={tab.title}><div>{tab.title}</div></Tab>)
+    });
+
     return (
       <Tabs
-        selectedTab={this.state.selectedTab ? this.state.selectedTab : "tab1"}
+        selectedTab={this.props.selectedTab ? this.props.selectedTab : "tab1"}
         onTabSelect={this.handleTabSelect.bind(this)}
         onTabClose={this.handleTabClose.bind(this)}
         onTabAddButtonClick={this.handleTabAddButtonClick.bind(this)}
         onTabPositionChange={this.handleTabPositionChange.bind(this)}
-        tabs={this.state.tabs}
+        tabsClassNames={tabsClassNames}
+        tabsStyles={tabsStyles}
+        tabs={newTabs}
       />
     )
   }
 }
 
-export default connect(null)(RightPanel)
+const mapStateToProps = state => {
+  const { tabsReducer } = state
+  const { tabs, selectedTab } = tabsReducer || { tabs: [], selectedTab:"" }
+
+  return { tabs, selectedTab }
+}
+
+export default connect(mapStateToProps)(RightPanel)
 
 /*
-tabsClassNames={tabsClassNames}
-tabsStyles={tabsStyles}
 shortCutKeys={
   {
     'close': ['alt+command+w', 'alt+ctrl+w'],
