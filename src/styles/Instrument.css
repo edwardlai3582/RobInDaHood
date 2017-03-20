@@ -1,6 +1,6 @@
 .instrumentWrapper {
   position: relative;
 
-  background-color: red;
+  background-color: var(--main-color);
   padding: 10px;
 }

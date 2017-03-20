@@ -22,18 +22,21 @@ const tabsStyles = {
     top: '0px',
     height: 'auto',
     marginTop: '0px',
-    backgroundColor: 'green'
+    backgroundColor: 'none'//'#076258'
   },
-  tabBar: {},
+  tabBar: {paddingRight: "0"},
   tabTitle: {},
-  tabCloseIcon: {},
-  tab: {backgroundImage: 'linear-gradient(#343434, #222222)'},
+  tabTitleActive:{marginTop: '4px'},
+  tabCloseIcon: {marginTop: '4px',opacity: '1',right: '5px', filter:'none', color:'rgb(170, 170, 170)'},
+  tabCloseIconOnHover:{backgroundColor: 'none', color: 'white'},
+  tab: {marginLeft: "2px", backgroundImage: '', backgroundColor: 'teal'},
   tabBefore: {display:'none'},//backgroundImage: 'linear-gradient(#343434, #222222)'
   tabAfter: {display:'none'},
-  tabActive: {backgroundImage: 'linear-gradient(#454545, #333333)'},
+  tabOnHover: {backgroundImage:''},
+  tabActive: {backgroundImage: '', backgroundColor: '#40C9BD', color:'white'},
   tabBeforeActive: {display:'none'},//backgroundImage: 'linear-gradient(#454545, #333333)'
   tabAfterActive: {display:'none'},
-  tabBarAfter: {height:'0px'}
+  tabBarAfter: {height:'0px', borderBottom:'0px'}
 };
 
 class RightPanel extends Component {

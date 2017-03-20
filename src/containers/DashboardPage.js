@@ -5,7 +5,7 @@ import { deleteToken,
          askAccount,
          askWatchlists,
          askInstrument,
-         addTab,
+         addTab, selectTab
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import Module from '../components/Module'
@@ -26,7 +26,7 @@ const customStyles = {
 class DashboardPage extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
-    //tabs: PropTypes.array.isRequired,
+    keys: PropTypes.array.isRequired,
     accountNumber: PropTypes.string.isRequired,
     watchlists: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
@@ -74,11 +74,13 @@ class DashboardPage extends Component {
   logout = () => { this.props.dispatch(deleteToken()) }
 
   handleaddTab = (data) => {
-    console.log(data);
-    ////////////
-    // key must be unique
-    //const key = 'newTab_' + Date.now();
     const key = data.symbol;
+
+    if(this.props.keys.indexOf(key) !== -1) {
+      this.props.dispatch(selectTab(key));
+      return;
+    }
+
     let newTab = {
       key: key,
       title: data.symbol,
@@ -86,7 +88,6 @@ class DashboardPage extends Component {
       url: data.url
     }
 
-    //let newTabs = this.props.tabs[key] = newTab;
     this.props.dispatch(addTab(key, newTab));
   }
 
@@ -129,14 +130,14 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
+  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
   const { token } = tokenReducer || { token: "" }
-  //const { tabs } = tabsReducer || { tabs: [] }
+  const { keys } = tabsReducer || { keys: [] }
   const { accountNumber } = accountReducer || { account: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, accountNumber, watchlists, instruments}
+  return { token, keys, accountNumber, watchlists, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)
