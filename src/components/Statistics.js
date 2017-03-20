@@ -10,7 +10,7 @@ const Statistics = ({ fundamental }) => {
 
 
 Statistics.propTypes = {
-  fundamentals: PropTypes.object.isRequired
+  fundamental: PropTypes.object.isRequired
 }
 
 export default Statistics
