@@ -27,7 +27,7 @@ const tabsStyles = {
   tabBar: {paddingRight: "0"},
   tabTitle: {},
   tabTitleActive:{marginTop: '4px'},
-  tabCloseIcon: {marginTop: '4px',opacity: '1',right: '5px', filter:'none', color:'rgb(170, 170, 170)'},
+  tabCloseIcon: {marginTop: '4px',opacity: '1',right: '5px', filter:'none', color:'rgb(170, 170, 170)', textShadow:'none'},
   tabCloseIconOnHover:{backgroundColor: 'none', color: 'white'},
   tab: {marginLeft: "2px", backgroundImage: '', backgroundColor: 'teal'},
   tabBefore: {display:'none'},//backgroundImage: 'linear-gradient(#343434, #222222)'

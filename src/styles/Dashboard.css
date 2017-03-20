@@ -14,7 +14,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   box-sizing: border-box;
-  border-right: 1px solid white;
+  /*border-right: 1px solid white;*/
 }
 .dbLeftPanel::-webkit-scrollbar {
   width: 0 !important
