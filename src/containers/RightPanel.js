@@ -44,7 +44,8 @@ class RightPanel extends Component {
     tabs: PropTypes.object.isRequired,
     keys: PropTypes.array.isRequired,
     selectedKey: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    width: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -68,6 +69,7 @@ class RightPanel extends Component {
   }
 
   render() {
+    console.log(this.props.width)
     const { tabs, keys, selectedKey } = this.props;
     let newTabs = keys.map((key)=>{
       if(tabs[key].type === "instrument"){
@@ -85,7 +87,7 @@ class RightPanel extends Component {
         onTabClose={this.handleTabClose}
         onTabPositionChange={this.handleTabPositionChange}
         tabsClassNames={tabsClassNames}
-        tabsStyles={tabsStyles}
+        tabsStyles={Object.assign(tabsStyles, {tabWrapper:{width: this.props.width}})}
         tabs={newTabs}
       />
     )

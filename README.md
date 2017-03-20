@@ -11,5 +11,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] scrollbar styles https://css-tricks.com/almanac/properties/s/scrollbar/
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [x] z-index of modal and tabs
-- [ ] window resize right part need to change
+- [x] window resize right part need to change
 - [ ] logout delete everything
