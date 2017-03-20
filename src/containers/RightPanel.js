@@ -63,13 +63,11 @@ class RightPanel extends Component {
   }
 
   handleTabPositionChange = (e, key, currentTabs) => {
-    console.log('handleTabPositionChange currentTabs:', currentTabs);
     let newKeys = currentTabs.map( tab => tab.key );
     this.props.dispatch(reorderTab(newKeys));
   }
 
   render() {
-    console.log(this.props.width)
     const { tabs, keys, selectedKey } = this.props;
     let newTabs = keys.map((key)=>{
       if(tabs[key].type === "instrument"){

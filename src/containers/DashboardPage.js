@@ -27,6 +27,7 @@ class DashboardPage extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
     keys: PropTypes.array.isRequired,
+    selectedKey: PropTypes.string.isRequired,
     accountNumber: PropTypes.string.isRequired,
     watchlists: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
@@ -65,7 +66,6 @@ class DashboardPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.watchlists.length !== this.props.watchlists.length){
-      console.log('fgadfsgadfgsdfg');
       nextProps.watchlists.forEach((instrument)=>{
         this.props.dispatch(askInstrument(instrument.instrument));
       });
@@ -112,7 +112,12 @@ class DashboardPage extends Component {
         };
       });
 
-      watchlistsMenu = (<Module moduleName="WATCHLIST" moduleData={watchlistData} callback={this.handleaddTab} />);
+      watchlistsMenu = (<Module
+        moduleName="WATCHLIST"
+        moduleData={watchlistData}
+        selectedKey={this.props.selectedKey}
+        callback={this.handleaddTab}
+      />);
     }
 
     return (
@@ -146,12 +151,12 @@ class DashboardPage extends Component {
 const mapStateToProps = state => {
   const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
   const { token } = tokenReducer || { token: "" }
-  const { keys } = tabsReducer || { keys: [] }
+  const { keys, selectedKey } = tabsReducer || { keys: [] }
   const { accountNumber } = accountReducer || { account: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, keys, accountNumber, watchlists, instruments}
+  return { token, keys, selectedKey, accountNumber, watchlists, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)

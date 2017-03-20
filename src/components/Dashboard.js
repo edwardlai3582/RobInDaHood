@@ -41,12 +41,9 @@ class Dashboard extends Component {
 
   resize = (e) => {
     //document.body.clientWidth;
-    //console.log("Eee")
-    this.dbRightPanel.style.width = (this.dbContainer.getBoundingClientRect().width-this.dbLeftPanel.style.width) + "px";
-    //this.dbRightPanel.style.left = this.dbLeftPanel.style.width + "px";
-    console.log(document.body.clientWidth);
-    console.log(this.dbContainer.getBoundingClientRect().width);
-    console.log(this.dbLeftPanel.getBoundingClientRect().width);
+    //console.log(document.body.clientWidth);
+    //console.log(this.dbContainer.getBoundingClientRect().width);
+    //console.log(this.dbLeftPanel.getBoundingClientRect().width);
     this.setState({rightWidth: this.dbContainer.getBoundingClientRect().width - this.dbLeftPanel.getBoundingClientRect().width + "px"})
   }
 

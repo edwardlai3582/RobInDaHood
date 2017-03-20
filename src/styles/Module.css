@@ -1,0 +1,24 @@
+.moduleArrow{
+  position: relative;
+  background-color: none;
+}
+
+.open {
+  top: -2px;
+  width: 0.6rem;
+  height: 0.6rem;
+  padding-right: 5px;
+  transform: rotate(0deg);
+}
+
+.close {
+  top: -3px;
+  width: 0.6rem;
+  height: 0.6rem;
+  padding-right: 5px;
+  transform: rotate(-90deg);
+}
+
+.selectedModuleDiv {
+  background-color: #016262;
+}
