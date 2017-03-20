@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Tab, Tabs} from 'react-draggable-tab'
 import { deleteTab, reorderTab, selectTab } from '../actions'
-import '../styles/Tabs.css'
 import Instrument from './Instrument'
+import '../styles/Tabs.css'
 
 const tabsClassNames = {
   tabWrapper: 'myWrapper',
@@ -44,8 +44,8 @@ class RightPanel extends Component {
     tabs: PropTypes.object.isRequired,
     keys: PropTypes.array.isRequired,
     selectedKey: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    width: PropTypes.string.isRequired
+    width: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   constructor(props) {

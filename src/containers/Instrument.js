@@ -32,9 +32,12 @@ class Instrument extends Component {
     return (
       <div className="instrumentWrapper">
         <h1 className="instrumentH1">{symbol}</h1>
-        <h2>{instruments[url].name}</h2>
+        <h2 className="instrumentH2">{instruments[url].name}</h2>
         <SectionWrapper SectionTitle={"Statistics"}>
           {statisticsBlock}
+        </SectionWrapper>
+        <SectionWrapper SectionTitle={"About"}>
+          {fundamentals[symbol].description}
         </SectionWrapper>
       </div>
     )

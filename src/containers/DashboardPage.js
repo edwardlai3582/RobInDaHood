@@ -8,7 +8,7 @@ import { deleteToken,
          addTab, selectTab
        } from '../actions'
 import Dashboard from '../components/Dashboard'
-import Module from '../components/Module'
+import Module from './Module'
 import RightPanel from './RightPanel'
 
 const customStyles = {

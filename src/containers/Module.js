@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { toggleWatchlistsModule } from '../actions'
 import '../styles/Module.css'
 import arrow from '../styles/arrow.png';
 
 class Module extends Component {
-  constructor(props) {
-    super(props);
-    this.state={
-      open: false
-    };
-    this.handleClick = this.handleClick.bind(this);
+  static propTypes = {
+    watchlistsModuleOpen: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
-  componentDidMount(){
-
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick = event => {
@@ -20,7 +20,7 @@ class Module extends Component {
   }
 
   openClose = () => {
-    this.setState({open: !this.state.open});
+    this.props.dispatch(toggleWatchlistsModule());
   }
 
   render() {
@@ -36,16 +36,27 @@ class Module extends Component {
       );
     });
 
+    let open = this.props.watchlistsModuleOpen;
+
     return (
       <div>
         <div onClick={this.openClose}>
-          <img src={arrow} className={this.state.open? "moduleArrow open": "moduleArrow close"} />
+          <img src={arrow}
+               alt={open? "open": "close"}
+               className={open? "moduleArrow open": "moduleArrow close"} />
           {this.props.moduleName}
         </div>
-        {this.state.open? data : ""}
+        {open? data : ""}
       </div>
     )
   }
 }
 
-export default Module
+const mapStateToProps = state => {
+  const { uiReducer } = state
+  const { watchlistsModuleOpen } = uiReducer || { watchlistsModuleOpen: false }
+
+  return { watchlistsModuleOpen }
+}
+
+export default connect(mapStateToProps)(Module)
