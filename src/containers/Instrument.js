@@ -4,6 +4,7 @@ import {
          askFundamental
        } from '../actions'
 import Statistics from '../components/Statistics'
+import SectionWrapper from '../components/SectionWrapper'
 import '../styles/Instrument.css'
 
 class Instrument extends Component {
@@ -32,7 +33,9 @@ class Instrument extends Component {
       <div className="instrumentWrapper">
         <h1 className="instrumentH1">{symbol}</h1>
         <h2>{instruments[url].name}</h2>
-        {statisticsBlock}
+        <SectionWrapper SectionTitle={"Statistics"}>
+          {statisticsBlock}
+        </SectionWrapper>
       </div>
     )
   }

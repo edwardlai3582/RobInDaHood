@@ -1,0 +1,22 @@
+.statisticsWrapper{
+  width: 100%;
+  display: flex;
+  flex-wrap:wrap;
+  /*justify-content:space-around;*/
+}
+
+.statisticsDiv {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.statisticsNum {
+
+}
+
+.statisticsType {
+  color: black;
+  padding-top: 3px;
+  padding-left: 1px;
+}

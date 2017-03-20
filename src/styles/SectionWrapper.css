@@ -1,0 +1,12 @@
+.SectionWrapper {
+  padding: 20px;
+}
+
+.sectionH3 {
+  color: #555869;
+  padding: 0px 0px 5px 10px;
+}
+
+.sectionChildrenWrapper {
+  background-color: teal;
+}
