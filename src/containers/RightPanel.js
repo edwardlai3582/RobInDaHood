@@ -43,7 +43,7 @@ class RightPanel extends Component {
   static propTypes = {
     tabs: PropTypes.object.isRequired,
     keys: PropTypes.array.isRequired,
-    //selectedTab: PropTypes.string.isRequired,
+    selectedKey: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -71,7 +71,7 @@ class RightPanel extends Component {
     const { tabs, keys, selectedKey } = this.props;
     let newTabs = keys.map((key)=>{
       if(tabs[key].type === "instrument"){
-        return (<Tab key={tabs[key].key} title={tabs[key].title}><Instrument url={tabs[key].url} /></Tab>);
+        return (<Tab key={tabs[key].key} title={tabs[key].title}><Instrument symbol={tabs[key].title} url={tabs[key].url} /></Tab>);
       }
       else{
         return (<Tab key={tabs[key].key} title={tabs[key].title}><div>NOTHING HERE</div></Tab>);

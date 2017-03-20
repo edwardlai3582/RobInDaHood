@@ -10,33 +10,43 @@ class Dashboard extends Component {
     };
   }
 
+  mousedown = (e) => {
+    this.setState({
+      isResizing : true,
+      lastDownX : e.clientX
+    });
+  }
+
+  mousemove = (e) => {
+    e.preventDefault();
+    if (!this.state.isResizing){
+      return;
+    }
+
+    if(e.clientX > 800 || e.clientX<100){
+      return;
+    }
+    else {
+      this.dbLeftPanel.style.width = e.clientX + "px";
+      this.dbRightPanel.style.width = (this.dbContainer.getBoundingClientRect().width-e.clientX) + "px";
+      this.dbRightPanel.style.left = e.clientX + "px";
+    }
+  }
+
+  mouseup = (e) => {
+      this.setState({isResizing : false});
+  }
+
   componentDidMount(){
-    this.dbDrag.addEventListener('mousedown', (e) => {
-      this.setState({
-        isResizing : true,
-        lastDownX : e.clientX
-      });
-    });
+    this.dbDrag.addEventListener('mousedown', this.mousedown);
+    document.addEventListener('mousemove', this.mousemove);
+    document.addEventListener('mouseup', this.mouseup);
+  }
 
-    document.addEventListener('mousemove',  (e) => {
-      e.preventDefault();
-      if (!this.state.isResizing){
-        return;
-      }
-
-      if(e.clientX > 800 || e.clientX<100){
-        return;
-      }
-      else {
-        this.dbLeftPanel.style.width = e.clientX + "px";
-        this.dbRightPanel.style.width = (this.dbContainer.getBoundingClientRect().width-e.clientX) + "px";
-        this.dbRightPanel.style.left = e.clientX + "px";
-      }
-    });
-
-    document.addEventListener('mouseup', (e) => {
-        this.setState({isResizing : false});
-    });
+  componentWillUnmount(){
+    this.dbDrag.removeEventListener('mousedown', this.mousedown);
+    document.removeEventListener('mousemove', this.mousemove);
+    document.removeEventListener('mouseup', this.mouseup);
   }
 
   render() {

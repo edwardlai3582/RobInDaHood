@@ -1,6 +1,9 @@
 .instrumentWrapper {
   position: relative;
-
   background-color: var(--main-color);
   padding: 10px;
+}
+
+.instrumentH1 {
+  font-size: 2rem;
 }

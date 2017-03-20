@@ -57,7 +57,7 @@ class LoginPage extends Component {
 
   render() {
     const { isAskingToken, error } = this.props
-    //const isEmpty = posts.length === 0
+    
     return (
       <div className="loginWrapper">
         <div className="loginLogo" />

@@ -65,6 +65,7 @@ class DashboardPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.watchlists.length !== this.props.watchlists.length){
+      console.log('fgadfsgadfgsdfg');
       nextProps.watchlists.forEach((instrument)=>{
         this.props.dispatch(askInstrument(instrument.instrument));
       });
@@ -85,7 +86,7 @@ class DashboardPage extends Component {
       key: key,
       title: data.symbol,
       type: "instrument",
-      url: data.url
+      url: data.url,
     }
 
     this.props.dispatch(addTab(key, newTab));
@@ -93,13 +94,26 @@ class DashboardPage extends Component {
 
   render() {
     const { watchlists, instruments } = this.props
-    let watchlistData = watchlists.map((instrument)=>{
-      return {
-        url: instrument.instrument,
-        symbol: instruments[instrument.instrument].symbol,
-        type: 'watchlist'
-      };
-    });
+    let watchlistsMenu = "loading...";
+    let instrumentsHasAllNeeded = true;
+    for(let i=0; i< watchlists.length; i++){
+      if(typeof instruments[watchlists[i].instrument] === "undefined"){
+        instrumentsHasAllNeeded = false;
+        break;
+      }
+    }
+
+    if(instrumentsHasAllNeeded){
+      let watchlistData = watchlists.map((instrument)=>{
+        return {
+          url: instrument.instrument,
+          symbol: instruments[instrument.instrument].symbol,
+          type: 'watchlist'
+        };
+      });
+
+      watchlistsMenu = (<Module moduleName="WATCHLIST" moduleData={watchlistData} callback={this.handleaddTab} />);
+    }
 
     return (
       <div>
@@ -108,7 +122,7 @@ class DashboardPage extends Component {
             <button onClick={this.openModal}>
               logout
             </button>
-            <Module moduleName="WATCHLIST" moduleData={watchlistData} callback={this.handleaddTab} />
+            {watchlistsMenu}
           </div>
           <RightPanel />
         </Dashboard>

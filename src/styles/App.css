@@ -57,7 +57,8 @@ html, body {
   color: white;
   text-align: center;
 	font-family: 'Roboto', sans-serif;
-	font-size: 16px;cursor: default;
+	font-size: 16px;
+	cursor: default;
 	overflow-x: hidden;
 }
 

@@ -12,3 +12,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [x] z-index of modal and tabs
 - [ ] window resize right part need to change
+- [ ] logout delete everything
