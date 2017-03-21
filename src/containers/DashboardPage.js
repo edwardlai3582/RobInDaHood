@@ -37,25 +37,6 @@ class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.state = { modalIsOpen: false};
-    this.logout = this.logout.bind(this);
-
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.handleaddTab = this.handleaddTab.bind(this);
-  }
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.refs.subtitle.style.color = 'black';
-    this.refs.logoutButton.style.color = '#40C9BD';
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
   }
 
   componentDidMount() {
@@ -70,6 +51,20 @@ class DashboardPage extends Component {
         this.props.dispatch(askInstrument(instrument.instrument));
       });
     }
+  }
+
+  openModal = () => {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal = () => {
+    // references are now sync'd and can be accessed.
+    this.refs.subtitle.style.color = 'black';
+    this.refs.logoutButton.style.color = '#40C9BD';
+  }
+
+  closeModal = () => {
+    this.setState({modalIsOpen: false});
   }
 
   logout = () => { this.props.dispatch(deleteToken()) }
@@ -93,7 +88,7 @@ class DashboardPage extends Component {
   }
 
   render() {
-    const { watchlists, instruments } = this.props
+    const { watchlists, instruments, selectedKey } = this.props
     let watchlistsMenu = "loading...";
     let instrumentsHasAllNeeded = true;
     for(let i=0; i< watchlists.length; i++){
@@ -115,7 +110,7 @@ class DashboardPage extends Component {
       watchlistsMenu = (<Module
         moduleName="WATCHLIST"
         moduleData={watchlistData}
-        selectedKey={this.props.selectedKey}
+        selectedKey={selectedKey}
         callback={this.handleaddTab}
       />);
     }
@@ -137,7 +132,7 @@ class DashboardPage extends Component {
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
-          contentLabel="Example Modal"
+          contentLabel="LogOut Modal"
         >
           <p ref="subtitle">Are you sure you want to log out?</p>
           <button onClick={this.closeModal}>CANCEL</button>
@@ -151,8 +146,8 @@ class DashboardPage extends Component {
 const mapStateToProps = state => {
   const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
   const { token } = tokenReducer || { token: "" }
-  const { keys, selectedKey } = tabsReducer || { keys: [] }
-  const { accountNumber } = accountReducer || { account: "" }
+  const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
+  const { accountNumber } = accountReducer || { accountNumber: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
 

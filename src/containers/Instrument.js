@@ -33,9 +33,11 @@ class Instrument extends Component {
     const { symbol, url, fundamentals, instruments, newsAll } = this.props
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading..."
     let newsBlock = (newsAll[symbol])? <News News={newsAll[symbol]} /> : "Loading..."
+    let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading..."
 
     return (
       <div className="instrumentWrapper">
+        <div className="instrumentFake"></div>
         <h1 className="instrumentH1">{symbol}</h1>
         <h2 className="instrumentH2">{instruments[url].name}</h2>
         <SectionWrapper SectionTitle={"Recent News"}>
@@ -45,7 +47,7 @@ class Instrument extends Component {
           {statisticsBlock}
         </SectionWrapper>
         <SectionWrapper SectionTitle={"About"}>
-          {fundamentals[symbol].description}
+          {descriptionBlock}
         </SectionWrapper>
       </div>
     )

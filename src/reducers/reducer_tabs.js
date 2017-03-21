@@ -20,25 +20,18 @@ const tabsReducer = (state = {
     case DELETE_TAB:
       let newTabs = Object.assign({}, state.tabs);
       delete newTabs[action.deletedKey]
-
-      if(action.currentKeys.length===0){
-        return {
-          selectedKey: "noTAbKey",
-          keys: action.currentKeys,
-          tabs: newTabs
-        }
-      }
-      else{
-        return {
-          ...state,
-          keys: action.currentKeys,
-          tabs: newTabs
-        }
-      }
-    case SELECT_TAB:
+      let realKey = (action.currentKeys.length===0)? "noTAbKey" : state.selectedKey;
       return {
         ...state,
-        selectedKey: action.currentKey
+        selectedKey: realKey,
+        keys: action.currentKeys,
+        tabs: newTabs
+      }
+    case SELECT_TAB:
+      let newSelectedKey = action.currentKey || "noTAbKey";
+      return {
+        ...state,
+        selectedKey: newSelectedKey
       }
     case REORDER_TAB:
       return {
