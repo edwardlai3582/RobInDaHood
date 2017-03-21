@@ -59,7 +59,7 @@ html, body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	cursor: default;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 :root {

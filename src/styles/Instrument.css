@@ -2,6 +2,8 @@
   position: relative;
   background-color: var(--main-color);
   padding: 10px;
+  overflow-y: auto;
+  height: calc(100vh - 26px);
 }
 
 .instrumentH1 {

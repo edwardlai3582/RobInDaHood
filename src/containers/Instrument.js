@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
-         askFundamental
+         askFundamental,
+         askNews
        } from '../actions'
 import Statistics from '../components/Statistics'
+import News from '../components/News'
 import SectionWrapper from '../components/SectionWrapper'
 import '../styles/Instrument.css'
 
@@ -13,6 +15,7 @@ class Instrument extends Component {
     symbol: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     fundamentals: PropTypes.object.isRequired,
+    newsAll: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -23,16 +26,21 @@ class Instrument extends Component {
 
   componentDidMount(){
     this.props.dispatch(askFundamental(this.props.symbol))
+    this.props.dispatch(askNews(this.props.symbol))
   }
 
   render() {
-    const { symbol, url, fundamentals, instruments } = this.props
+    const { symbol, url, fundamentals, instruments, newsAll } = this.props
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading..."
+    let newsBlock = (newsAll[symbol])? <News News={newsAll[symbol]} /> : "Loading..."
 
     return (
       <div className="instrumentWrapper">
         <h1 className="instrumentH1">{symbol}</h1>
         <h2 className="instrumentH2">{instruments[url].name}</h2>
+        <SectionWrapper SectionTitle={"Recent News"}>
+          {newsBlock}
+        </SectionWrapper>
         <SectionWrapper SectionTitle={"Statistics"}>
           {statisticsBlock}
         </SectionWrapper>
@@ -45,10 +53,11 @@ class Instrument extends Component {
 }
 
 const mapStateToProps = state => {
-  const { instrumentsReducer, fundamentalsReducer } = state
+  const { instrumentsReducer, fundamentalsReducer, newsReducer } = state
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
-  return { instruments, fundamentals }
+  const { newsAll } = newsReducer || { newsAll: {}}
+  return { instruments, fundamentals, newsAll }
 }
 
 export default connect(mapStateToProps)(Instrument)

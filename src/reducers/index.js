@@ -5,6 +5,7 @@ import watchlistsReducer from './reducer_watchlists'
 import instrumentsReducer from './reducer_instruments'
 import tabsReducer from './reducer_tabs'
 import fundamentalsReducer from './reducer_fundamentals'
+import newsReducer from './reducer_news'
 import uiReducer from './reducer_ui'
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   instrumentsReducer,
   tabsReducer,
   fundamentalsReducer,
+  newsReducer,
   uiReducer
 })
 
