@@ -6,9 +6,10 @@ import '../styles/LoginPage.css'
 
 class LoginPage extends Component {
   static propTypes = {
-    error: PropTypes.string.isRequired,
-    token: PropTypes.string.isRequired,
+    tokenError: PropTypes.string.isRequired,
     isAskingToken: PropTypes.bool.isRequired,
+    accountError: PropTypes.string.isRequired,
+    isAskingAccount: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -47,17 +48,19 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { isAskingToken, error } = this.props
+    const { isAskingToken, tokenError, isAskingAccount, accountError } = this.props
+    const isAsking = isAskingToken || isAskingAccount;
+    const Errors = tokenError || accountError;
 
     return (
       <div className="loginWrapper">
         <div className="loginLogo" />
         <h1 className="loginTitle">ROBINDAHOOD</h1>
-        <div className="loginError">{error}</div>
+        <div className="loginError">{Errors}</div>
         <form onSubmit={this.handleSubmit}>
           <Input type="text" focus={true} label="USERNAME" value={this.state.username} message={this.state.unMessage} onChange={this.handleUsernameChange}/>
           <Input type="password" focus={false} label="PASSWORD" value={this.state.password} message={this.state.pwMessage} onChange={this.handlePasswordChange}/>
-          <input className="loginSubmit" type="submit" value={isAskingToken?"LOADING...":"LOG IN"} disabled={isAskingToken}/>
+          <input className="loginSubmit" type="submit" value={isAsking?"LOADING...":"LOG IN"} disabled={isAskingToken}/>
         </form>
       </div>
     )
@@ -65,23 +68,11 @@ class LoginPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer } = state
+  const { tokenReducer, accountReducer } = state
+  const { isAskingToken, tokenError } = tokenReducer || { isAskingToken: false, tokenError:"" }
+  const { isAskingAccount, accountError } = accountReducer || { isAskingAccount: false, accountError:"" }
 
-  const {
-    isAskingToken,
-    error,
-    token
-  } = tokenReducer || {
-    isAskingToken: false,
-    error:"",
-    token: ""
-  }
-
-  return {
-    isAskingToken,
-    error,
-    token
-  }
+  return { isAskingToken, tokenError, isAskingAccount, accountError }
 }
 
 export default connect(mapStateToProps)(LoginPage)

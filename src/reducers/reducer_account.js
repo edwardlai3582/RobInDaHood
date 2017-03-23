@@ -1,25 +1,31 @@
 import {
-  ADD_ACCOUNT, DELETE_ACCOUNT, ASKING_ACCOUNT, ASKING_ACCOUNT_FAILED
+  ADD_ACCOUNT, DELETE_ACCOUNT, ASKING_ACCOUNT, ASKING_ACCOUNT_FAILED, RESET_ACCOUNT_ERROR
 } from '../actions'
 
 const accountReducer = (state = {
   isAskingAccount: false,
-  error: "",
+  accountError: "",
   account: undefined,
   accountNumber: ""
 }, action) => {
   switch (action.type) {
+    case RESET_ACCOUNT_ERROR:
+      return {
+        ...state,
+        accountError:"",
+        isAskingAccount: false
+      }
     case ASKING_ACCOUNT:
       return {
         ...state,
-        error: "",
+        accountError: "",
         isAskingAccount: true
       }
     case ASKING_ACCOUNT_FAILED:
       return {
         ...state,
         isAskingAccount: false,
-        error: action.error,
+        accountError: action.error,
         account: undefined
       }
     case ADD_ACCOUNT:

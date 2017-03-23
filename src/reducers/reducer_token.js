@@ -4,26 +4,26 @@ import {
 
 const tokenReducer = (state = {
   isAskingToken: false,
-  error: "",
+  tokenError: "",
   token: ""
 }, action) => {
   switch (action.type) {
     case RESET_TOKEN_ERROR:
       return {
         ...state,
-        error:"",
+        tokenError:"",
         isAskingToken: false
       }
     case ASKING_TOKEN:
       return {
         ...state,
-        error:"",
+        tokenError:"",
         isAskingToken: true
       }
     case ASKING_TOKEN_FAILED:
       return {
         ...state,
-        error: action.error,
+        tokenError: action.error,
         isAskingToken: false
       }
     case ADD_TOKEN:

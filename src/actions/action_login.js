@@ -1,9 +1,14 @@
 ////////////LOGIN
 ////////////ACCOUNT
+export const RESET_ACCOUNT_ERROR = 'RESET_ACCOUNT_ERROR'
 export const ADD_ACCOUNT = 'ADD_ACCOUNT'
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT'
 export const ASKING_ACCOUNT = 'ASKING_ACCOUNT'
 export const ASKING_ACCOUNT_FAILED = 'ASKING_ACCOUNT_FAILED'
+
+export const resetAccountError = () => ({
+  type: RESET_ACCOUNT_ERROR
+})
 
 export const askingAccountFailed = (error) => ({
   type: ASKING_ACCOUNT_FAILED,
