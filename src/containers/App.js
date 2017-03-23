@@ -7,45 +7,27 @@ import '../styles/App.css'
 class App extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
+    accountNumber: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
-  componentDidMount() {
-    //const { dispatch } = this.props
-  }
-
-  componentWillReceiveProps(nextProps) {
-    /*
-    if (nextProps.selectedReddit !== this.props.selectedReddit) {
-      const { dispatch, selectedReddit } = nextProps
-      dispatch(fetchPostsIfNeeded(selectedReddit))
-    }
-    */
-  }
-
   render() {
-    const { token } = this.props
+    const { token, accountNumber } = this.props
     //const isEmpty = posts.length === 0
     return (
       <div>
-        {(token === "")? <LoginPage /> : <DashboardPage />}
+        {(token === "" || accountNumber === "" )? <LoginPage /> : <DashboardPage />}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer } = state
+  const { tokenReducer, accountReducer } = state
+  const { token } = tokenReducer || { token: "" }
+  const { accountNumber } = accountReducer || { accountNumber: "" }
 
-  const {
-    token
-  } = tokenReducer || {
-    token: ""
-  }
-
-  return {
-    token
-  }
+  return { token, accountNumber }
 }
 
 export default connect(mapStateToProps)(App)

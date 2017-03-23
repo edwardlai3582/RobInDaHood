@@ -26,17 +26,8 @@ class LoginPage extends Component {
 
   componentDidMount() {
     this.props.dispatch(resetTokenError())
-    //dispatch(fetchPostsIfNeeded(selectedReddit))
   }
 
-  componentWillReceiveProps(nextProps) {
-    /*
-    if (nextProps.selectedReddit !== this.props.selectedReddit) {
-      const { dispatch, selectedReddit } = nextProps
-      dispatch(fetchPostsIfNeeded(selectedReddit))
-    }
-    */
-  }
   handleUsernameChange = event => {
     this.setState({username: event.target.value, unMessage:""});
   }
@@ -57,7 +48,7 @@ class LoginPage extends Component {
 
   render() {
     const { isAskingToken, error } = this.props
-    
+
     return (
       <div className="loginWrapper">
         <div className="loginLogo" />
@@ -72,17 +63,6 @@ class LoginPage extends Component {
     )
   }
 }
-
-/*
-<label>
-  username:
-  <input type="text" value={this.state.username} onChange={this.handleUsernameChange} />
-</label>
-<label>
-  password:
-  <input type="text" value={this.state.password} onChange={this.handlePasswordChange} />
-</label>
-*/
 
 const mapStateToProps = state => {
   const { tokenReducer } = state

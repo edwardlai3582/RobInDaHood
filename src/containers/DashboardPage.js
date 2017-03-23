@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { deleteToken,
-         askAccount,
          askWatchlists,
          askInstrument,
          addTab, selectTab
@@ -41,7 +40,6 @@ class DashboardPage extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(askAccount());
     dispatch(askWatchlists());
   }
 
