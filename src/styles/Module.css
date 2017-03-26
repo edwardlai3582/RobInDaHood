@@ -1,5 +1,6 @@
 .moduleWrapper {
   margin-bottom: 10px;
+  text-align: left;;
 }
 
 .moduleArrow{
@@ -11,6 +12,7 @@
   top: -2px;
   width: 0.6rem;
   height: 0.6rem;
+  margin-left: 5px;
   padding-right: 5px;
   transform: rotate(0deg);
 }
@@ -21,6 +23,10 @@
   height: 0.6rem;
   padding-right: 5px;
   transform: rotate(-90deg);
+}
+
+.moduleDiv {
+  padding-left: calc( 25px + 0.6rem);
 }
 
 .selectedModuleDiv {

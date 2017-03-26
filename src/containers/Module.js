@@ -36,7 +36,7 @@ class Module extends Component {
         <div key={instrument.symbol}
              id={index}
              onClick={this.handleClick}
-             className={this.props.selectedKey === instrument.symbol? "selectedModuleDiv" : ""}
+             className={this.props.selectedKey === instrument.symbol? "moduleDiv selectedModuleDiv" : "moduleDiv"}
         >
           {instrument.symbol}
         </div>
