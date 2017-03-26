@@ -1,5 +1,6 @@
 ////////////POSITIONS
 export const ADD_POSITIONS = 'ADD_POSITIONS'
+export const ADD_POSITION = 'ADD_POSITION'
 export const DELETE_POSITIONS = 'DELETE_POSITIONS'
 export const ASKING_POSITIONS = 'ASKING_POSITIONS'
 export const ASKING_POSITIONS_FAILED = 'ASKING_POSITIONS_FAILED'
@@ -47,5 +48,34 @@ export const askPositions = () => (dispatch, getState) => {
   .catch(function(reason) {
     console.log(reason);
     dispatch(askingPositionsFailed(reason));
+  });
+}
+
+export const addPosition = position => ({
+  type: ADD_POSITION,
+  position
+})
+
+export const askPosition = (url) => (dispatch, getState) => {
+  //dispatch(askingPositions());
+  //searcg non zero
+  return fetch( url, {
+    method: 'GET',
+    headers: new Headers({
+      'content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token
+    })
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    console.log(jsonResult);
+    if(jsonResult.hasOwnProperty("quantity")){
+      dispatch(addPosition(jsonResult));
+    }
+  })
+  .catch(function(reason) {
+    console.log(reason);
+    //dispatch(askingPositionsFailed(reason));
   });
 }

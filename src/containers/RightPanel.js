@@ -71,7 +71,7 @@ class RightPanel extends Component {
     const { tabs, keys, selectedKey } = this.props;
     let newTabs = keys.map((key)=>{
       if(tabs[key].type === "watchlist" || tabs[key].type === "position"){
-        return (<Tab key={tabs[key].key} title={tabs[key].title}><Instrument symbol={tabs[key].title} url={tabs[key].url} /></Tab>);
+        return (<Tab key={tabs[key].key} title={tabs[key].title}><Instrument symbol={tabs[key].title} instrument={tabs[key].instrument} type={tabs[key].type} /></Tab>);
       }
       else{
         return (<Tab key={tabs[key].key} title={tabs[key].title}><div>NOTHING HERE</div></Tab>);

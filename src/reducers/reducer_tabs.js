@@ -15,7 +15,7 @@ const tabsReducer = (state = {
         ...state,
         selectedKey: action.currentKey,
         keys: state.keys.concat(action.currentKey),
-        tabs: Object.assign(state.tabs, tempTabObject)
+        tabs: Object.assign({}, state.tabs, tempTabObject)
       }
     case DELETE_TAB:
       let newTabs = Object.assign({}, state.tabs);

@@ -87,7 +87,7 @@ class DashboardPage extends Component {
     let newTab = {
       key: key,
       title: data.symbol,
-      url: data.url,
+      instrument: data.instrument,
       type: data.type
     }
 
@@ -117,7 +117,7 @@ class DashboardPage extends Component {
       })
       .map((instrument)=>{
         return {
-          url: instrument.instrument,
+          instrument: instrument.instrument,
           symbol: instruments[instrument.instrument].symbol,
           type: 'watchlist'
         };
@@ -125,7 +125,7 @@ class DashboardPage extends Component {
 
       let positionsData = positions.map((instrument)=>{
         return {
-          url: instrument.instrument,
+          instrument: instrument.instrument,
           symbol: instruments[instrument.instrument].symbol,
           type: 'position'
         };
