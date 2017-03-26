@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { deleteToken,
          askWatchlists,
+         askPositions,
          askInstrument,
          addTab, selectTab
        } from '../actions'
@@ -29,6 +30,7 @@ class DashboardPage extends Component {
     selectedKey: PropTypes.string.isRequired,
     accountNumber: PropTypes.string.isRequired,
     watchlists: PropTypes.array.isRequired,
+    positions: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
@@ -41,11 +43,17 @@ class DashboardPage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(askWatchlists());
+    dispatch(askPositions());
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.watchlists.length !== this.props.watchlists.length){
       nextProps.watchlists.forEach((instrument)=>{
+        this.props.dispatch(askInstrument(instrument.instrument));
+      });
+    }
+    if(nextProps.positions.length !== this.props.positions.length){
+      nextProps.positions.forEach((instrument)=>{
         this.props.dispatch(askInstrument(instrument.instrument));
       });
     }
@@ -75,19 +83,21 @@ class DashboardPage extends Component {
       return;
     }
 
+    let type = (data.type==="watchlist" || data.type==="positions")? "instrument" : "others"
     let newTab = {
       key: key,
       title: data.symbol,
-      type: "instrument",
       url: data.url,
+      type      
     }
 
     this.props.dispatch(addTab(key, newTab));
   }
 
   render() {
-    const { watchlists, instruments, selectedKey } = this.props
-    let watchlistsMenu = "loading...";
+    const { watchlists, positions, instruments, selectedKey } = this.props
+    let watchlistsMenu = "loading watchlists...";
+    let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
     for(let i=0; i< watchlists.length; i++){
       if(typeof instruments[watchlists[i].instrument] === "undefined"){
@@ -97,7 +107,15 @@ class DashboardPage extends Component {
     }
 
     if(instrumentsHasAllNeeded){
-      let watchlistData = watchlists.map((instrument)=>{
+      let watchlistData = watchlists.filter((instrument)=>{
+        for(let i=0; i< positions.length; i++){
+          if((positions[i].instrument === instrument.instrument)){
+            return false;
+          }
+        }
+        return true;
+      })
+      .map((instrument)=>{
         return {
           url: instrument.instrument,
           symbol: instruments[instrument.instrument].symbol,
@@ -105,9 +123,24 @@ class DashboardPage extends Component {
         };
       });
 
+      let positionsData = positions.map((instrument)=>{
+        return {
+          url: instrument.instrument,
+          symbol: instruments[instrument.instrument].symbol,
+          type: 'positions'
+        };
+      });
+
       watchlistsMenu = (<Module
         moduleName="WATCHLIST"
         moduleData={watchlistData}
+        selectedKey={selectedKey}
+        callback={this.handleaddTab}
+      />);
+
+      positionsMenu = (<Module
+        moduleName="POSITIONS"
+        moduleData={positionsData}
         selectedKey={selectedKey}
         callback={this.handleaddTab}
       />);
@@ -120,6 +153,7 @@ class DashboardPage extends Component {
             <button onClick={this.openModal}>
               logout
             </button>
+            {positionsMenu}
             {watchlistsMenu}
           </div>
           <RightPanel />
@@ -142,14 +176,15 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, instrumentsReducer } = state
+  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, positionsReducer, instrumentsReducer } = state
   const { token } = tokenReducer || { token: "" }
   const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
   const { accountNumber } = accountReducer || { accountNumber: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
+  const { positions } = positionsReducer || { positions: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, keys, selectedKey, accountNumber, watchlists, instruments}
+  return { token, keys, selectedKey, accountNumber, watchlists, positions, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)

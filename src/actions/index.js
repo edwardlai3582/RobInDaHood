@@ -1,5 +1,6 @@
 export * from './action_login'
 export * from './action_watchlists'
+export * from './action_positions'
 export * from './action_instruments'
 export * from './action_tabs'
 export * from './action_fundamentals'

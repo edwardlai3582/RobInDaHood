@@ -1,3 +1,7 @@
+.moduleWrapper {
+  margin-bottom: 10px;
+}
+
 .moduleArrow{
   position: relative;
   background-color: none;

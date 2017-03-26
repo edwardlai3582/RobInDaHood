@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { toggleWatchlistsModule } from '../actions'
+import { toggleWatchlistsModule,
+         togglePositionsModule
+       } from '../actions'
 import '../styles/Module.css'
 import arrow from '../styles/arrow.png';
 
@@ -20,7 +22,12 @@ class Module extends Component {
   }
 
   openClose = () => {
-    this.props.dispatch(toggleWatchlistsModule());
+    if(this.props.moduleName === "WATCHLIST"){
+      this.props.dispatch(toggleWatchlistsModule());
+    }
+    if(this.props.moduleName === "POSITIONS"){
+      this.props.dispatch(togglePositionsModule());
+    }
   }
 
   render() {
@@ -36,10 +43,16 @@ class Module extends Component {
       );
     });
 
-    let open = this.props.watchlistsModuleOpen;
+    let open = false;
+    if(this.props.moduleName === "WATCHLIST"){
+      open = this.props.watchlistsModuleOpen;
+    }
+    if(this.props.moduleName === "POSITIONS"){
+      open = this.props.positionsModuleOpen;
+    }
 
     return (
-      <div>
+      <div className="moduleWrapper" >
         <div onClick={this.openClose}>
           <img src={arrow}
                alt={open? "open": "close"}
@@ -54,9 +67,9 @@ class Module extends Component {
 
 const mapStateToProps = state => {
   const { uiReducer } = state
-  const { watchlistsModuleOpen } = uiReducer || { watchlistsModuleOpen: false }
+  const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer || { watchlistsModuleOpen: false, positionsModuleOpen:false }
 
-  return { watchlistsModuleOpen }
+  return { watchlistsModuleOpen, positionsModuleOpen }
 }
 
 export default connect(mapStateToProps)(Module)
