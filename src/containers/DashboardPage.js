@@ -83,12 +83,12 @@ class DashboardPage extends Component {
       return;
     }
 
-    let type = (data.type==="watchlist" || data.type==="positions")? "instrument" : "others"
+    //let type = (data.type==="watchlist" || data.type==="positions")? "instrument" : "others"
     let newTab = {
       key: key,
       title: data.symbol,
       url: data.url,
-      type      
+      type: data.type
     }
 
     this.props.dispatch(addTab(key, newTab));
@@ -127,7 +127,7 @@ class DashboardPage extends Component {
         return {
           url: instrument.instrument,
           symbol: instruments[instrument.instrument].symbol,
-          type: 'positions'
+          type: 'position'
         };
       });
 
