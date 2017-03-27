@@ -5,9 +5,9 @@ import '../styles/Quotes.css'
 const Quotes = ({ quotes }) => {
   return (
     <div className="quotesWrapper">
-      <LineChart width={600} height={400} data={quotes.historicals} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-        <Line type="monotone" dataKey="high_price" stroke="#8884d8" />
-        <XAxis dataKey="begins_at" />
+      <LineChart width={300} height={200} data={quotes.historicals} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <Line type="monotone" dataKey="high_price" stroke="#8884d8" dot={false} />
+        <XAxis dataKey="begins_at" tick={false} hide={true} />
         <YAxis domain={['auto', 'auto']} />
         <Tooltip />
       </LineChart>
