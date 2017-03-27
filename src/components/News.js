@@ -62,31 +62,31 @@ class News extends Component {
   }
 
   render() {
-    let News = this.props.News;
+    let news = this.props.news;
     let threeNews = [];
     let allNews = [];
     for(let i=0; i<3; i++){
-      if(News.results.length === i){ break; }
+      if(news.results.length === i){ break; }
       threeNews.push(
         <div key={i} className="eachNews" >
           <div className="newsLink" >
-            <a href={News.results[i].url} onClick={this.openUrlInBrowser} >
-              {News.results[i].title}
+            <a href={news.results[i].url} onClick={this.openUrlInBrowser} >
+              {news.results[i].title}
             </a>
           </div>
-          <div className="dateDiv">{this.printDate(News.results[i].published_at)}</div>
+          <div className="dateDiv">{this.printDate(news.results[i].published_at)}</div>
         </div>
       );
     }
-    for(let i=0; i<News.results.length; i++){
+    for(let i=0; i<news.results.length; i++){
       allNews.push(
         <div key={i} className="eachNews" >
           <div className="newsLink" >
-            <a href={News.results[i].url} onClick={this.openUrlInBrowser} >
-              {News.results[i].title}
+            <a href={news.results[i].url} onClick={this.openUrlInBrowser} >
+              {news.results[i].title}
             </a>
           </div>
-          <div className="dateDiv">{this.printDate(News.results[i].published_at)}</div>
+          <div className="dateDiv">{this.printDate(news.results[i].published_at)}</div>
         </div>
       );
     }

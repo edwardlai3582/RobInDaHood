@@ -51,7 +51,7 @@ const Statistics = ({ fundamental }) => {
         <div className="statisticsType">52 Wk High</div>
       </div>
       <div className="statisticsDiv">
-        <div className="statisticsNum">${ Number(fundamental.pe_ratio) }</div>
+        <div className="statisticsNum">{(fundamental.pe_ratio === null)?"N/A": Number(fundamental.pe_ratio) }</div>
         <div className="statisticsType">P/E Ratio</div>
       </div>
       <div className="statisticsDiv">
@@ -59,7 +59,7 @@ const Statistics = ({ fundamental }) => {
         <div className="statisticsType">52 Wk Low</div>
       </div>
       <div className="statisticsDiv">
-        <div className="statisticsNum">${ Number(fundamental.dividend_yield) }</div>
+        <div className="statisticsNum">{ Number(fundamental.dividend_yield) }</div>
         <div className="statisticsType">Div/Yield</div>
       </div>
     </div>

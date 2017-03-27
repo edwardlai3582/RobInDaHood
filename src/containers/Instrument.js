@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import {
          askFundamental,
          askNews,
-         askPosition
+         askPosition,
+         askQuotes
        } from '../actions'
 import Statistics from '../components/Statistics'
 import News from '../components/News'
+import Quotes from '../components/Quotes'
 import Position from '../components/Position'
 import SectionWrapper from '../components/SectionWrapper'
 import '../styles/Instrument.css'
@@ -19,6 +21,7 @@ class Instrument extends Component {
     instruments: PropTypes.object.isRequired,
     fundamentals: PropTypes.object.isRequired,
     newsAll: PropTypes.object.isRequired,
+    quotesAll: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
     eachPosition: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -30,9 +33,10 @@ class Instrument extends Component {
   }
 
   componentDidMount(){
-    const { symbol, instrument, positions, dispatch } = this.props
-    dispatch(askFundamental(symbol))
-    dispatch(askNews(symbol))
+    const { symbol, instrument, positions, dispatch } = this.props;
+    dispatch(askFundamental(symbol));
+    dispatch(askNews(symbol));
+    dispatch(askQuotes(symbol));
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
         dispatch(askPosition(positions[i].url))
@@ -41,9 +45,10 @@ class Instrument extends Component {
   }
 
   render() {
-    const { symbol, instrument, type, fundamentals, instruments, newsAll, eachPosition } = this.props
+    const { symbol, instrument, type, fundamentals, instruments, newsAll, quotesAll, eachPosition } = this.props
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading..."
-    let newsBlock = (newsAll[symbol])? <News News={newsAll[symbol]} /> : "Loading..."
+    let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading..."
+    let quotesBlock = (quotesAll[symbol])? <Quotes quotes={quotesAll[symbol]} /> : "Loading..."
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading..."
     let positionBlock = "";
     if(type === "position"){
@@ -55,6 +60,9 @@ class Instrument extends Component {
         <div className="instrumentFake"></div>
         <h1 className="instrumentH1">{symbol}</h1>
         <h2 className="instrumentH2">{instruments[instrument].name}</h2>
+
+        {quotesBlock}
+
         {(type === "position")?
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}
@@ -75,12 +83,13 @@ class Instrument extends Component {
 }
 
 const mapStateToProps = state => {
-  const { instrumentsReducer, fundamentalsReducer, newsReducer, positionsReducer } = state
+  const { instrumentsReducer, fundamentalsReducer, newsReducer, quotesReducer, positionsReducer } = state
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
   const { newsAll } = newsReducer || { newsAll: {}}
+  const { quotesAll } = quotesReducer || { quotesAll: {}}
   const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
-  return { instruments, fundamentals, newsAll, positions, eachPosition }
+  return { instruments, fundamentals, newsAll, quotesAll, positions, eachPosition }
 }
 
 export default connect(mapStateToProps)(Instrument)

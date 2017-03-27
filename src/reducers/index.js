@@ -7,6 +7,7 @@ import instrumentsReducer from './reducer_instruments'
 import tabsReducer from './reducer_tabs'
 import fundamentalsReducer from './reducer_fundamentals'
 import newsReducer from './reducer_news'
+import quotesReducer from './reducer_quotes'
 import uiReducer from './reducer_ui'
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   tabsReducer,
   fundamentalsReducer,
   newsReducer,
+  quotesReducer,
   uiReducer
 })
 
