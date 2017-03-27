@@ -1,18 +1,18 @@
 import {
-  ADD_QUOTES, DELETE_QUOTES
+  ADD_HIS_QUOTES, DELETE_HIS_QUOTES
 } from '../actions'
 
 const quotesReducer = (state = {
-  quotesAll: {}
+  historicalsQuotes: {}
 }, action) => {
   switch (action.type) {
-    case ADD_QUOTES:
-      let newQuotesAll = Object.assign({}, state.quotesAll);
-      newQuotesAll[action.symbol] = action.quotes;
+    case ADD_HIS_QUOTES:
+      let newHistoricalsQuotes = Object.assign({}, state.historicalsQuotes);
+      newHistoricalsQuotes[action.symbol] = action.quotes;
       return {
-        quotesAll: newQuotesAll
+        historicalsQuotes: newHistoricalsQuotes
       }
-    case DELETE_QUOTES:
+    case DELETE_HIS_QUOTES:
       return {
         ...state,
         //instruments: [],

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
@@ -32,11 +32,34 @@ const store = createStore(
   )
 )
 // begin periodically persisting the store
-persistStore(store)
+//persistStore(store)
+
+class AppProvider extends Component {
+
+  constructor() {
+    super()
+    this.state = { rehydrated: false }
+  }
+
+  componentWillMount(){
+    persistStore(store, {}, () => {
+      this.setState({ rehydrated: true })
+    })
+  }
+
+  render() {
+    if(!this.state.rehydrated){
+      return (<div style={{}}>Loading...</div>)
+    }
+    return (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    )
+  }
+}
 
 render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <AppProvider />,
   document.getElementById('root')
 )

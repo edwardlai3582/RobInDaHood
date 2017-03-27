@@ -4,7 +4,7 @@ import {
          askFundamental,
          askNews,
          askPosition,
-         askQuotes
+         askHistoricalsQuotes
        } from '../actions'
 import Statistics from '../components/Statistics'
 import News from '../components/News'
@@ -21,7 +21,7 @@ class Instrument extends Component {
     instruments: PropTypes.object.isRequired,
     fundamentals: PropTypes.object.isRequired,
     newsAll: PropTypes.object.isRequired,
-    quotesAll: PropTypes.object.isRequired,
+    historicalsQuotes: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
     eachPosition: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -36,7 +36,7 @@ class Instrument extends Component {
     const { symbol, instrument, positions, dispatch } = this.props;
     dispatch(askFundamental(symbol));
     dispatch(askNews(symbol));
-    dispatch(askQuotes(symbol));
+    dispatch(askHistoricalsQuotes(symbol));
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
         dispatch(askPosition(positions[i].url))
@@ -45,10 +45,10 @@ class Instrument extends Component {
   }
 
   render() {
-    const { symbol, instrument, type, fundamentals, instruments, newsAll, quotesAll, eachPosition } = this.props
+    const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, eachPosition } = this.props
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading..."
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading..."
-    let quotesBlock = (quotesAll[symbol])? <Quotes quotes={quotesAll[symbol]} /> : "Loading..."
+    let quotesBlock = (historicalsQuotes[symbol])? <Quotes quotes={historicalsQuotes[symbol]} /> : "Loading..."
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading..."
     let positionBlock = "";
     if(type === "position"){
@@ -87,9 +87,9 @@ const mapStateToProps = state => {
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
   const { newsAll } = newsReducer || { newsAll: {}}
-  const { quotesAll } = quotesReducer || { quotesAll: {}}
+  const { historicalsQuotes } = quotesReducer || { historicalsQuotes: {}}
   const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
-  return { instruments, fundamentals, newsAll, quotesAll, positions, eachPosition }
+  return { instruments, fundamentals, newsAll, historicalsQuotes, positions, eachPosition }
 }
 
 export default connect(mapStateToProps)(Instrument)

@@ -13,10 +13,11 @@ class App extends Component {
 
   render() {
     const { token, accountNumber } = this.props
-    //const isEmpty = posts.length === 0
+    let whatToDisplay = (token === "" || accountNumber === "" )? <LoginPage /> : <DashboardPage />
+
     return (
       <div>
-        {(token === "" || accountNumber === "" )? <LoginPage /> : <DashboardPage />}
+        { whatToDisplay }
       </div>
     )
   }
