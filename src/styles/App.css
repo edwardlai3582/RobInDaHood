@@ -65,3 +65,9 @@ html, body {
 :root {
   --main-color: #40C9BD;
 }
+
+.AppProvider {
+	background-color: var(--main-color);
+	height: 100vh;
+	line-height: 100vh;
+}

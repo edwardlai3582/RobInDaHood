@@ -10,6 +10,7 @@ import createActionBuffer from 'redux-action-buffer'
 import reducer from './reducers'
 
 import App from './containers/App'
+import './styles/App.css'
 
 const middleware = [ thunk ]
 /*
@@ -35,7 +36,6 @@ const store = createStore(
 //persistStore(store)
 
 class AppProvider extends Component {
-
   constructor() {
     super()
     this.state = { rehydrated: false }
@@ -49,7 +49,7 @@ class AppProvider extends Component {
 
   render() {
     if(!this.state.rehydrated){
-      return (<div style={{}}>Loading...</div>)
+      return (<div className="AppProvider" >Loading...</div>)
     }
     return (
       <Provider store={store}>
