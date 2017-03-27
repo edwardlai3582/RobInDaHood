@@ -8,7 +8,7 @@ const quotesReducer = (state = {
   switch (action.type) {
     case ADD_HIS_QUOTES:
       let newHistoricalsQuotes = Object.assign({}, state.historicalsQuotes);
-      newHistoricalsQuotes[action.symbol] = action.quotes;
+      newHistoricalsQuotes[action.symbol+action.hisType] = action.quotes;
       return {
         historicalsQuotes: newHistoricalsQuotes
       }

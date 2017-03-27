@@ -49,7 +49,11 @@ class AppProvider extends Component {
 
   render() {
     if(!this.state.rehydrated){
-      return (<div className="AppProvider" >Loading...</div>)
+      return (
+        <div className="AppProvider" >
+          Loading...
+        </div>
+      )
     }
     return (
       <Provider store={store}>

@@ -29,14 +29,21 @@ class Instrument extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+      quotes: {
+        span: "day",
+        interval: "5minute",
+        bounds: "extended"
+      }
+    };
   }
 
   componentDidMount(){
     const { symbol, instrument, positions, dispatch } = this.props;
+    const { span, interval, bounds } = this.state.quotes;
     dispatch(askFundamental(symbol));
     dispatch(askNews(symbol));
-    dispatch(askHistoricalsQuotes(symbol));
+    dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
         dispatch(askPosition(positions[i].url))
@@ -44,11 +51,17 @@ class Instrument extends Component {
     }
   }
 
+  changeHisQuotes = (span, interval, bounds)=>{
+    this.setState({ quotes: { span: span, interval: interval, bounds: bounds } });
+    this.props.dispatch(askHistoricalsQuotes(this.props.symbol, span, interval, bounds));
+  }
+
   render() {
     const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, eachPosition } = this.props
+    const { span, interval, bounds } = this.state.quotes;
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading..."
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading..."
-    let quotesBlock = (historicalsQuotes[symbol])? <Quotes quotes={historicalsQuotes[symbol]} /> : "Loading..."
+    let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])? <Quotes quotes={historicalsQuotes[symbol+span+interval+bounds]} /> : "Loading..."
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading..."
     let positionBlock = "";
     if(type === "position"){
@@ -61,8 +74,16 @@ class Instrument extends Component {
         <h1 className="instrumentH1">{symbol}</h1>
         <h2 className="instrumentH2">{instruments[instrument].name}</h2>
 
-        {quotesBlock}
-
+        <SectionWrapper SectionTitle={""}>
+          {quotesBlock}
+          <button onClick={() => this.changeHisQuotes("day", "5minute", "extended")}>1D</button>
+          <button onClick={() => this.changeHisQuotes("week", "10minute", "regular")}>1W</button>
+          <button onClick={() => this.changeHisQuotes("year", "day", "regular")}>1M</button>
+          <button onClick={() => this.changeHisQuotes("year", "day", "regular")}>3M</button>
+          <button onClick={() => this.changeHisQuotes("year", "day", "regular")}>1Y</button>
+          <button onClick={() => this.changeHisQuotes("5year", "week", "regular")}>5Y</button>
+        </SectionWrapper>
+        
         {(type === "position")?
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}

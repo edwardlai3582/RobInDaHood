@@ -2,9 +2,10 @@
 export const ADD_HIS_QUOTES = 'ADD_HIS_QUOTES'
 export const DELETE_HIS_QUOTES = 'DELETE_HIS_QUOTES'
 
-export const addHistoricalsQuotes = (symbol, quotes) => ({
+export const addHistoricalsQuotes = (symbol, hisType, quotes) => ({
   type: ADD_HIS_QUOTES,
   symbol,
+  hisType,
   quotes
 })
 
@@ -13,9 +14,9 @@ export const deleteHistoricalsQuotes = (symbol) => ({
   symbol
 })
 
-export const askHistoricalsQuotes = (symbol) => (dispatch, getState) => {
+export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatch, getState) => {
   //dispatch(askingFundamental());
-  return fetch(`https://api.robinhood.com/quotes/historicals/${symbol}/?interval=5minute&span=day&bounds=extended`, {
+  return fetch(`https://api.robinhood.com/quotes/historicals/${symbol}/?span=${span}&interval=${interval}&bounds=${bounds}`, {
     method: 'GET',
     headers: new Headers({
       'content-type': 'application/json',
@@ -35,7 +36,7 @@ export const askHistoricalsQuotes = (symbol) => (dispatch, getState) => {
       theArray[index].low_price= Number(historical.low_price)
     })
 
-    dispatch(addHistoricalsQuotes(symbol, jsonResult));
+    dispatch(addHistoricalsQuotes(symbol, span+interval+bounds, jsonResult));
   })
   .catch(function(reason) {
     console.log(reason);
