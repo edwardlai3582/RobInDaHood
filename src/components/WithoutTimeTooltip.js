@@ -13,7 +13,7 @@ class WithoutTimeTooltip extends Component {
     if (active) {
       const { payload, label } = this.props;
       let date = new Date(label);
-      let dateLabel = (date.getMonth()+1)+"/"+date.getDate()
+      let dateLabel = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear();
 
       return (
         <div>

@@ -9,6 +9,7 @@ import {
 import Statistics from '../components/Statistics'
 import News from '../components/News'
 import Quotes from '../components/Quotes'
+import DummyQuotes from '../components/DummyQuotes'
 import Position from '../components/Position'
 import SectionWrapper from '../components/SectionWrapper'
 import '../styles/Instrument.css'
@@ -65,7 +66,7 @@ class Instrument extends Component {
     let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])?
       (<Quotes quotes={historicalsQuotes[symbol+span+interval+bounds]}
                selectedButtonName={selectedButtonName}
-               changeHisQuotes={this.changeHisQuotes} />): "Loading...";
+      />): <DummyQuotes />;
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
     let positionBlock = "";
     if(type === "position"){
@@ -80,6 +81,20 @@ class Instrument extends Component {
 
         <SectionWrapper SectionTitle={""}>
           {quotesBlock}
+          <div className="quotesButtonsWrapper">
+            <button className={selectedButtonName==="1D"? "quotesButton selectedButton": "quotesButton"}
+                    onClick={() => this.changeHisQuotes("day", "5minute", "trading", "1D")}>1D</button>
+            <button className={selectedButtonName==="1W"? "quotesButton selectedButton": "quotesButton"}
+                    onClick={() => this.changeHisQuotes("week", "10minute", "regular", "1W")}>1W</button>
+            <button className={selectedButtonName==="1M"? "quotesButton selectedButton": "quotesButton"}
+                    onClick={() => this.changeHisQuotes("year", "day", "regular", "1M")}>1M</button>
+            <button className={selectedButtonName==="3M"? "quotesButton selectedButton": "quotesButton"}
+                    onClick={() => this.changeHisQuotes("year", "day", "regular", "3M")}>3M</button>
+            <button className={selectedButtonName==="1Y"? "quotesButton selectedButton": "quotesButton"}
+                    onClick={() => this.changeHisQuotes("year", "day", "regular", "1Y")}>1Y</button>
+            <button className={selectedButtonName==="5Y"? "quotesButton selectedButton": "quotesButton"}
+                    onClick={() => this.changeHisQuotes("5year", "week", "regular", "5Y")}>5Y</button>
+          </div>
         </SectionWrapper>
         {(type === "position")?
           <SectionWrapper SectionTitle={"Position"}>

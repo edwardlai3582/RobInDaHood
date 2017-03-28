@@ -12,7 +12,7 @@ class Quotes extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {height: 0, width: 0};
+    this.state = {width: 0};
   }
 
   componentDidMount() {
@@ -26,6 +26,7 @@ class Quotes extends Component {
 
   resetDimensions = () => {
     this.setState({width: this.qw.offsetWidth });
+    this.qw.style.height = this.qw.offsetWidth>500? "250px" :  this.qw.offsetWidth/2+"px";
   }
 
   render() {
@@ -38,13 +39,15 @@ class Quotes extends Component {
       data = data.slice(Math.max(data.length - 90))
     }
 
+    const strokeColor = (data[0].close_price < data[data.length-1].close_price)? '#00FF73' : '#F33900';
+
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >
         <LineChart width={this.state.width}
-                   height={this.state.width/2}
+                   height={this.state.width>500? 250 : this.state.width/2 }
                    data={data}
-                   margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-          <Line type="monotone" dataKey="close_price" stroke="#00FF73" dot={false} />
+                   margin={{ top: 15, right: 10, left: 5, bottom: 15 }}>
+          <Line type="monotone" dataKey="close_price" stroke={strokeColor} dot={false} />
           <XAxis dataKey="begins_at" tick={false} hide={true} />
           <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />
           {selectedButtonName==="1D" || selectedButtonName==="1W"?
@@ -54,20 +57,7 @@ class Quotes extends Component {
 
         </LineChart>
 
-        <div className="quotesButtonsWrapper">
-          <button className={selectedButtonName==="1D"? "quotesButton selectedButton": "quotesButton"}
-                  onClick={() => this.props.changeHisQuotes("day", "5minute", "trading", "1D")}>1D</button>
-          <button className={selectedButtonName==="1W"? "quotesButton selectedButton": "quotesButton"}
-                  onClick={() => this.props.changeHisQuotes("week", "10minute", "regular", "1W")}>1W</button>
-          <button className={selectedButtonName==="1M"? "quotesButton selectedButton": "quotesButton"}
-                  onClick={() => this.props.changeHisQuotes("year", "day", "regular", "1M")}>1M</button>
-          <button className={selectedButtonName==="3M"? "quotesButton selectedButton": "quotesButton"}
-                  onClick={() => this.props.changeHisQuotes("year", "day", "regular", "3M")}>3M</button>
-          <button className={selectedButtonName==="1Y"? "quotesButton selectedButton": "quotesButton"}
-                  onClick={() => this.props.changeHisQuotes("year", "day", "regular", "1Y")}>1Y</button>
-          <button className={selectedButtonName==="5Y"? "quotesButton selectedButton": "quotesButton"}
-                  onClick={() => this.props.changeHisQuotes("5year", "week", "regular", "5Y")}>5Y</button>
-        </div>
+
       </div>
     )
   }
