@@ -1,3 +1,25 @@
 .quotesWrapper {
-  
+
+}
+
+.quotesButtonsWrapper {
+  display: flex;
+  justify-content:flex-end;
+  border-top: 1px solid var(--main-color);
+}
+
+.quotesButton {
+  margin-top: 3px;
+  margin-left: 2px;
+  border: none;
+  font-family: Arial;
+  color: #045C4F;
+  background: #46e3c1;
+  padding: 5px 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.selectedButton {
+  background: white;
 }

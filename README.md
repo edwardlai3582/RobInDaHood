@@ -14,3 +14,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [x] window resize right part need to change
 - [ ] logout delete everything
 - [ ] check tab == watchlists, delete nonexist
+- [ ] http://recharts.org/#/en-US/api/ReferenceLine
