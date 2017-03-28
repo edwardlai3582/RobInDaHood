@@ -4,7 +4,7 @@ import {
          askFundamental,
          askNews,
          askPosition,
-         askHistoricalsQuotes
+         askHistoricalsQuotes, askQuotes
        } from '../actions'
 import Statistics from '../components/Statistics'
 import News from '../components/News'
@@ -23,6 +23,7 @@ class Instrument extends Component {
     fundamentals: PropTypes.object.isRequired,
     newsAll: PropTypes.object.isRequired,
     historicalsQuotes: PropTypes.object.isRequired,
+    quotes: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
     eachPosition: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
@@ -46,6 +47,7 @@ class Instrument extends Component {
     dispatch(askFundamental(symbol));
     dispatch(askNews(symbol));
     dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
+    dispatch(askQuotes(symbol));
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
         dispatch(askPosition(positions[i].url))
@@ -59,7 +61,7 @@ class Instrument extends Component {
   }
 
   render() {
-    const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, eachPosition } = this.props
+    const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, quotes, eachPosition } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
@@ -69,8 +71,9 @@ class Instrument extends Component {
       />): <DummyQuotes />;
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
     let positionBlock = "";
+    //need to change
     if(type === "position"){
-      positionBlock = (eachPosition[instrument])? <Position position={eachPosition[instrument]} /> : "Loading...";
+      positionBlock = (eachPosition[instrument] && quotes[symbol])? <Position quotes={quotes[symbol]} position={eachPosition[instrument]} /> : "Loading...";
     }
 
     return (
@@ -96,17 +99,21 @@ class Instrument extends Component {
                     onClick={() => this.changeHisQuotes("5year", "week", "regular", "5Y")}>5Y</button>
           </div>
         </SectionWrapper>
+
         {(type === "position")?
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}
           </SectionWrapper>
         :""}
+
         <SectionWrapper SectionTitle={"Recent News"}>
           {newsBlock}
         </SectionWrapper>
+
         <SectionWrapper SectionTitle={"Statistics"}>
           {statisticsBlock}
         </SectionWrapper>
+
         <SectionWrapper SectionTitle={"About"}>
           {descriptionBlock}
         </SectionWrapper>
@@ -120,9 +127,9 @@ const mapStateToProps = state => {
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
   const { newsAll } = newsReducer || { newsAll: {}}
-  const { historicalsQuotes } = quotesReducer || { historicalsQuotes: {}}
+  const { historicalsQuotes, quotes } = quotesReducer || { historicalsQuotes: {}, quotes:{}}
   const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
-  return { instruments, fundamentals, newsAll, historicalsQuotes, positions, eachPosition }
+  return { instruments, fundamentals, newsAll, historicalsQuotes, quotes, positions, eachPosition }
 }
 
 export default connect(mapStateToProps)(Instrument)

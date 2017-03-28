@@ -12,6 +12,7 @@
   position: fixed;
   top: 26px;
   background-color: var(--main-color);
+  z-index: 10;
 }
 
 .instrumentH1 {

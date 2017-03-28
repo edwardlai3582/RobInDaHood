@@ -46,7 +46,7 @@ class Quotes extends Component {
         <LineChart width={this.state.width}
                    height={this.state.width>500? 250 : this.state.width/2 }
                    data={data}
-                   margin={{ top: 15, right: 10, left: 5, bottom: 15 }}>
+                   margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
           <Line type="monotone" dataKey="close_price" stroke={strokeColor} dot={false} />
           <XAxis dataKey="begins_at" tick={false} hide={true} />
           <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />

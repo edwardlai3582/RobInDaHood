@@ -15,3 +15,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] logout delete everything
 - [ ] check tab == watchlists, delete nonexist
 - [ ] http://recharts.org/#/en-US/api/ReferenceLine
+- [ ] https://github.com/ameyms/react-animated-number
+- [ ]  add change tab type(watchlist <-> position) function
