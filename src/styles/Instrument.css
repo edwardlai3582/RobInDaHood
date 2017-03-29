@@ -15,6 +15,12 @@
   z-index: 10;
 }
 
+.instrumentWrapper header {
+  display: flex;
+  justify-content:space-between;
+  background-color: red;
+}
+
 .instrumentH1 {
   font-size: 2rem;
 }

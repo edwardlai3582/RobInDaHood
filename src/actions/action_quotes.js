@@ -28,7 +28,7 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     //parse string to number
     //open_price, close_price, high_price, low_price
     jsonResult.historicals.forEach((historical, index, theArray)=>{
@@ -68,7 +68,7 @@ export const askQuotes = (symbol) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     dispatch(addQuotes(symbol, jsonResult));
   })
   .catch(function(reason) {

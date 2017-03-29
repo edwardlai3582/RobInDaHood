@@ -36,7 +36,7 @@ export const askFundamental = (symbol) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     dispatch(addFundamental(symbol, jsonResult));
   })
   .catch(function(reason) {

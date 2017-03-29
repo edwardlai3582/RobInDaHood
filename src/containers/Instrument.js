@@ -79,8 +79,13 @@ class Instrument extends Component {
     return (
       <div className="instrumentWrapper">
         <div className="instrumentFake"></div>
-        <h1 className="instrumentH1">{symbol}</h1>
-        <h2 className="instrumentH2">{instruments[instrument].name}</h2>
+        <header>
+          <div>
+            <h1 className="instrumentH1">{symbol}</h1>
+            <h2 className="instrumentH2">{instruments[instrument].name}</h2>
+          </div>
+          <button> {"add to watchlist"} </button>
+        </header>
 
         <SectionWrapper SectionTitle={""}>
           {quotesBlock}

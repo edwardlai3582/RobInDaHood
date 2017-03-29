@@ -36,7 +36,7 @@ export const askPositions = () => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       dispatch(addPositions(jsonResult.results));
     }

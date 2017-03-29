@@ -13,7 +13,7 @@ const instrumentsReducer = (state = {
         ...state
       }
     case ASKING_INSTRUMENT_FAILED:
-    console.log(action.error)
+      console.log(action.error)
       return {
         ...state
       }
@@ -21,7 +21,8 @@ const instrumentsReducer = (state = {
       let newInstruments = Object.assign({}, state.instruments);
       newInstruments[action.instrument.url] = action.instrument;
       return {
-        instruments: newInstruments  
+        ...state,
+        instruments: newInstruments
       }
     case DELETE_INSTRUMENT:
       return {
