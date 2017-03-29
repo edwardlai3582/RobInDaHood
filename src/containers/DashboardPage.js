@@ -8,8 +8,10 @@ import { deleteToken,
          addTab, selectTab
        } from '../actions'
 import Dashboard from '../components/Dashboard'
+import Search from './Search'
 import Module from './Module'
 import RightPanel from './RightPanel'
+import '../styles/DashboardPage.css'
 
 const customStyles = {
   content : {
@@ -149,12 +151,15 @@ class DashboardPage extends Component {
     return (
       <div>
         <Dashboard>
-          <div>
-            <button onClick={this.openModal}>
-              logout
-            </button>
-            {positionsMenu}
-            {watchlistsMenu}
+          <div className="leftPanelDiv">
+            <div className="leftPanelRest">
+              <Search className="leftPanelSearch" callback={this.handleaddTab} />
+              <button onClick={this.openModal}>
+                logout
+              </button>
+              {positionsMenu}
+              {watchlistsMenu}
+            </div>
           </div>
           <RightPanel />
         </Dashboard>
