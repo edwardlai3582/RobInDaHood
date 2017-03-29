@@ -55,7 +55,10 @@ class Search extends Component {
 
   renderSuggestion = (suggestion) => {
     return (
-      <span className="suggestionSpan" onClick={()=>this.handleClick(suggestion)} >{suggestion.symbol}</span>
+      <div className="suggestionSpan" onClick={()=>this.handleClick(suggestion)} >
+        <div className="suggestionSymbol">{suggestion.symbol}</div>
+        <div className="suggestionName">{suggestion.name}</div>
+      </div>
     );
   }
 
@@ -84,6 +87,10 @@ class Search extends Component {
     .catch(function(reason) {
       console.log(reason);
     });
+  }
+
+  onSuggestionSelected= (e)=>{
+    this.setState({value:''})
   }
 
   loadSuggestions=(value)=> {
@@ -116,18 +123,14 @@ class Search extends Component {
           value,
           onChange: this.onChange
         };
-        //const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
-        /*
-        <div className="status">
-          <strong>Status:</strong> {status}
-        </div>
-        */
+
         return (
           <div>
             <Autosuggest
               suggestions={suggestions}
               onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
               onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              onSuggestionSelected={this.onSuggestionSelected}
               getSuggestionValue={getSuggestionValue}
               renderSuggestion={this.renderSuggestion}
               renderSuggestionsContainer={renderSuggestionsContainer}

@@ -1,9 +1,28 @@
-.suggestionSpan {
-  z-index: 3;
-  background-color: white;
-}
-
 .renderSuggestionsContainer{
   background-color: white;
   position: absolute;
+  z-index: 5;
+}
+
+.suggestionSpan {
+  background-color: white;
+  cursor: pointer;
+}
+
+.suggestionSpan:hover {
+  background-color: #D8D8D8;
+}
+
+.suggestionSymbol {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+}
+
+.suggestionName {
+  color: black;
+  padding-left: 5px;
+  padding-bottom: 3px;
+  font-size: 0.75rem;
+  border-bottom: 1px solid grey;
 }

@@ -6,6 +6,7 @@
 .moduleArrow{
   position: relative;
   background-color: none;
+  z-index: 1;
 }
 
 .open {
