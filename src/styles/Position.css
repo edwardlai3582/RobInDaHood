@@ -1,0 +1,37 @@
+.positionWRapper {
+  width: 100%;
+}
+
+.upperPosition {
+  display: flex;
+}
+
+.upperDiv {
+  width: 50%;
+  padding-top: 10px;
+}
+
+.lowerPosition {
+  margin-top: 15px;
+  border-top: 1px solid var(--main-color);
+  padding-top: 10px;
+}
+
+.positionNum {
+
+}
+
+.positionType {
+  color: black;
+  padding-top: 2px;
+  padding-left: 1px;
+}
+
+.lowerDiv {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.lowerDiv > div {
+  width: 50%;
+}
