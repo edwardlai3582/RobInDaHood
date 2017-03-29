@@ -9,7 +9,6 @@
     "react-scripts": "0.9.5"
   },
   "dependencies": {
-    "dexie": "^1.5.1",
     "lodash": "^4.17.4",
     "material-ui": "^0.17.1",
     "normalizr": "^3.2.2",
