@@ -16,17 +16,21 @@ function escapeRegexCharacters(str) {
 /*    Component    */
 /* --------------- */
 
-function getSuggestionValue(suggestion) {
-  return suggestion.symbol;
-}
+const getSuggestionValue = (suggestion) => (suggestion.symbol);
 
-function renderSuggestionsContainer({ containerProps , children, query }) {
+const renderSuggestionsContainer = ({ containerProps , children, query }) => {
   return (
     <div {... containerProps} className="renderSuggestionsContainer">
       {children}
     </div>
   );
 }
+
+const renderInputComponent = inputProps => (
+  <div className="renderInputComponent">
+    <input {...inputProps} />
+  </div>
+);
 
 class Search extends Component {
   static propTypes = {
@@ -39,7 +43,7 @@ class Search extends Component {
     this.state = {
       value: '',
       suggestions: [],
-      isLoading: false
+      //isLoading: false
     };
 
     this.lastRequestId = null;
@@ -67,7 +71,7 @@ class Search extends Component {
 
     if (escapedValue === '') {
       this.setState({
-        isLoading: false,
+        //isLoading: false,
         suggestions: []
       });
     }
@@ -80,7 +84,7 @@ class Search extends Component {
     .then(jsonResult => {
       console.log(Array.isArray(jsonResult.results));
       this.setState({
-        isLoading: false,
+        //isLoading: false,
         suggestions: jsonResult.results
       });
     })
@@ -95,7 +99,7 @@ class Search extends Component {
 
   loadSuggestions=(value)=> {
     this.setState({
-      isLoading: true
+      //isLoading: true
     });
     this.getMatchingInstruments(value);
   }
@@ -117,7 +121,7 @@ class Search extends Component {
   };
 
   render() {
-    const { value, suggestions, isLoading } = this.state;
+    const { value, suggestions } = this.state;
         const inputProps = {
           placeholder: "SEARCH",
           value,
@@ -134,7 +138,9 @@ class Search extends Component {
               getSuggestionValue={getSuggestionValue}
               renderSuggestion={this.renderSuggestion}
               renderSuggestionsContainer={renderSuggestionsContainer}
+              renderInputComponent={renderInputComponent}
               inputProps={inputProps} />
+
           </div>
         );
       }

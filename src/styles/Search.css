@@ -26,3 +26,15 @@
   font-size: 0.75rem;
   border-bottom: 1px solid grey;
 }
+
+.renderInputComponent {
+
+}
+
+.renderInputComponent > input {
+  width: 100%;
+  border: 3px solid black;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding-left: 3px;
+}
