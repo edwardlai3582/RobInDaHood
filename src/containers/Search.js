@@ -52,7 +52,7 @@ class Search extends Component {
   handleClick = suggestion => {
     suggestion.instrument = suggestion.url
     suggestion.type = "watchlist"
-    console.log(suggestion)
+    //console.log(suggestion)
     this.props.dispatch(addInstrument(suggestion))
     this.props.callback(suggestion);
   }
@@ -82,7 +82,6 @@ class Search extends Component {
     })
     .then(response => response.json())
     .then(jsonResult => {
-      console.log(Array.isArray(jsonResult.results));
       this.setState({
         //isLoading: false,
         suggestions: jsonResult.results
