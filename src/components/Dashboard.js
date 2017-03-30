@@ -24,7 +24,7 @@ class Dashboard extends Component {
       return;
     }
 
-    if(e.clientX > 150 || e.clientX<110){
+    if(e.clientX > 150 || e.clientX<150){
       return;
     }
     else {

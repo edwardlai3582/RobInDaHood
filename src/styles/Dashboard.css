@@ -8,7 +8,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 140px;
+  width: 150px;
   background-color: black;
   color: var(--main-color);
   overflow-x: hidden;
@@ -21,9 +21,9 @@
 }
 
 .dbRightPanel {
-  width: calc(100% - 140px);
+  width: calc(100% - 150px);
   position: absolute;
-  left: 140px;
+  left: 150px;
   top: 0;
   bottom: 0;
   background-color: none;
