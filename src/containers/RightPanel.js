@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {Tab, Tabs} from 'react-draggable-tab'
 import { deleteTab, reorderTab, selectTab } from '../actions'
 import Instrument from './Instrument'
+import Portfolio from './Portfolio'
 import '../styles/Tabs.css'
 
 const tabsClassNames = {
@@ -72,6 +73,9 @@ class RightPanel extends Component {
     let newTabs = keys.map((key)=>{
       if(tabs[key].type === "watchlist" || tabs[key].type === "position"){
         return (<Tab key={tabs[key].key} title={tabs[key].title}><Instrument symbol={tabs[key].title} instrument={tabs[key].instrument} type={tabs[key].type} /></Tab>);
+      }
+      else if (tabs[key].type === "portfolio") {
+        return (<Tab key={tabs[key].key} title={tabs[key].title}><Portfolio /></Tab>);
       }
       else{
         return (<Tab key={tabs[key].key} title={tabs[key].title}><div>NOTHING HERE</div></Tab>);

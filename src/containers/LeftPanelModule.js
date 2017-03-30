@@ -3,18 +3,14 @@ import { connect } from 'react-redux'
 import { toggleWatchlistsModule,
          togglePositionsModule
        } from '../actions'
-import '../styles/Module.css'
+import '../styles/LeftPanelModule.css'
 import arrow from '../styles/arrow.png';
+import LeftPanelItem from '../components/LeftPanelItem'
 
-class Module extends Component {
+class LeftPanelModule extends Component {
   static propTypes = {
     watchlistsModuleOpen: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick = event => {
@@ -33,13 +29,13 @@ class Module extends Component {
   render() {
     let data = this.props.moduleData.map((instrument, index) => {
       return(
-        <div key={instrument.symbol}
-             id={index}
-             onClick={this.handleClick}
-             className={this.props.selectedKey === instrument.symbol? "moduleDiv selectedModuleDiv" : "moduleDiv"}
-        >
-          {instrument.symbol}
-        </div>
+        <LeftPanelItem
+          key={instrument.symbol}
+          symbol={instrument.symbol}
+          id={index}
+          onClick={this.handleClick}
+          className={this.props.selectedKey === instrument.symbol? "moduleDiv selectedModuleDiv" : "moduleDiv"}
+        />
       );
     });
 
@@ -72,4 +68,4 @@ const mapStateToProps = state => {
   return { watchlistsModuleOpen, positionsModuleOpen }
 }
 
-export default connect(mapStateToProps)(Module)
+export default connect(mapStateToProps)(LeftPanelModule)

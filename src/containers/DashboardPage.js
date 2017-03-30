@@ -8,8 +8,9 @@ import { deleteToken,
          addTab, selectTab
        } from '../actions'
 import Dashboard from '../components/Dashboard'
+import LeftPanelItem from '../components/LeftPanelItem'
 import Search from './Search'
-import Module from './Module'
+import LeftPanelModule from './LeftPanelModule'
 import RightPanel from './RightPanel'
 import '../styles/DashboardPage.css'
 
@@ -98,6 +99,25 @@ class DashboardPage extends Component {
     this.props.dispatch(addTab(key, newTab));
   }
 
+  handleaddNonStockTab = (name) => {
+    const key = name;
+
+    if(this.props.keys.indexOf(key) !== -1) {
+      this.props.dispatch(selectTab(key));
+      return;
+    }
+
+    //let type = (data.type==="watchlist" || data.type==="positions")? "instrument" : "others"
+    let newTab = {
+      key: key,
+      title: name,
+      instrument: {},
+      type: name
+    }
+
+    this.props.dispatch(addTab(key, newTab));
+  }
+
   render() {
     const { watchlists, positions, instruments, selectedKey } = this.props
     let watchlistsMenu = "loading watchlists...";
@@ -135,14 +155,14 @@ class DashboardPage extends Component {
         };
       });
 
-      watchlistsMenu = (<Module
+      watchlistsMenu = (<LeftPanelModule
         moduleName="WATCHLIST"
         moduleData={watchlistData}
         selectedKey={selectedKey}
         callback={this.handleaddTab}
       />);
 
-      positionsMenu = (<Module
+      positionsMenu = (<LeftPanelModule
         moduleName="POSITIONS"
         moduleData={positionsData}
         selectedKey={selectedKey}
@@ -156,6 +176,14 @@ class DashboardPage extends Component {
           <div className="leftPanelDiv">
             <Search className="leftPanelSearch" callback={this.handleaddTab} />
             <div className="leftPanelRest">
+
+              <LeftPanelItem
+                symbol={"portfolio"}
+                id={"portfolio"}
+                onClick={()=>this.handleaddNonStockTab("portfolio")}
+                className={selectedKey === "portfolio"? "moduleDiv selectedModuleDiv" : "moduleDiv"}
+              />
+
               {positionsMenu}
               {watchlistsMenu}
             </div>
