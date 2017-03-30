@@ -39,4 +39,5 @@
   box-sizing: border-box;
   padding-left: 3px;
   text-align: left;
+  outline: none;
 }

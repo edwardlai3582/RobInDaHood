@@ -3,11 +3,11 @@
   background-color: var(--main-color);
   padding: 10px;
   overflow-y: auto;
-  height: calc(100vh - 26px);
+  height: calc(100vh - 45px);
 }
 
 .instrumentFake {
-  width: calc(100% - 170px);
+  width: calc(100% - 175px);
   height: 10px;
   position: fixed;
   top: 26px;
