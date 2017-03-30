@@ -7,7 +7,7 @@
 }
 
 .instrumentFake {
-  width: calc(100% - 180px);
+  width: calc(100% - 170px);
   height: 10px;
   position: fixed;
   top: 26px;
@@ -18,7 +18,7 @@
 .instrumentWrapper header {
   display: flex;
   justify-content:space-between;
-  background-color: red;
+  align-items:center;
 }
 
 .instrumentH1 {

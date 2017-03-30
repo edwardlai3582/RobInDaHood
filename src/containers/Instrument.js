@@ -4,13 +4,16 @@ import {
          askFundamental,
          askNews,
          askPosition,
-         askHistoricalsQuotes, askQuotes
+         askHistoricalsQuotes, askQuotes,
+         addToWatchlists, removeFromWatchlists
        } from '../actions'
 import Statistics from '../components/Statistics'
 import News from '../components/News'
 import Quotes from '../components/Quotes'
 import DummyQuotes from '../components/DummyQuotes'
 import Position from '../components/Position'
+import AddButton from '../components/AddButton'
+import RemoveButton from '../components/RemoveButton'
 import SectionWrapper from '../components/SectionWrapper'
 import '../styles/Instrument.css'
 
@@ -26,12 +29,15 @@ class Instrument extends Component {
     quotes: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
     eachPosition: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    watchlists: PropTypes.array.isRequired
   }
 
   constructor(props) {
     super(props);
     this.state = {
+      isInPositions: false,
+      isInWatchLists: false,
       quotes: {
         span: "day",
         interval: "5minute",
@@ -42,7 +48,7 @@ class Instrument extends Component {
   }
 
   componentDidMount(){
-    const { symbol, instrument, positions, dispatch } = this.props;
+    const { symbol, instrument, positions, watchlists, dispatch } = this.props;
     const { span, interval, bounds } = this.state.quotes;
     dispatch(askFundamental(symbol));
     dispatch(askNews(symbol));
@@ -50,14 +56,46 @@ class Instrument extends Component {
     dispatch(askQuotes(symbol));
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
-        dispatch(askPosition(positions[i].url))
+        this.setState({isInPositions:true});
+        dispatch(askPosition(positions[i].url));
       }
     }
+    for(let i=0; i< positions.length; i++){
+      if(positions[i].instrument === instrument){
+        this.setState({isInPositions:true});
+        dispatch(askPosition(positions[i].url));
+      }
+    }
+    for(let i=0; i< watchlists.length; i++){
+      if(watchlists[i].instrument === instrument){
+        this.setState({isInWatchLists:true});
+      }
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    for(let i=0; i< nextProps.watchlists.length; i++){
+      if(nextProps.watchlists[i].instrument === this.props.instrument){
+        this.setState({isInWatchLists:true});
+        return;
+      }
+    }
+    this.setState({isInWatchLists:false});
   }
 
   changeHisQuotes = (span, interval, bounds, selectedButtonName)=>{
     this.setState({ quotes: { span: span, interval: interval, bounds: bounds, selectedButtonName: selectedButtonName } });
     this.props.dispatch(askHistoricalsQuotes(this.props.symbol, span, interval, bounds));
+  }
+
+  addToWatchlists = () => {
+    //console.log(this.props.instruments[this.props.instrument].symbol);
+    this.props.dispatch(addToWatchlists(this.props.instruments[this.props.instrument].symbol))
+  }
+
+  removeFromWatchlists = () => {
+    //console.log(this.props.instruments[this.props.instrument].id);
+    this.props.dispatch(removeFromWatchlists(this.props.instruments[this.props.instrument].id))
   }
 
   render() {
@@ -71,6 +109,7 @@ class Instrument extends Component {
       />): <DummyQuotes />;
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
     let positionBlock = "";
+
     //need to change
     if(type === "position"){
       positionBlock = (eachPosition[instrument] && quotes[symbol])? <Position quotes={quotes[symbol]} position={eachPosition[instrument]} /> : "Loading...";
@@ -84,7 +123,7 @@ class Instrument extends Component {
             <h1 className="instrumentH1">{symbol}</h1>
             <h2 className="instrumentH2">{instruments[instrument].name}</h2>
           </div>
-          <button> {"add to watchlist"} </button>
+          {(this.state.isInPositions)?"":(this.state.isInWatchLists)?<RemoveButton cb={this.removeFromWatchlists}/>:<AddButton cb={this.addToWatchlists}/>}
         </header>
 
         <SectionWrapper SectionTitle={""}>
@@ -128,13 +167,14 @@ class Instrument extends Component {
 }
 
 const mapStateToProps = state => {
-  const { instrumentsReducer, fundamentalsReducer, newsReducer, quotesReducer, positionsReducer } = state
+  const { instrumentsReducer, fundamentalsReducer, newsReducer, quotesReducer, positionsReducer, watchlistsReducer } = state
+  const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
   const { newsAll } = newsReducer || { newsAll: {}}
   const { historicalsQuotes, quotes } = quotesReducer || { historicalsQuotes: {}, quotes:{}}
   const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
-  return { instruments, fundamentals, newsAll, historicalsQuotes, quotes, positions, eachPosition }
+  return { instruments, fundamentals, newsAll, historicalsQuotes, quotes, positions, eachPosition, watchlists }
 }
 
 export default connect(mapStateToProps)(Instrument)

@@ -1,5 +1,10 @@
 import {
-  ADD_WATCHLISTS, DELETE_WATCHLISTS, ASKING_WATCHLISTS, ASKING_WATCHLISTS_FAILED
+  ADD_WATCHLISTS,
+  ADD_WATCHLIST,
+  REMOVE_WATCHLIST,
+  DELETE_WATCHLISTS,
+  ASKING_WATCHLISTS,
+  ASKING_WATCHLISTS_FAILED
 } from '../actions'
 
 const watchlistsReducer = (state = {
@@ -31,6 +36,26 @@ const watchlistsReducer = (state = {
       return {
         ...state,
         watchlists: [],
+      }
+    case ADD_WATCHLIST:
+      return {
+        ...state,
+        watchlists: [...state.watchlists, action.watchlist]
+      }
+    case REMOVE_WATCHLIST:
+      let instrumentLink = `https://api.robinhood.com/instruments/${action.instrumentId}/`;
+      let newWatchlists = undefined;
+      for(let i=0; i<state.watchlists.length; i++){
+        if(state.watchlists[i].instrument === instrumentLink){
+          console.log("found it");
+          newWatchlists = [...state.watchlists.slice(0, i), ...state.watchlists.slice(i+1)];
+          break;
+        }
+      }
+      if(!newWatchlists) newWatchlists = state.watchlists;
+      return {
+        ...state,
+        watchlists: newWatchlists,
       }
     default:
       return state

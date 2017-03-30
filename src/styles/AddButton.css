@@ -1,0 +1,13 @@
+.addButtonBorder {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border: 5px solid white;
+  border-radius: 50%;
+
+  font-size: 2rem;
+  text-align: center;
+  line-height: 30px;
+
+  cursor: pointer;
+}
