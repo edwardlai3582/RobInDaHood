@@ -11,7 +11,7 @@
 .leftPanelRest {
   padding: 5px 0 10px;
   overflow-y: auto;
-  height: calc(100vh - 73px);
+  height: calc(100vh - 84px);
 }
 
 .leftSingleDiv{
