@@ -20,6 +20,7 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
+    padding               : '10px',
     transform             : 'translate(-50%, -50%)'
   },
   overlay :{ zIndex: 999 }
@@ -152,14 +153,14 @@ class DashboardPage extends Component {
       <div>
         <Dashboard>
           <div className="leftPanelDiv">
+            <Search className="leftPanelSearch" callback={this.handleaddTab} />
             <div className="leftPanelRest">
-              <Search className="leftPanelSearch" callback={this.handleaddTab} />
-              <button onClick={this.openModal}>
-                logout
-              </button>
               {positionsMenu}
               {watchlistsMenu}
             </div>
+            <button onClick={this.openModal} className="leftPanellogoutButton">
+              LOG OUT
+            </button>
           </div>
           <RightPanel />
         </Dashboard>
@@ -172,8 +173,10 @@ class DashboardPage extends Component {
           contentLabel="LogOut Modal"
         >
           <p ref="subtitle">Are you sure you want to log out?</p>
-          <button onClick={this.closeModal}>CANCEL</button>
-          <button ref="logoutButton" onClick={this.logout}>LOG OUT</button>
+          <div className="logoutModalButtonsWrapper">
+            <button onClick={this.closeModal}>CANCEL</button>
+            <button ref="logoutButton" onClick={this.logout}>LOG OUT</button>
+          </div>
         </Modal>
       </div>
     )

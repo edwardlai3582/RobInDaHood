@@ -3,9 +3,46 @@
 }
 
 .leftPanelSearch {
-
+  position: absolute;
+  top: 0;
 }
 
 .leftPanelRest {
+  padding-top: 5px;
+  overflow-y: auto;
+  height: 92vh;
+}
 
+.leftPanellogoutButton{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border: 3px solid black;
+  background-color: white;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  outline: none;
+}
+
+.leftPanellogoutButton:hover {
+  background-color: #D8D8D8;
+}
+
+.logoutModalButtonsWrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content:space-between;
+}
+
+.logoutModalButtonsWrapper >button {
+  width: 45%;
+  background-color: white;
+  border: solid;
+  border-radius: 5px;
+  padding-top: 2px;
+  cursor: pointer;
 }

@@ -12,12 +12,12 @@
   background-color: black;
   color: var(--main-color);
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: hidden;/*scroll;*/
   box-sizing: border-box;
   /*border-right: 1px solid white;*/
 }
 .dbLeftPanel::-webkit-scrollbar {
-  width: 0 !important
+  /*width: 0 !important*/
 }
 
 .dbRightPanel {
