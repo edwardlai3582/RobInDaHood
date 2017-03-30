@@ -18,3 +18,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] https://github.com/ameyms/react-animated-number
 - [ ] add change tab type(watchlist <-> position) function
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity
+- [ ] electron right click close tab
