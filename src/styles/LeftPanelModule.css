@@ -1,5 +1,5 @@
 .moduleWrapper {
-  margin-bottom: 10px;
+
   text-align: left;;
 }
 
@@ -7,19 +7,26 @@
   position: relative;
   background-color: none;
   z-index: 1;
+  padding-left: 10px;
+}
+
+.moduleTitle {
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 0 5px 0px;
 }
 
 .open {
   top: -2px;
   width: 0.6rem;
   height: 0.6rem;
-  margin-left: 5px;
+  margin-left: 0px;
   padding-right: 5px;
   transform: rotate(0deg);
 }
 
 .close {
-  top: -3px;
+  top: 0px;
   width: 0.6rem;
   height: 0.6rem;
   padding-right: 5px;
@@ -28,6 +35,11 @@
 
 .moduleDiv {
   padding-left: calc( 25px + 0.6rem);
+  cursor: pointer;
+  background-color: #313E3B;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid black;
 }
 
 .selectedModuleDiv {

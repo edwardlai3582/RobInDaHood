@@ -16,4 +16,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] check tab == watchlists, delete nonexist
 - [ ] http://recharts.org/#/en-US/api/ReferenceLine
 - [ ] https://github.com/ameyms/react-animated-number
-- [ ]  add change tab type(watchlist <-> position) function
+- [ ] add change tab type(watchlist <-> position) function
+- [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity

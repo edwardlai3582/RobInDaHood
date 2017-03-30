@@ -1,8 +1,10 @@
 import {
-  ADD_HIS_PORTFOLIOS, DELETE_HIS_PORTFOLIOS
+  ADD_HIS_PORTFOLIOS, DELETE_HIS_PORTFOLIOS,
+  ADD_PORTFOLIOS
 } from '../actions'
 
 const portfoliosReducer = (state = {
+  portfolios: {},
   historicalsPortfolios: {},
 }, action) => {
   switch (action.type) {
@@ -18,6 +20,11 @@ const portfoliosReducer = (state = {
         ...state,
         //instruments: [],
       }
+      case ADD_PORTFOLIOS:
+        return {
+          ...state,
+          portfolios: action.portfolios
+        }
     default:
       return state
   }

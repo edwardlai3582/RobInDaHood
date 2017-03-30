@@ -49,7 +49,7 @@ class LeftPanelModule extends Component {
 
     return (
       <div className="moduleWrapper" >
-        <div onClick={this.openClose}>
+        <div onClick={this.openClose} className="moduleTitle">
           <img src={arrow}
                alt={open? "open": "close"}
                className={open? "moduleArrow open": "moduleArrow close"} />

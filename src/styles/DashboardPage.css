@@ -13,6 +13,12 @@
   height: 92vh;
 }
 
+.leftSingleDiv{
+  font-size: 1.2rem;
+  padding: 5px 0 5px 25px;
+  cursor: pointer;
+}
+
 .leftPanellogoutButton{
   position: absolute;
   bottom: 0;

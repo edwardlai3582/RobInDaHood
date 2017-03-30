@@ -181,7 +181,7 @@ class DashboardPage extends Component {
                 symbol={"PORTFOLIO"}
                 id={"portfolio"}
                 onClick={()=>this.handleaddNonStockTab("portfolio")}
-                className={selectedKey === "portfolio"? "moduleDiv selectedModuleDiv" : "moduleDiv"}
+                className={selectedKey === "portfolio"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
               />
 
               {positionsMenu}
