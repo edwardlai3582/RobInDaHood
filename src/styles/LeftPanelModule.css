@@ -43,5 +43,6 @@
 }
 
 .selectedModuleDiv {
-  background-color: #016262;
+  background-color: var(--main-color);/*#016262;*/
+  color: white;
 }

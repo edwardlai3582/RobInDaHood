@@ -55,7 +55,7 @@ class Portfolio extends Component {
           </div>
         </header>
 
-        <SectionWrapper SectionTitle={"About"}>
+        <SectionWrapper SectionTitle={" "}>
           ${((portfolios.extended_hours_equity)?Number(portfolios.extended_hours_equity):portfolios.equity).toFixed(2)}
         </SectionWrapper>
 
