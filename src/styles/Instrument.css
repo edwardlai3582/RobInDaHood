@@ -3,6 +3,7 @@
   background-color: var(--main-color);
   padding: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   height: calc(100vh - 45px);
 }
 
@@ -32,21 +33,23 @@
 .quotesButtonsWrapper {
   display: flex;
   justify-content:flex-end;
-  border-top: 1px solid var(--main-color);
+  border-top: 2px solid var(--main-color);
+  margin-right: 5px;
 }
 
 .quotesButton {
-  margin-top: 3px;
+  margin-top: 0px;
   margin-left: 2px;
   border: none;
   font-family: Arial;
   color: #045C4F;
-  background: #46e3c1;
+  background: white;
   padding: 5px 10px;
   text-decoration: none;
   cursor: pointer;
+  outline: none;
 }
 
 .selectedButton {
-  background: white;
+  background: var(--main-color);
 }

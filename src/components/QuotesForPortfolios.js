@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import WithoutTimeTooltip   from './WithoutTimeTooltip'
 import WithTimeTooltip from './WithTimeTooltip'
 import '../styles/Quotes.css'
@@ -43,20 +43,18 @@ class QuotesForPortfolios extends Component {
 
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >
-        <LineChart width={this.state.width}
-                   height={this.state.width>500? 250 : this.state.width/2 }
-                   data={data}
-                   margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
-          <Line type="monotone" dataKey="adjusted_close_equity" stroke={strokeColor} dot={false} />
-          <XAxis dataKey="begins_at" tick={false} hide={true} />
-          <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />
-          {selectedButtonName==="1D" || selectedButtonName==="1W"?
-            <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px'}} content={<WithTimeTooltip/>}/>:
-            <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px' }} content={<WithoutTimeTooltip/>}/>
-          }
+        <ResponsiveContainer width="100%" height="100%" debounce={3}>
+          <LineChart data={data} margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
+            <Line type="monotone" dataKey="adjusted_close_equity" stroke={strokeColor} dot={false} />
+            <XAxis dataKey="begins_at" tick={false} hide={true} />
+            <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />
+            {selectedButtonName==="1D" || selectedButtonName==="1W"?
+              <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px'}} content={<WithTimeTooltip/>}/>:
+              <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px' }} content={<WithoutTimeTooltip/>}/>
+            }
 
-        </LineChart>
-
+          </LineChart>
+        </ResponsiveContainer>
 
       </div>
     )
