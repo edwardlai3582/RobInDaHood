@@ -69,7 +69,8 @@ class DashboardPage extends Component {
   afterOpenModal = () => {
     // references are now sync'd and can be accessed.
     this.refs.subtitle.style.color = 'black';
-    this.refs.logoutButton.style.color = '#40C9BD';
+    this.refs.logoutButton.style.color = 'white';
+    this.refs.logoutButton.style.backgroundColor = '#40C9BD';
   }
 
   closeModal = () => {

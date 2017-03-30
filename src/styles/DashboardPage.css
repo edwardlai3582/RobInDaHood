@@ -41,8 +41,8 @@
 .logoutModalButtonsWrapper >button {
   width: 45%;
   background-color: white;
-  border: solid;
-  border-radius: 5px;
+  border: 1px solid black;
+  border-radius: 1px;
   padding-top: 2px;
   cursor: pointer;
 }
