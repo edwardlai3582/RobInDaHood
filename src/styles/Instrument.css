@@ -1,10 +1,10 @@
 .instrumentWrapper {
-  width: calc(100vw - 171px);
+  width: calc(100% - 21px);
   position: relative;
   background-color: var(--main-color);
   padding: 10px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   height: calc(100vh - 46px);
 }
 

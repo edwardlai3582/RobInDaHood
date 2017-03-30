@@ -54,7 +54,7 @@ class LoginPage extends Component {
 
     return (
       <div className="loginWrapper">
-        <div className="loginLogo" />
+        <div className="loginLogo"></div>
         <h1 className="loginTitle">ROBINDAHOOD</h1>
         <div className="loginError">{Errors}</div>
         <form onSubmit={this.handleSubmit}>

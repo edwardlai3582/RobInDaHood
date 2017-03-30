@@ -16,7 +16,7 @@ class App extends Component {
     let whatToDisplay = (token === "" || accountNumber === "" )? <LoginPage /> : <DashboardPage />
 
     return (
-      <div>
+      <div className={(token === "" || accountNumber === "" )? "elephantprint" : ""} >
         { whatToDisplay }
       </div>
     )

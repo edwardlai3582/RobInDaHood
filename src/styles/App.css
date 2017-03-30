@@ -51,9 +51,7 @@ table {
 html, body {
   width: 100%;
   height: 100%;
-  background-color: black;
-	background-image: url('./eprint_1024x1024.png');
-	background-size:cover;
+	background-color: #313E3B;
   color: white;
   text-align: center;
 	font-family: 'Roboto', sans-serif;
@@ -70,4 +68,12 @@ html, body {
 	background-color: var(--main-color);
 	height: 100vh;
 	line-height: 100vh;
+}
+
+.elephantprint {
+	position: relative;
+	background-image: url('./eprint_1024x1024.png');
+	background-size:cover;
+	width: 100vw;
+	height: 100vh;
 }

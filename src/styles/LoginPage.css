@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Francois+One');
 
+.qq {
+  width: 100%;
+    background-image: url('./eprint_1024x1024.png');
+}
+
 .loginWrapper {
-  position: absolute;
+  position: relative;
   width: 240px;
   margin: 0 auto ;
   padding: 30px;
@@ -9,8 +14,8 @@
   background-color: black;
   border-radius: 5%;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /*left: 50%;*/
+  transform: translate(0%, -50%);
 }
 
 .loginLogo {
