@@ -4,7 +4,7 @@ import WithoutTimeTooltip   from './WithoutTimeTooltip'
 import WithTimeTooltip from './WithTimeTooltip'
 import '../styles/Quotes.css'
 
-class Quotes extends Component {
+class QuotesForPortfolios extends Component {
   static propTypes = {
     historicals: PropTypes.array.isRequired,
     selectedButtonName: PropTypes.string.isRequired
@@ -47,7 +47,7 @@ class Quotes extends Component {
                    height={this.state.width>500? 250 : this.state.width/2 }
                    data={data}
                    margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
-          <Line type="monotone" dataKey="close_price" stroke={strokeColor} dot={false} />
+          <Line type="monotone" dataKey="adjusted_close_equity" stroke={strokeColor} dot={false} />
           <XAxis dataKey="begins_at" tick={false} hide={true} />
           <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />
           {selectedButtonName==="1D" || selectedButtonName==="1W"?
@@ -63,4 +63,4 @@ class Quotes extends Component {
   }
 }
 
-export default Quotes
+export default QuotesForPortfolios

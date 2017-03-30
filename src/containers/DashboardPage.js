@@ -178,7 +178,7 @@ class DashboardPage extends Component {
             <div className="leftPanelRest">
 
               <LeftPanelItem
-                symbol={"portfolio"}
+                symbol={"PORTFOLIO"}
                 id={"portfolio"}
                 onClick={()=>this.handleaddNonStockTab("portfolio")}
                 className={selectedKey === "portfolio"? "moduleDiv selectedModuleDiv" : "moduleDiv"}

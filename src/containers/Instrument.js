@@ -101,7 +101,7 @@ class Instrument extends Component {
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
     let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])?
-      (<Quotes quotes={historicalsQuotes[symbol+span+interval+bounds]}
+      (<Quotes historicals={historicalsQuotes[symbol+span+interval+bounds].historicals}
                selectedButtonName={selectedButtonName}
       />): <DummyQuotes />;
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";

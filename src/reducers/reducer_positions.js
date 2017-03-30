@@ -3,6 +3,40 @@ import {
   ADD_POSITION
 } from '../actions'
 
+/*
+"positions":[
+      {
+         "account":"https://api.robinhood.com/accounts/accountnumber/",
+         "intraday_quantity":"0.0000",
+         "intraday_average_buy_price":"0.0000",
+         "url":"https://api.robinhood.com/positions/accountnumber/stringOfSomething/",
+         "created_at":"2017-03-02T03:52:54.895476Z",
+         "updated_at":"2017-03-28T16:23:05.714421Z",
+         "shares_held_for_buys":"0.0000",
+         "average_buy_price":"1.33",
+         "instrument":"https://api.robinhood.com/instruments/stringOfSomething/",
+         "shares_held_for_sells":"0.0000",
+         "quantity":"495.0000"
+      },
+]
+
+"eachPosition":{
+      "https://api.robinhood.com/instruments/stringOfSomething/":{
+         "account":"https://api.robinhood.com/accounts/accountnumber/",
+         "intraday_quantity":"0.0000",
+         "intraday_average_buy_price":"0.0000",
+         "url":"https://api.robinhood.com/positions/stringOfSomething/",
+         "created_at":"2017-03-02T03:52:54.895476Z",
+         "updated_at":"2017-03-28T16:23:05.714421Z",
+         "shares_held_for_buys":"0.0000",
+         "average_buy_price":"6.33",
+         "instrument":"https://api.robinhood.com/instruments/stringOfSomething/",
+         "shares_held_for_sells":"0.0000",
+         "quantity":"100.0000"
+      },
+}
+*/
+
 const positionsReducer = (state = {
   isAskingPositions: false,
   error: "",

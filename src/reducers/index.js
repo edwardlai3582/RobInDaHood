@@ -8,6 +8,7 @@ import tabsReducer from './reducer_tabs'
 import fundamentalsReducer from './reducer_fundamentals'
 import newsReducer from './reducer_news'
 import quotesReducer from './reducer_quotes'
+import portfoliosReducer from './reducer_portfolios'
 import uiReducer from './reducer_ui'
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   fundamentalsReducer,
   newsReducer,
   quotesReducer,
+  portfoliosReducer,
   uiReducer
 })
 

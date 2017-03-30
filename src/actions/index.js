@@ -1,4 +1,5 @@
 export * from './action_login'
+export * from './action_portfolios'
 export * from './action_watchlists'
 export * from './action_positions'
 export * from './action_instruments'
