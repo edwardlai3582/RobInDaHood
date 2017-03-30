@@ -4,7 +4,7 @@ import '../styles/Position.css'
 const Position = ({ position, quotes }) => {
   const { quantity, average_buy_price } = position;
   const lastPrice = (quotes.last_extended_hours_trade_price)? quotes.last_extended_hours_trade_price : quotes.last_trade_price;
-  const equityValue = lastPrice*quantity;
+  const equityValue = (lastPrice*quantity).toFixed(2);
   let totalReturn = (lastPrice - Number(average_buy_price))*quantity;
   if(totalReturn < 0) {
     totalReturn = "-US$"+(-1)*totalReturn.toFixed(2)

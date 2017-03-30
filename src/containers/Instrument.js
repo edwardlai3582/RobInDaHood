@@ -58,17 +58,14 @@ class Instrument extends Component {
       if(positions[i].instrument === instrument){
         this.setState({isInPositions:true});
         dispatch(askPosition(positions[i].url));
+        break;
       }
     }
-    for(let i=0; i< positions.length; i++){
-      if(positions[i].instrument === instrument){
-        this.setState({isInPositions:true});
-        dispatch(askPosition(positions[i].url));
-      }
-    }
+
     for(let i=0; i< watchlists.length; i++){
       if(watchlists[i].instrument === instrument){
         this.setState({isInWatchLists:true});
+        break;
       }
     }
   }
