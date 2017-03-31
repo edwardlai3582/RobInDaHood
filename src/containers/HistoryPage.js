@@ -12,9 +12,11 @@ import '../styles/HistoryPage.css'
 const customStyles = {
   content : {
     top                   : '50px',
-    backgroundColor       : 'teal',
-    textAlign             : 'left',
-    padding               : '0px'
+    backgroundColor       : 'black',
+    textAlign             : 'center',
+    padding               : '0px',
+    border                : '0px solid black',
+    overflowY             : 'auto'
   },
   overlay :{ zIndex: 999 }
 };

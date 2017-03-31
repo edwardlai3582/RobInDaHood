@@ -32,15 +32,15 @@
 }
 
 .quotesButtonsWrapper {
+  width: 100%;
   display: flex;
   justify-content:flex-end;
   border-top: 2px solid #46e3c1;
-  margin-right: 5px;
 }
 
 .quotesButton {
   margin-top: 0px;
-  margin-left: 2px;
+  margin-right: 2px;
   border: none;
   font-family: Arial;
   color: #045C4F;

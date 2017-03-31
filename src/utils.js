@@ -2,7 +2,8 @@ export const capFirst = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-export const formatAMPM = (date) => {
+export const formatAMPM = (dateString) => {
+  let date = new Date(dateString);
   var hours = date.getHours();
   var minutes = date.getMinutes();
   var ampm = hours >= 12 ? 'pm' : 'am';
@@ -23,11 +24,17 @@ export const printDate = (dateString) => {
      newsDate.getMonth()===now.getMonth() &&
      newsDate.getFullYear()===now.getFullYear()
    ){
-    res =  formatAMPM(newsDate);
+    res =  formatAMPM(dateString);
   }
   else{
     res = `${newsDate.getMonth()+1}/${newsDate.getDate()}/${newsDate.getFullYear()}`
   }
-  
+
   return res;
+}
+
+export const printDateOnly = (dateString) => {
+  let newsDate = new Date(dateString);
+
+  return `${newsDate.getMonth()+1}/${newsDate.getDate()}/${newsDate.getFullYear()}`;
 }

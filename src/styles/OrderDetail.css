@@ -1,0 +1,60 @@
+.orderDetailLoadingWrapper{
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.orderDetailWrapper {
+  background-color: black;
+}
+
+.orderDetailWrapper > header {
+  background-color: var(--main-color);
+  padding: 2%;
+  text-align: left;
+  position: relative;
+}
+
+.orderDetailWrapper > header > h6{
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+  position: relative;
+  width: 90%;
+  left: 5%;
+}
+
+.orderDetailWrapper > header > h2{
+  font-size: 1.1rem;
+  position: relative;
+  width: 90%;
+  left: 5%;
+}
+
+.OrderDetailUlWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.OrderDetailUlWrapper > ul {
+  position: relative;
+  width: 80%;
+  left: 10%;
+  padding: 2% 0;
+  text-align: left;
+}
+
+.OrderDetailUlWrapper > ul > li {
+  margin-bottom: 12px;
+}
+
+.OrderDetailUlWrapper > ul > li:last-child {
+  margin-bottom: 0px;
+}
+
+.orderDetailType {
+  font-size: 0.8rem;
+  color: #BDBDBD;
+  margin-bottom: 2px;
+}
