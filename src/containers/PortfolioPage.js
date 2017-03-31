@@ -6,9 +6,9 @@ import {
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
 import SectionWrapper from '../components/SectionWrapper'
-import '../styles/Portfolio.css'
+import '../styles/PortfolioPage.css'
 
-class Portfolio extends Component {
+class PortfolioPage extends Component {
   static propTypes = {
     historicalsPortfolios: PropTypes.object.isRequired,
     portfolios: PropTypes.object.isRequired
@@ -91,4 +91,4 @@ const mapStateToProps = state => {
   return { historicalsPortfolios, portfolios }
 }
 
-export default connect(mapStateToProps)(Portfolio)
+export default connect(mapStateToProps)(PortfolioPage)

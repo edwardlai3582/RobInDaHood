@@ -186,6 +186,13 @@ class DashboardPage extends Component {
 
               {positionsMenu}
               {watchlistsMenu}
+
+              <LeftPanelItem
+                symbol={"ORDERS"}
+                id={"orders"}
+                onClick={()=>this.handleaddNonStockTab("orders")}
+                className={selectedKey === "orders"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
+              />              
             </div>
             <button onClick={this.openModal} className="leftPanellogoutButton">
               LOG OUT
