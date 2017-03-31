@@ -4,7 +4,7 @@ import {Tab, Tabs} from 'react-draggable-tab'
 import { deleteTab, reorderTab, selectTab } from '../actions'
 import Instrument from './Instrument'
 import PortfolioPage from './PortfolioPage'
-import OrdersPage from './OrdersPage'
+import HistoryPage from './HistoryPage'
 import '../styles/Tabs.css'
 
 const tabsClassNames = {
@@ -78,8 +78,8 @@ class RightPanel extends Component {
       else if (tabs[key].type === "portfolio") {
         return (<Tab key={tabs[key].key} title={tabs[key].title}><PortfolioPage /></Tab>);
       }
-      else if (tabs[key].type === "orders") {
-        return (<Tab key={tabs[key].key} title={tabs[key].title}><OrdersPage /></Tab>);
+      else if (tabs[key].type === "history") {
+        return (<Tab key={tabs[key].key} title={tabs[key].title}><HistoryPage /></Tab>);
       }
       else{
         return (<Tab key={tabs[key].key} title={tabs[key].title}><div>NOTHING HERE</div></Tab>);

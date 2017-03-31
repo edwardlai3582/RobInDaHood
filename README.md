@@ -8,7 +8,7 @@ https://medium.freecodecamp.com/building-an-electron-application-with-create-rea
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ### todos
-- [ ] scrollbar styles https://css-tricks.com/almanac/properties/s/scrollbar/
+- [x] scrollbar styles https://css-tricks.com/almanac/properties/s/scrollbar/
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [x] z-index of modal and tabs
 - [x] window resize right part need to change
@@ -20,3 +20,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity
 - [ ] electron right click close tab
 - [ ] if no tab, show portfolio
+- [ ] https://github.com/mariotacke/redux-electron-ipc
+- [ ] https://github.com/jschr/electron-react-redux-boilerplate

@@ -1,6 +1,7 @@
 ////////////POSITIONS
 export const ADD_POSITIONS = 'ADD_POSITIONS'
 export const ADD_POSITION = 'ADD_POSITION'
+export const ADD_POSITIONS_WITH_ZERO = 'ADD_POSITIONS_WITH_ZERO'
 export const DELETE_POSITIONS = 'DELETE_POSITIONS'
 export const ASKING_POSITIONS = 'ASKING_POSITIONS'
 export const ASKING_POSITIONS_FAILED = 'ASKING_POSITIONS_FAILED'
@@ -29,7 +30,6 @@ export const askPositions = () => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/positions/?nonzero=true`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
@@ -62,14 +62,13 @@ export const askPosition = (url) => (dispatch, getState) => {
   return fetch( url, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("quantity")){
       dispatch(addPosition(jsonResult));
     }
@@ -77,5 +76,36 @@ export const askPosition = (url) => (dispatch, getState) => {
   .catch(function(reason) {
     console.log(reason);
     //dispatch(askingPositionsFailed(reason));
+  });
+}
+
+export const addPositionsWithZero = positions => ({
+  type: ADD_POSITIONS_WITH_ZERO,
+  positions
+})
+
+export const askPositionsWithZero = () => (dispatch, getState) => {
+
+  //searcg non zero
+  return fetch(`https://api.robinhood.com/positions/`, {
+    method: 'GET',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token
+    })
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    //console.log(jsonResult);
+    if(jsonResult.hasOwnProperty("results")){
+      dispatch(addPositionsWithZero(jsonResult.results));
+    }
+    else {
+      //jsonResult[Object.keys(jsonResult)[0]][0])
+      //dispatch(askingPositionsFailed("QQ"));
+    }
+  })
+  .catch(function(reason) {
+    console.log(reason);
   });
 }

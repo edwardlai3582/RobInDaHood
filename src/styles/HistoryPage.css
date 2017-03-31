@@ -1,0 +1,22 @@
+.orderWrapper {
+  border-bottom: 1px solid var(--main-color);
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.orderWrapper:hover {
+  background-color: var(--main-color);
+}
+
+.orderWrapper:last-child {
+    border-bottom: none;
+}
+
+.orderHisDate {
+  color: black;
+  font-size: 0.8rem;
+  margin-top: 3px;
+}

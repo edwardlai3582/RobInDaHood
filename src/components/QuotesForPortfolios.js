@@ -43,7 +43,7 @@ class QuotesForPortfolios extends Component {
 
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >
-        <ResponsiveContainer width="100%" height="100%" debounce={3}>
+        <ResponsiveContainer width="100%" height="100%" minHeight={1} debounce={3}>
           <LineChart data={data} margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
             <Line type="monotone" dataKey="adjusted_close_equity" stroke={strokeColor} dot={false} />
             <XAxis dataKey="begins_at" tick={false} hide={true} />

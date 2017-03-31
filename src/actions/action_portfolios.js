@@ -86,7 +86,7 @@ export const askPortfolios = () => (dispatch, getState) => {
       res.start_date = jsonResult.results[0].start_date
       ////can be null
       res.extended_hours_market_value =  jsonResult.results[0].extended_hours_market_value
-console.log(res);
+      //console.log(res);
       dispatch(addPortfolios(res));
     }
     else {

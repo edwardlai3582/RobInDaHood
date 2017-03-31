@@ -1,5 +1,6 @@
 import {
   ADD_POSITIONS, DELETE_POSITIONS, ASKING_POSITIONS, ASKING_POSITIONS_FAILED,
+  ADD_POSITIONS_WITH_ZERO,
   ADD_POSITION
 } from '../actions'
 
@@ -41,6 +42,7 @@ const positionsReducer = (state = {
   isAskingPositions: false,
   error: "",
   positions: [],
+  positionsWithZero: [],
   eachPosition: {}
 }, action) => {
   switch (action.type) {
@@ -74,6 +76,11 @@ const positionsReducer = (state = {
       return {
         ...state,
         eachPosition: Object.assign({}, state.eachPosition, tempPosition)
+      }
+    case ADD_POSITIONS_WITH_ZERO:
+      return {
+        ...state,
+        positionsWithZero: action.positions,
       }
     default:
       return state

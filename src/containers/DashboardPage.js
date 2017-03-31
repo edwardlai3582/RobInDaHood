@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { deleteToken,
          askWatchlists,
-         askPositions,
+         askPositions, askPositionsWithZero,
          askInstrument,
          addTab, selectTab
        } from '../actions'
@@ -35,6 +35,7 @@ class DashboardPage extends Component {
     accountNumber: PropTypes.string.isRequired,
     watchlists: PropTypes.array.isRequired,
     positions: PropTypes.array.isRequired,
+    positionsWithZero: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
@@ -48,16 +49,22 @@ class DashboardPage extends Component {
     const { dispatch } = this.props
     dispatch(askWatchlists());
     dispatch(askPositions());
+    dispatch(askPositionsWithZero());
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.watchlists.length !== this.props.watchlists.length){
+    if(nextProps.watchlists !== this.props.watchlists){
       nextProps.watchlists.forEach((instrument)=>{
         this.props.dispatch(askInstrument(instrument.instrument));
       });
     }
-    if(nextProps.positions.length !== this.props.positions.length){
+    if(nextProps.positions !== this.props.positions){
       nextProps.positions.forEach((instrument)=>{
+        this.props.dispatch(askInstrument(instrument.instrument));
+      });
+    }
+    if(nextProps.positionsWithZero !== this.props.positionsWithZero){
+      nextProps.positionsWithZero.forEach((instrument)=>{
         this.props.dispatch(askInstrument(instrument.instrument));
       });
     }
@@ -188,11 +195,11 @@ class DashboardPage extends Component {
               {watchlistsMenu}
 
               <LeftPanelItem
-                symbol={"ORDERS"}
-                id={"orders"}
-                onClick={()=>this.handleaddNonStockTab("orders")}
-                className={selectedKey === "orders"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
-              />              
+                symbol={"HISTORY"}
+                id={"history"}
+                onClick={()=>this.handleaddNonStockTab("history")}
+                className={selectedKey === "history"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
+              />
             </div>
             <button onClick={this.openModal} className="leftPanellogoutButton">
               LOG OUT
@@ -225,10 +232,10 @@ const mapStateToProps = state => {
   const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
   const { accountNumber } = accountReducer || { accountNumber: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
-  const { positions } = positionsReducer || { positions: []}
+  const { positions, positionsWithZero } = positionsReducer || { positions: [], positionsWithZero:[]}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, keys, selectedKey, accountNumber, watchlists, positions, instruments}
+  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments}
 }
 
 export default connect(mapStateToProps)(DashboardPage)
