@@ -34,7 +34,7 @@
 .quotesButtonsWrapper {
   display: flex;
   justify-content:flex-end;
-  border-top: 2px solid var(--main-color);
+  border-top: 2px solid #46e3c1;
   margin-right: 5px;
 }
 
@@ -52,5 +52,5 @@
 }
 
 .selectedButton {
-  background: var(--main-color);
+  background: #46e3c1;
 }

@@ -41,6 +41,14 @@ class PortfolioPage extends Component {
     const { historicalsPortfolios, portfolios } = this.props
     const { span, interval, selectedButtonName } = this.state.quotes;
 
+    let equity = ""
+    if(portfolios.extended_hours_equity){
+      equity = Number(portfolios.extended_hours_equity).toFixed(2)
+    }
+    else if (portfolios.equity){
+      equity = portfolios.equity.toFixed(2)
+    }
+
     let quotesBlock = (historicalsPortfolios[span+interval])?
       (<QuotesForPortfolios historicals={historicalsPortfolios[span+interval].equity_historicals}
                selectedButtonName={selectedButtonName}
@@ -56,7 +64,7 @@ class PortfolioPage extends Component {
         </header>
 
         <SectionWrapper SectionTitle={" "}>
-          ${((portfolios.extended_hours_equity)?Number(portfolios.extended_hours_equity):portfolios.equity).toFixed(2)}
+          ${equity}
         </SectionWrapper>
 
         <SectionWrapper SectionTitle={""}>

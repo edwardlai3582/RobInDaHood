@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
+
 const electron = window.require('electron');
 const shell  = electron.shell;
+
+import { printDate } from '../utils'
 import '../styles/News.css'
 
 const customStyles = {
@@ -28,34 +31,6 @@ class News extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  formatAMPM = (date) => {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours %= 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    hours = (hours<10)? '0'+hours : hours;
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
-
-  printDate = (dateString) => {
-    let newsDate = new Date(dateString);
-    let now = new Date();
-    let res = "";
-    if(newsDate.getDate()===now.getDate() &&
-       newsDate.getMonth()===now.getMonth() &&
-       newsDate.getFullYear()===now.getFullYear()
-     ){
-      res =  this.formatAMPM(newsDate);
-    }
-    else{
-      res = `${newsDate.getMonth()+1}/${newsDate.getDate()}/${newsDate.getFullYear()}`
-    }
-    return res;
-  }
-
   openUrlInBrowser = (e) => {
       e.preventDefault();
       shell.openExternal(e.target.href);
@@ -74,7 +49,7 @@ class News extends Component {
               {news.results[i].title}
             </a>
           </div>
-          <div className="dateDiv">{this.printDate(news.results[i].published_at)}</div>
+          <div className="dateDiv">{ printDate(news.results[i].published_at)}</div>
         </div>
       );
     }
@@ -86,7 +61,7 @@ class News extends Component {
               {news.results[i].title}
             </a>
           </div>
-          <div className="dateDiv">{this.printDate(news.results[i].published_at)}</div>
+          <div className="dateDiv">{printDate(news.results[i].published_at)}</div>
         </div>
       );
     }
