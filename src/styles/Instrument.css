@@ -4,7 +4,7 @@
   background-color: var(--main-color);
   padding: 10px;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   height: calc(100vh - 46px);
 }
 
