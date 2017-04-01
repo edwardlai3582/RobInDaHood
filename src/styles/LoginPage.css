@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Francois+One');
 
-.qq {
-  width: 100%;
-    background-image: url('./eprint_1024x1024.png');
-}
-
 .loginWrapper {
   position: relative;
   width: 240px;

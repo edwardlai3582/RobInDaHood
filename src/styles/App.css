@@ -58,6 +58,9 @@ html, body {
 	font-size: 16px;
 	cursor: default;
 	overflow: hidden;
+	background-image: url('./logo.png');
+	background-repeat: no-repeat;
+	background-position: calc(50% + 61px) calc(50% - 19px);
 }
 
 :root {
