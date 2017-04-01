@@ -98,7 +98,7 @@ class PortfolioPage extends Component {
 */
 const mapStateToProps = state => {
   const { portfoliosReducer } = state
-  const { historicalsPortfolios, portfolios } = portfoliosReducer || { historicalsPortfolios: {}, portfolios: {}}
+  const { historicalsPortfolios, portfolios } = portfoliosReducer || { historicalsPortfolios: {}, portfolios: {} }
 
   return { historicalsPortfolios, portfolios }
 }

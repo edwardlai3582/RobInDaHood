@@ -39,7 +39,7 @@ class HistoryPage extends Component {
     if(!this.props.isCurrent){ return null; }
 
     const historicalsOrdersBlock = ( props.historicalsOrders )?
-      <Orders {...props} addMoreHistoricalsOrder={this.addMoreHistoricalsOrder} askCurrentOrder={this.askCurrentOrder} />
+      <Orders {...props} forInstrument={false} addMoreHistoricalsOrder={this.addMoreHistoricalsOrder} askCurrentOrder={this.askCurrentOrder} />
       : "Loading...";
 
     return (

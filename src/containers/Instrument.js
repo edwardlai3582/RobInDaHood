@@ -192,6 +192,7 @@ class Instrument extends Component {
           instruments={instruments}
           addMoreHistoricalsOrder={this.addMoreHistoricalsOrder}
           askCurrentOrder={this.askOwnCurrentOrder}
+          forInstrument={true}
         />
       </SectionWrapper>
     )

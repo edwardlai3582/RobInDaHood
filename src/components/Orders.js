@@ -25,7 +25,8 @@ class Orders extends Component {
     currentOrderFailedREason: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     addMoreHistoricalsOrder: PropTypes.func.isRequired,
-    askCurrentOrder: PropTypes.func.isRequired
+    askCurrentOrder: PropTypes.func.isRequired,
+    forInstrument: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -43,13 +44,15 @@ class Orders extends Component {
   }
 
   render() {
-    const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments, addMoreHistoricalsOrder } = this.props
+    const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, forInstrument, instruments, addMoreHistoricalsOrder } = this.props
+
+
 
     let recentOrders = historicalsOrders.map((order, i)=>{
       return (
         <div key={i} className="orderWrapper" onClick={()=> this.openModalAndAskCurrentOrder(order.id)} >
           <div>
-            {instruments[order.instrument].symbol+": "+capFirst(order.type)+" "+capFirst(order.side)}
+            {((forInstrument)? "" : instruments[order.instrument].symbol+": ")+capFirst(order.type)+" "+capFirst(order.side)}
             <div className="orderHisDate">
               {printDate(order.updated_at)}
             </div>
