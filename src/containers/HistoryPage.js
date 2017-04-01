@@ -5,21 +5,10 @@ import {
          askHistoricalsOrders, askCurrentOrder
        } from '../actions'
 import SectionWrapper from '../components/SectionWrapper'
-import OrderDetail from '../components/OrderDetail'
-import { capFirst, printDate } from '../utils'
+import Orders from '../components/Orders'
 import '../styles/HistoryPage.css'
 
-const customStyles = {
-  content : {
-    top                   : '50px',
-    backgroundColor       : 'black',
-    textAlign             : 'center',
-    padding               : '0px',
-    border                : '0px solid black',
-    overflowY             : 'auto'
-  },
-  overlay :{ zIndex: 999 }
-};
+
 
 class HistoryPage extends Component {
   static propTypes = {
@@ -31,11 +20,6 @@ class HistoryPage extends Component {
     instruments: PropTypes.object.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { modalIsOpen: false };
-  }
-
   componentDidMount(){
     this.props.dispatch(askHistoricalsOrders());
   }
@@ -44,37 +28,15 @@ class HistoryPage extends Component {
     this.props.dispatch(askHistoricalsOrders(this.props.historicalsOrdersNextLink))
   }
 
-  openModalAndAskCurrentOrder = (orderId) => {
+  askCurrentOrder = (orderId) => {
     this.props.dispatch(askCurrentOrder(orderId));
-    this.setState({ modalIsOpen: true });
-  }
-
-  closeModal = () => {
-    this.setState({ modalIsOpen: false });
-  }
-
-  afterOpenModal = () => {
-
   }
 
   render() {
-    const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments } = this.props
-    let recentOrders = historicalsOrders.map((order, i)=>{
-      return (
-        <div key={i} className="orderWrapper" onClick={()=> this.openModalAndAskCurrentOrder(order.id)} >
-          <div>
-            {instruments[order.instrument].symbol+": "+capFirst(order.type)+" "+capFirst(order.side)}
-            <div className="orderHisDate">
-              {printDate(order.updated_at)}
-            </div>
-          </div>
-          <div>
-            {(order.state === "filled")?
-              "$"+(Number(order.quantity) * Number(order.average_price)).toFixed(2) : capFirst(order.state)}
-          </div>
-        </div>
-      )
-    })
+    const props = { ...this.props };
+    const historicalsOrdersBlock = ( props.historicalsOrders )?
+      <Orders {...props} addMoreHistoricalsOrder={this.addMoreHistoricalsOrder} askCurrentOrder={this.askCurrentOrder} />
+      : "Loading...";
 
     return (
       <div className="instrumentWrapper">
@@ -86,36 +48,15 @@ class HistoryPage extends Component {
         </header>
 
         <SectionWrapper SectionTitle={"Recent Orders"}>
-          {recentOrders}
-          {(historicalsOrdersNextLink === "")? "":
-            (<div className="orderMoreButtonWrapper">
-              <button onClick={this.addMoreHistoricalsOrder} className="orderMoreButton">
-                More
-              </button>
-            </div>)}
+          { historicalsOrdersBlock }
         </SectionWrapper>
 
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Order Modal"
-        >
-          <OrderDetail currentOrder={currentOrder}
-                       isAskingCurrentOrder={isAskingCurrentOrder}
-                       currentOrderFailedREason={currentOrderFailedREason}
-                       instrument={instruments[currentOrder.instrument] || {}}
-          />
-        </Modal>
+
       </div>
     )
   }
 }
-/*
 
-
-*/
 const mapStateToProps = state => {
   const { ordersReducer, instrumentsReducer } = state
   const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason } = ordersReducer || {
