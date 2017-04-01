@@ -24,7 +24,8 @@ class Orders extends Component {
     currentOrder: PropTypes.object.isRequired,
     currentOrderFailedREason: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
-    addMoreHistoricalsOrder: PropTypes.func.isRequired
+    addMoreHistoricalsOrder: PropTypes.func.isRequired,
+    askCurrentOrder: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -62,8 +63,10 @@ class Orders extends Component {
     })
 
     return (
-      <div>
-        {recentOrders}
+      <div className="OrdersWrapper" >
+        <div className="recentOrdersWrapper">
+          {recentOrders}
+        </div>
         {(historicalsOrdersNextLink === "")? "":
           (<div className="orderMoreButtonWrapper">
             <button onClick={addMoreHistoricalsOrder} className="orderMoreButton">

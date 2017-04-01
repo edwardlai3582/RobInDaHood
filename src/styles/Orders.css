@@ -11,7 +11,7 @@
   background-color: var(--main-color);
 }
 
-.orderWrapper:last-child {
+.recentOrdersWrapper > .orderWrapper:last-child {
     border-bottom: none;
 }
 

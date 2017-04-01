@@ -15,6 +15,7 @@ import Position from '../components/Position'
 import AddButton from '../components/AddButton'
 import RemoveButton from '../components/RemoveButton'
 import SectionWrapper from '../components/SectionWrapper'
+import Orders from '../components/Orders'
 import '../styles/Instrument.css'
 
 class Instrument extends Component {
@@ -30,7 +31,8 @@ class Instrument extends Component {
     positions: PropTypes.array.isRequired,
     eachPosition: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    watchlists: PropTypes.array.isRequired
+    watchlists: PropTypes.array.isRequired,
+    token: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -43,13 +45,82 @@ class Instrument extends Component {
         interval: "5minute",
         bounds: "trading",
         selectedButtonName: "1D"
-      }
+      },
+      ownHistoricalsOrders: [],
+      ownHistoricalsOrdersNextLink: "",
+      isAskingOwnCurrentOrder: false,
+      OwncurrentOrder: {},
+      OwncurrentOrderFailedREason: ""
     };
+  }
+
+  askOwnHistoricalsOrders = (...theArgs) => {
+    let link = (theArgs.length === 0)? `https://api.robinhood.com/orders/?instrument=${this.props.instrument}` : theArgs[0];
+
+    return fetch(link, {
+      method: 'GET',
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Authorization': this.props.token
+      })
+    })
+    .then(response => response.json())
+    .then(jsonResult => {
+      if(theArgs.length === 0){
+        //console.log("orders from instrument");
+        //console.log(jsonResult)
+        this.setState({
+          ownHistoricalsOrders: jsonResult.results,
+          ownHistoricalsOrdersNextLink: (jsonResult.next)? jsonResult.next : ""
+        });
+      }
+      else {
+        //console.log("more order histories from instrument!")
+        this.setState({
+          ownHistoricalsOrders: this.state.ownHistoricalsOrders.concat(jsonResult.results),
+          ownHistoricalsOrdersNextLink: (jsonResult.next)? jsonResult.next : ""
+        });
+      }
+    })
+    .catch(function(reason) {
+      console.log(reason);
+    });
+  }
+
+  askOwnCurrentOrder = (orderId) =>  {
+    this.setState({ isAskingOwnCurrentOrder: true, OwncurrentOrderFailedREason: ""});
+    return fetch(`https://api.robinhood.com/orders/${orderId}/`, {
+      method: 'GET',
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Authorization': this.props.token
+      })
+    })
+    .then(response => response.json())
+    .then(jsonResult => {
+      if(jsonResult.deatil){
+        //console.log(jsonResult.deatil);
+        this.setState({isAskingOwnCurrentOrder: false, OwncurrentOrderFailedREason: jsonResult.deatil, OwncurrentOrder:{}});
+      }
+      else{
+        //console.log(jsonResult)
+        this.setState({isAskingOwnCurrentOrder: false, OwncurrentOrder: jsonResult});
+      }
+    })
+    .catch(function(reason) {
+      console.log(reason);
+      this.setState({isAskingOwnCurrentOrder: false, OwncurrentOrderFailedREason: reason, OwncurrentOrder:{}});
+    });
+  }
+
+  addMoreHistoricalsOrder = () => {
+    this.askOwnHistoricalsOrders(this.state.ownHistoricalsOrdersNextLink)
   }
 
   componentDidMount(){
     const { symbol, instrument, positions, watchlists, dispatch } = this.props;
     const { span, interval, bounds } = this.state.quotes;
+    this.askOwnHistoricalsOrders();
     dispatch(askFundamental(symbol));
     dispatch(askNews(symbol));
     dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
@@ -61,7 +132,6 @@ class Instrument extends Component {
         break;
       }
     }
-
     for(let i=0; i< watchlists.length; i++){
       if(watchlists[i].instrument === instrument){
         this.setState({isInWatchLists:true});
@@ -98,12 +168,28 @@ class Instrument extends Component {
   render() {
     const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, quotes, eachPosition } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
+    const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
+            isAskingOwnCurrentOrder, OwncurrentOrder, OwncurrentOrderFailedREason } = this.state;
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
     let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])?
       (<Quotes historicals={historicalsQuotes[symbol+span+interval+bounds].historicals}
                selectedButtonName={selectedButtonName}
       />): <DummyQuotes />;
+    let ordersBlock = (ownHistoricalsOrders.length === 0)? "" : (
+      <SectionWrapper SectionTitle={"Orders"}>
+        <Orders
+          historicalsOrders={ownHistoricalsOrders}
+          historicalsOrdersNextLink={ownHistoricalsOrdersNextLink}
+          isAskingCurrentOrder={isAskingOwnCurrentOrder}
+          currentOrder={OwncurrentOrder}
+          currentOrderFailedREason={OwncurrentOrderFailedREason}
+          instruments={instruments}
+          addMoreHistoricalsOrder={this.addMoreHistoricalsOrder}
+          askCurrentOrder={this.askOwnCurrentOrder}
+        />
+      </SectionWrapper>
+    )
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
     let positionBlock = "";
 
@@ -155,6 +241,8 @@ class Instrument extends Component {
           {statisticsBlock}
         </SectionWrapper>
 
+        { ordersBlock }
+
         <SectionWrapper SectionTitle={"About"}>
           {descriptionBlock}
         </SectionWrapper>
@@ -164,14 +252,16 @@ class Instrument extends Component {
 }
 
 const mapStateToProps = state => {
-  const { instrumentsReducer, fundamentalsReducer, newsReducer, quotesReducer, positionsReducer, watchlistsReducer } = state
+  const { instrumentsReducer, fundamentalsReducer, newsReducer, quotesReducer, positionsReducer, watchlistsReducer, tokenReducer } = state
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
   const { newsAll } = newsReducer || { newsAll: {}}
   const { historicalsQuotes, quotes } = quotesReducer || { historicalsQuotes: {}, quotes:{}}
   const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
-  return { instruments, fundamentals, newsAll, historicalsQuotes, quotes, positions, eachPosition, watchlists }
+  const { token } = tokenReducer || { token:"" }
+
+  return { instruments, fundamentals, newsAll, historicalsQuotes, quotes, positions, eachPosition, watchlists, token }
 }
 
 export default connect(mapStateToProps)(Instrument)

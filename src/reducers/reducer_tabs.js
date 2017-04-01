@@ -2,8 +2,10 @@ import {
   ADD_TAB, DELETE_TAB, REORDER_TAB, SELECT_TAB
 } from '../actions'
 
+const NOTABKEY = "noTAbKey"
+
 const tabsReducer = (state = {
-  selectedKey: "noTAbKey",
+  selectedKey: NOTABKEY,
   keys: [],
   tabs: {}
 }, action) => {
@@ -20,7 +22,7 @@ const tabsReducer = (state = {
     case DELETE_TAB:
       let newTabs = Object.assign({}, state.tabs);
       delete newTabs[action.deletedKey]
-      let realKey = (action.currentKeys.length===0)? "noTAbKey" : state.selectedKey;
+      let realKey = (action.currentKeys.length===0)? NOTABKEY : state.selectedKey;
       return {
         ...state,
         selectedKey: realKey,
@@ -28,7 +30,7 @@ const tabsReducer = (state = {
         tabs: newTabs
       }
     case SELECT_TAB:
-      let newSelectedKey = action.currentKey || "noTAbKey";
+      let newSelectedKey = action.currentKey || NOTABKEY;
       return {
         ...state,
         selectedKey: newSelectedKey

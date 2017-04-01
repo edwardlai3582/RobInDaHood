@@ -46,10 +46,14 @@ class DashboardPage extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
+    const { dispatch, keys } = this.props
     dispatch(askWatchlists());
     dispatch(askPositions());
     dispatch(askPositionsWithZero());
+    //if no tabs, show portfolio page
+    if(keys.length === 0){
+      this.handleaddNonStockTab("portfolio")
+    }
   }
 
   componentWillReceiveProps(nextProps) {
