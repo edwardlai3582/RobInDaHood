@@ -17,6 +17,7 @@ class HistoryPage extends Component {
     currentOrder: PropTypes.object.isRequired,
     currentOrderFailedREason: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
+    isCurrent: PropTypes.bool.isRequired
   }
 
   componentDidMount(){
@@ -33,6 +34,10 @@ class HistoryPage extends Component {
 
   render() {
     const props = { ...this.props };
+
+    //show null if not cuttent page
+    if(!this.props.isCurrent){ return null; }
+
     const historicalsOrdersBlock = ( props.historicalsOrders )?
       <Orders {...props} addMoreHistoricalsOrder={this.addMoreHistoricalsOrder} askCurrentOrder={this.askCurrentOrder} />
       : "Loading...";

@@ -67,7 +67,7 @@ class Orders extends Component {
         <div className="recentOrdersWrapper">
           {recentOrders}
         </div>
-        {(historicalsOrdersNextLink === "")? "":
+        {(historicalsOrdersNextLink === "")? null:
           (<div className="orderMoreButtonWrapper">
             <button onClick={addMoreHistoricalsOrder} className="orderMoreButton">
               More

@@ -55,7 +55,7 @@ class LeftPanelModule extends Component {
                className={open? "moduleArrow open": "moduleArrow close"} />
           {this.props.moduleName}
         </div>
-        {open? data : ""}
+        {open? data : null}
       </div>
     )
   }

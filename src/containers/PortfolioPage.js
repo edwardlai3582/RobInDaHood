@@ -11,7 +11,8 @@ import '../styles/PortfolioPage.css'
 class PortfolioPage extends Component {
   static propTypes = {
     historicalsPortfolios: PropTypes.object.isRequired,
-    portfolios: PropTypes.object.isRequired
+    portfolios: PropTypes.object.isRequired,
+    isCurrent: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -40,6 +41,9 @@ class PortfolioPage extends Component {
   render() {
     const { historicalsPortfolios, portfolios } = this.props
     const { span, interval, selectedButtonName } = this.state.quotes;
+
+    //show null if not cuttent page
+    if(!this.props.isCurrent){ return null; }
 
     let equity = ""
     if(portfolios.extended_hours_equity){

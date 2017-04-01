@@ -32,7 +32,8 @@ class Instrument extends Component {
     eachPosition: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     watchlists: PropTypes.array.isRequired,
-    token: PropTypes.string.isRequired
+    token: PropTypes.string.isRequired,
+    isCurrent: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -170,13 +171,17 @@ class Instrument extends Component {
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
             isAskingOwnCurrentOrder, OwncurrentOrder, OwncurrentOrderFailedREason } = this.state;
+
+    //show null if not cuttent page
+    if(!this.props.isCurrent){ return null; }
+
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
     let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])?
       (<Quotes historicals={historicalsQuotes[symbol+span+interval+bounds].historicals}
                selectedButtonName={selectedButtonName}
       />): <DummyQuotes />;
-    let ordersBlock = (ownHistoricalsOrders.length === 0)? "" : (
+    let ordersBlock = (ownHistoricalsOrders.length === 0)? null : (
       <SectionWrapper SectionTitle={"Orders"}>
         <Orders
           historicalsOrders={ownHistoricalsOrders}
@@ -191,7 +196,7 @@ class Instrument extends Component {
       </SectionWrapper>
     )
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
-    let positionBlock = "";
+    let positionBlock = null;
 
     //need to change
     if(type === "position"){
@@ -206,7 +211,7 @@ class Instrument extends Component {
             <h1 className="instrumentH1">{symbol}</h1>
             <h2 className="instrumentH2">{instruments[instrument].name}</h2>
           </div>
-          {(this.state.isInPositions)?"":(this.state.isInWatchLists)?<RemoveButton cb={this.removeFromWatchlists}/>:<AddButton cb={this.addToWatchlists}/>}
+          {(this.state.isInPositions)?null:(this.state.isInWatchLists)?<RemoveButton cb={this.removeFromWatchlists}/>:<AddButton cb={this.addToWatchlists}/>}
         </header>
 
         <SectionWrapper SectionTitle={""}>
@@ -231,7 +236,7 @@ class Instrument extends Component {
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}
           </SectionWrapper>
-        :""}
+        :null}
 
         <SectionWrapper SectionTitle={"Recent News"}>
           {newsBlock}
