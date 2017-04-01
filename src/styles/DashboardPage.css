@@ -1,5 +1,6 @@
 .leftPanelDiv {
   text-align: left;
+  background-color: black;
 }
 
 .leftPanelSearch {
@@ -9,9 +10,9 @@
 }
 
 .leftPanelRest {
-  padding: 5px 0 10px;
+  padding: 0px 0 10px;
   overflow-y: auto;
-  height: calc(100vh - 84px);
+  height: calc(100vh - 81px);
 }
 
 .leftSingleDiv{
@@ -26,7 +27,7 @@
   width: 96%;
   left: 2%;
   height: 30px;
-  border: 3px solid black;
+  border: 3px solid white;
   background-color: white;
   border-radius: 5px;
   box-sizing: border-box;

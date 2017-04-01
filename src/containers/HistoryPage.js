@@ -24,6 +24,7 @@ const customStyles = {
 class HistoryPage extends Component {
   static propTypes = {
     historicalsOrders: PropTypes.array.isRequired,
+    historicalsOrdersNextLink: PropTypes.string.isRequired,
     isAskingCurrentOrder: PropTypes.bool.isRequired,
     currentOrder: PropTypes.object.isRequired,
     currentOrderFailedREason: PropTypes.string.isRequired,
@@ -37,6 +38,10 @@ class HistoryPage extends Component {
 
   componentDidMount(){
     this.props.dispatch(askHistoricalsOrders());
+  }
+
+  addMoreHistoricalsOrder = () => {
+    this.props.dispatch(askHistoricalsOrders(this.props.historicalsOrdersNextLink))
   }
 
   openModalAndAskCurrentOrder = (orderId) => {
@@ -53,7 +58,7 @@ class HistoryPage extends Component {
   }
 
   render() {
-    const { historicalsOrders, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments } = this.props
+    const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments } = this.props
     let recentOrders = historicalsOrders.map((order, i)=>{
       return (
         <div key={i} className="orderWrapper" onClick={()=> this.openModalAndAskCurrentOrder(order.id)} >
@@ -82,6 +87,12 @@ class HistoryPage extends Component {
 
         <SectionWrapper SectionTitle={"Recent Orders"}>
           {recentOrders}
+          {(historicalsOrdersNextLink === "")? "":
+            (<div className="orderMoreButtonWrapper">
+              <button onClick={this.addMoreHistoricalsOrder} className="orderMoreButton">
+                More
+              </button>
+            </div>)}
         </SectionWrapper>
 
         <Modal
@@ -107,15 +118,16 @@ class HistoryPage extends Component {
 */
 const mapStateToProps = state => {
   const { ordersReducer, instrumentsReducer } = state
-  const { historicalsOrders, isAskingCurrentOrder, currentOrder, currentOrderFailedREason } = ordersReducer || {
+  const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason } = ordersReducer || {
     historicalsOrders: [],
+    historicalsOrdersNextLink: "",
     isAskingCurrentOrder: false,
     currentOrder: {},
     currentOrderFailedREason: ''
    }
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { historicalsOrders, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments }
+  return { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments }
 }
 
 export default connect(mapStateToProps)(HistoryPage)

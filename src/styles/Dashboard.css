@@ -35,7 +35,7 @@
   left: -4px;
   top: 0;
   bottom: 0;
-  width: 8px;
-  cursor: w-resize;
+  /*width: 8px;*/
+  /*cursor: w-resize;*/
   background-color: none;
 }
