@@ -22,4 +22,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] if no tab, show portfolio
 - [ ] https://github.com/mariotacke/redux-electron-ipc
 - [ ] https://github.com/jschr/electron-react-redux-boilerplate
-- [ ] cancel order button
+- [ ] if current tab => setInterval
+- [ ] cancel order button *****
