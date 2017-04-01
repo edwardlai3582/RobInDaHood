@@ -58,9 +58,16 @@ html, body {
 	font-size: 16px;
 	cursor: default;
 	overflow: hidden;
+	/*
 	background-image: url('./logo.png');
 	background-repeat: no-repeat;
 	background-position: calc(50% + 61px) calc(50% - 19px);
+	*/
+	background-image: url('./onTheMoon1920x1200.jpg');
+	background-repeat: no-repeat;
+	background-position: bottom;
+	background-size: cover;
+
 }
 
 :root {
@@ -75,7 +82,7 @@ html, body {
 
 .elephantprint {
 	position: relative;
-	background-image: url('./eprint_1024x1024.png');
+	/*background-image: url('./eprint_1024x1024.png');*/
 	background-size:cover;
 	width: 100vw;
 	height: 100vh;
