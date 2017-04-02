@@ -7,7 +7,8 @@ class OrderDetail extends Component {
     instrument: PropTypes.object.isRequired,
     currentOrder: PropTypes.object.isRequired,
     isAskingCurrentOrder: PropTypes.bool.isRequired,
-    currentOrderFailedREason: PropTypes.string.isRequired
+    currentOrderFailedREason: PropTypes.string.isRequired,
+    cancelCurrentOrderState: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -20,7 +21,7 @@ class OrderDetail extends Component {
   }
 
   render() {
-    let { currentOrder, isAskingCurrentOrder, currentOrderFailedREason, instrument } = this.props;
+    let { currentOrder, isAskingCurrentOrder, currentOrderFailedREason, cancelCurrentOrderState, instrument, cancelOrder } = this.props;
 
     if(isAskingCurrentOrder){
       return (<div className="orderDetailLoadingWrapper">Loading...</div>)
@@ -112,6 +113,19 @@ class OrderDetail extends Component {
                 </div>
               </li>
             </ul>
+
+            {(currentOrder.cancel)?
+              (cancelCurrentOrderState === "ing")?
+                (<div className="cancelOrderDiv">CANCELLING</div>)
+                :
+                (<button
+                  className="cancelOrderButton"
+                  onClick={()=>cancelOrder(currentOrder.cancel, currentOrder.id)}
+                >
+                  CANCEL ORDER
+                </button>)
+              : null
+            }
           </div>
         </div>
       )

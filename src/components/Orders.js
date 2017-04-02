@@ -26,6 +26,7 @@ class Orders extends Component {
     instruments: PropTypes.object.isRequired,
     addMoreHistoricalsOrder: PropTypes.func.isRequired,
     askCurrentOrder: PropTypes.func.isRequired,
+    cancelCurrentOrderState: PropTypes.string.isRequired,
     forInstrument: PropTypes.bool.isRequired
   }
 
@@ -44,7 +45,11 @@ class Orders extends Component {
   }
 
   render() {
-    const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, forInstrument, instruments, addMoreHistoricalsOrder } = this.props
+    const { historicalsOrders, historicalsOrdersNextLink,
+            isAskingCurrentOrder, currentOrder, currentOrderFailedREason,
+            forInstrument, instruments,
+            addMoreHistoricalsOrder, cancelOrder, cancelCurrentOrderState
+          } = this.props
 
 
 
@@ -83,10 +88,13 @@ class Orders extends Component {
           style={customStyles}
           contentLabel="Order Modal"
         >
-          <OrderDetail currentOrder={currentOrder}
-                       isAskingCurrentOrder={isAskingCurrentOrder}
-                       currentOrderFailedREason={currentOrderFailedREason}
-                       instrument={instruments[currentOrder.instrument] || {}}
+          <OrderDetail
+            currentOrder={currentOrder}
+            isAskingCurrentOrder={isAskingCurrentOrder}
+            currentOrderFailedREason={currentOrderFailedREason}
+            instrument={instruments[currentOrder.instrument] || {}}
+            cancelOrder={cancelOrder}
+            cancelCurrentOrderState={cancelCurrentOrderState}
           />
         </Modal>
       </div>

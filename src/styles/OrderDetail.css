@@ -58,3 +58,28 @@
   color: #BDBDBD;
   margin-bottom: 2px;
 }
+
+.cancelOrderButton {
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancelOrderButton:hover {
+  background-color: #D9524E;
+}
+
+.cancelOrderDiv {
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: #D9524E;
+  color: white;
+  font-weight: bold;
+}

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
-         askHistoricalsOrders, askCurrentOrder
+         askHistoricalsOrders, askCurrentOrder, cancelOrder
        } from '../actions'
 import SectionWrapper from '../components/SectionWrapper'
 import Orders from '../components/Orders'
@@ -16,6 +16,7 @@ class HistoryPage extends Component {
     isAskingCurrentOrder: PropTypes.bool.isRequired,
     currentOrder: PropTypes.object.isRequired,
     currentOrderFailedREason: PropTypes.string.isRequired,
+    cancelCurrentOrderState: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     isCurrent: PropTypes.bool.isRequired
   }
@@ -32,6 +33,10 @@ class HistoryPage extends Component {
     this.props.dispatch(askCurrentOrder(orderId));
   }
 
+  cancelOrder = (cancelLink, orderId) => {
+      this.props.dispatch(cancelOrder(cancelLink, orderId));
+  }
+
   render() {
     const props = { ...this.props };
 
@@ -39,7 +44,12 @@ class HistoryPage extends Component {
     if(!this.props.isCurrent){ return null; }
 
     const historicalsOrdersBlock = ( props.historicalsOrders )?
-      <Orders {...props} forInstrument={false} addMoreHistoricalsOrder={this.addMoreHistoricalsOrder} askCurrentOrder={this.askCurrentOrder} />
+      <Orders {...props}
+              forInstrument={ false }
+              addMoreHistoricalsOrder={ this.addMoreHistoricalsOrder }
+              askCurrentOrder={ this.askCurrentOrder }
+              cancelOrder={ this.cancelOrder }
+      />
       : "Loading...";
 
     return (
@@ -63,16 +73,17 @@ class HistoryPage extends Component {
 
 const mapStateToProps = state => {
   const { ordersReducer, instrumentsReducer } = state
-  const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason } = ordersReducer || {
+  const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, cancelCurrentOrderState  } = ordersReducer || {
     historicalsOrders: [],
     historicalsOrdersNextLink: "",
     isAskingCurrentOrder: false,
     currentOrder: {},
-    currentOrderFailedREason: ''
+    currentOrderFailedREason: '',
+    cancelCurrentOrderState: 'noteven'
    }
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, instruments }
+  return { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, cancelCurrentOrderState, instruments }
 }
 
 export default connect(mapStateToProps)(HistoryPage)
