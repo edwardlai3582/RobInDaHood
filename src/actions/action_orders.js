@@ -1,3 +1,5 @@
+import { askWatchlists } from './action_watchlists'
+import { askPositions }  from './action_positions'
 ////////////ORDERS
 export const ADD_HIS_ORDERS = 'ADD_HIS_ORDERS'
 export const REFILL_HIS_ORDERS = 'REFILL_HIS_ORDERS'
@@ -132,6 +134,9 @@ export const cancelOrder = (cancelLink, orderId) => (dispatch, getState) => {
       dispatch(cancelCurrentOrderSucceeded());
       dispatch(askCurrentOrder(orderId));
       dispatch(askHistoricalsOrders());
+      //reload watchlist & positions after order cancelled
+      dispatch(askWatchlists());
+      dispatch(askPositions());
     }
     else{
       console.log(jsonResult);
