@@ -7,7 +7,7 @@ class OrderDetail extends Component {
     instrument: PropTypes.object.isRequired,
     currentOrder: PropTypes.object.isRequired,
     isAskingCurrentOrder: PropTypes.bool.isRequired,
-    currentOrderFailedREason: PropTypes.string.isRequired,
+    currentOrderFailedReason: PropTypes.string.isRequired,
     cancelCurrentOrderState: PropTypes.string.isRequired
   }
 
@@ -21,13 +21,13 @@ class OrderDetail extends Component {
   }
 
   render() {
-    let { currentOrder, isAskingCurrentOrder, currentOrderFailedREason, cancelCurrentOrderState, instrument, cancelOrder } = this.props;
+    let { currentOrder, isAskingCurrentOrder, currentOrderFailedReason, cancelCurrentOrderState, instrument, cancelOrder } = this.props;
 
     if(isAskingCurrentOrder){
       return (<div className="orderDetailLoadingWrapper">Loading...</div>)
     }
-    else if (currentOrderFailedREason !== ""){
-      return (<div>{currentOrderFailedREason}</div>)
+    else if (currentOrderFailedReason !== ""){
+      return (<div>{currentOrderFailedReason}</div>)
     }
     else{
       let timeInForce = ""

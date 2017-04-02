@@ -15,7 +15,7 @@ class HistoryPage extends Component {
     historicalsOrdersNextLink: PropTypes.string.isRequired,
     isAskingCurrentOrder: PropTypes.bool.isRequired,
     currentOrder: PropTypes.object.isRequired,
-    currentOrderFailedREason: PropTypes.string.isRequired,
+    currentOrderFailedReason: PropTypes.string.isRequired,
     cancelCurrentOrderState: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     isCurrent: PropTypes.bool.isRequired
@@ -73,17 +73,17 @@ class HistoryPage extends Component {
 
 const mapStateToProps = state => {
   const { ordersReducer, instrumentsReducer } = state
-  const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, cancelCurrentOrderState  } = ordersReducer || {
+  const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedReason, cancelCurrentOrderState  } = ordersReducer || {
     historicalsOrders: [],
     historicalsOrdersNextLink: "",
     isAskingCurrentOrder: false,
     currentOrder: {},
-    currentOrderFailedREason: '',
+    currentOrderFailedReason: '',
     cancelCurrentOrderState: 'noteven'
    }
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedREason, cancelCurrentOrderState, instruments }
+  return { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedReason, cancelCurrentOrderState, instruments }
 }
 
 export default connect(mapStateToProps)(HistoryPage)

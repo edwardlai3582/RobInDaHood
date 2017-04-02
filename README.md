@@ -23,4 +23,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] https://github.com/jschr/electron-react-redux-boilerplate
 - [ ] if current tab => setInterval
 - [x] if not current tab => return null
-- [ ] cancel order button *****
+- [x] cancel order button *****
+- [ ] shouldCloseOnOverlayClick={false} when cancellin order

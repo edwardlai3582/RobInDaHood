@@ -22,7 +22,7 @@ class Orders extends Component {
     historicalsOrdersNextLink: PropTypes.string.isRequired,
     isAskingCurrentOrder: PropTypes.bool.isRequired,
     currentOrder: PropTypes.object.isRequired,
-    currentOrderFailedREason: PropTypes.string.isRequired,
+    currentOrderFailedReason: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     addMoreHistoricalsOrder: PropTypes.func.isRequired,
     askCurrentOrder: PropTypes.func.isRequired,
@@ -46,7 +46,7 @@ class Orders extends Component {
 
   render() {
     const { historicalsOrders, historicalsOrdersNextLink,
-            isAskingCurrentOrder, currentOrder, currentOrderFailedREason,
+            isAskingCurrentOrder, currentOrder, currentOrderFailedReason,
             forInstrument, instruments,
             addMoreHistoricalsOrder, cancelOrder, cancelCurrentOrderState
           } = this.props
@@ -91,7 +91,7 @@ class Orders extends Component {
           <OrderDetail
             currentOrder={currentOrder}
             isAskingCurrentOrder={isAskingCurrentOrder}
-            currentOrderFailedREason={currentOrderFailedREason}
+            currentOrderFailedReason={currentOrderFailedReason}
             instrument={instruments[currentOrder.instrument] || {}}
             cancelOrder={cancelOrder}
             cancelCurrentOrderState={cancelCurrentOrderState}

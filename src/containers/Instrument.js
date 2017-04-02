@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import {
          askFundamental,
          askNews,
-         askPosition,
+         askPosition, askPositions,
          askHistoricalsQuotes, askQuotes,
-         addToWatchlists, removeFromWatchlists
+         askWatchlists, addToWatchlists, removeFromWatchlists
        } from '../actions'
 import Statistics from '../components/Statistics'
 import News from '../components/News'
@@ -50,8 +50,11 @@ class Instrument extends Component {
       ownHistoricalsOrders: [],
       ownHistoricalsOrdersNextLink: "",
       isAskingOwnCurrentOrder: false,
-      OwncurrentOrder: {},
-      OwncurrentOrderFailedREason: ""
+      OwnCurrentOrder: {},
+      OwnCurrentOrderFailedReason: "",
+      //CancelCurrentOrderState: noteven, ing, failed, succeeded
+      cancelOwnCurrentOrderState: "noteven",
+      cancelOwnFailedReason: ""
     };
   }
 
@@ -89,7 +92,7 @@ class Instrument extends Component {
   }
 
   askOwnCurrentOrder = (orderId) =>  {
-    this.setState({ isAskingOwnCurrentOrder: true, OwncurrentOrderFailedREason: ""});
+    this.setState({ isAskingOwnCurrentOrder: true, OwnCurrentOrderFailedReason: ""});
     return fetch(`https://api.robinhood.com/orders/${orderId}/`, {
       method: 'GET',
       headers: new Headers({
@@ -101,21 +104,57 @@ class Instrument extends Component {
     .then(jsonResult => {
       if(jsonResult.deatil){
         //console.log(jsonResult.deatil);
-        this.setState({isAskingOwnCurrentOrder: false, OwncurrentOrderFailedREason: jsonResult.deatil, OwncurrentOrder:{}});
+        this.setState({isAskingOwnCurrentOrder: false, OwnCurrentOrderFailedReason: jsonResult.deatil, OwncurrentOrder:{}});
       }
       else{
         //console.log(jsonResult)
-        this.setState({isAskingOwnCurrentOrder: false, OwncurrentOrder: jsonResult});
+        this.setState({isAskingOwnCurrentOrder: false, OwnCurrentOrder: jsonResult});
       }
     })
     .catch(function(reason) {
       console.log(reason);
-      this.setState({isAskingOwnCurrentOrder: false, OwncurrentOrderFailedREason: reason, OwncurrentOrder:{}});
+      this.setState({isAskingOwnCurrentOrder: false, OwnCurrentOrderFailedReason: reason, OwnCurrentOrder:{}});
     });
   }
 
   addMoreHistoricalsOrder = () => {
     this.askOwnHistoricalsOrders(this.state.ownHistoricalsOrdersNextLink)
+  }
+
+  cancelOwnOrder = (cancelLink, orderId) => {
+    this.setState({cancelOwnCurrentOrderState:"ing", cancelOwnFailedReason: ""});
+
+    return fetch(cancelLink, {
+      method: 'POST',
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Authorization': this.props.token
+      })
+    })
+    .then(response => response.json())
+    .then(jsonResult => {
+      console.log(jsonResult);
+      if(Object.keys(jsonResult).length === 0){
+        //dispatch(cancelCurrentOrderSucceeded());
+        this.setState({cancelOwnCurrentOrderState:"succeeded"});
+        this.askOwnCurrentOrder(orderId);
+        this.askOwnHistoricalsOrders();
+
+        //reload watchlist & positions after order cancelled
+        this.props.dispatch(askWatchlists());
+        this.props.dispatch(askPositions());
+      }
+      else{
+        console.log(jsonResult);
+        this.setState({cancelOwnCurrentOrderState:"failed", cancelOwnFailedReason: JSON.stringify(jsonResult)});
+        this.askOwnCurrentOrder(orderId);
+      }
+    })
+    .catch(function(reason) {
+      console.log(reason);
+      this.setState({cancelOwnCurrentOrderState:"failed", cancelOwnFailedReason: reason});
+      this.askOwnCurrentOrder(orderId);
+    });
   }
 
   componentDidMount(){
@@ -170,7 +209,7 @@ class Instrument extends Component {
     const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, quotes, eachPosition } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
-            isAskingOwnCurrentOrder, OwncurrentOrder, OwncurrentOrderFailedREason } = this.state;
+            isAskingOwnCurrentOrder, OwnCurrentOrder, OwnCurrentOrderFailedReason } = this.state;
 
     //show null if not cuttent page
     if(!this.props.isCurrent){ return null; }
@@ -187,12 +226,14 @@ class Instrument extends Component {
           historicalsOrders={ownHistoricalsOrders}
           historicalsOrdersNextLink={ownHistoricalsOrdersNextLink}
           isAskingCurrentOrder={isAskingOwnCurrentOrder}
-          currentOrder={OwncurrentOrder}
-          currentOrderFailedREason={OwncurrentOrderFailedREason}
+          currentOrder={OwnCurrentOrder}
+          currentOrderFailedReason={OwnCurrentOrderFailedReason}
           instruments={instruments}
           addMoreHistoricalsOrder={this.addMoreHistoricalsOrder}
           askCurrentOrder={this.askOwnCurrentOrder}
           forInstrument={true}
+          cancelOrder={ this.cancelOwnOrder }
+          cancelCurrentOrderState={this.state.cancelOwnCurrentOrderState}
         />
       </SectionWrapper>
     )
