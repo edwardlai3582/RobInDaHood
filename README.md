@@ -13,7 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [x] z-index of modal and tabs
 - [x] window resize right part need to change
 - [ ] logout delete everything
-- [ ] http://recharts.org/#/en-US/api/ReferenceLine Previous day close
+- [x] http://recharts.org/#/en-US/api/ReferenceLine Previous day close
 - [ ] https://github.com/ameyms/react-animated-number
 - [ ] add change tab type(watchlist <-> position) function
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity
@@ -27,5 +27,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] shouldCloseOnOverlayClick={false} when cancellin order
 - [ ] push current data to chart's data
 - [ ] extended_hours order
-- [x] DAshboardPage's componentWillReceiveProps needs improvement *********
+- [x] DAshboardPage's componentWillReceiveProps remove to action
 - [ ] placeorder style

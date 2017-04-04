@@ -7,7 +7,7 @@ import '../styles/Quotes.css'
 class QuotesForPortfolios extends Component {
   static propTypes = {
     historicals: PropTypes.array.isRequired,
-    previous_close: PropTypes.string.isRequired,
+    previous_close: PropTypes.number.isRequired,
     selectedButtonName: PropTypes.string.isRequired
   }
 

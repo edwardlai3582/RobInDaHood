@@ -5,7 +5,6 @@ import { deleteToken,
          askAccount,
          askWatchlists,
          askPositions, askPositionsWithZero,
-         askInstrument,
          addTab, selectTab,
          resetPlaceOrderRelated
        } from '../actions'
@@ -61,25 +60,7 @@ class DashboardPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.watchlists.forEach((instrument)=>{
-      if(!this.props.instruments[instrument.instrument]){
-        this.props.dispatch(askInstrument(instrument.instrument));
-        console.log("ask for watchlists");
-      }
-    });
-    nextProps.positions.forEach((instrument)=>{
-      if(!this.props.instruments[instrument.instrument]){
-        this.props.dispatch(askInstrument(instrument.instrument));
-        console.log("ask for positions");
-      }
-    });
 
-    nextProps.positionsWithZero.forEach((instrument)=>{
-      if(!this.props.instruments[instrument.instrument]){
-        this.props.dispatch(askInstrument(instrument.instrument));
-        console.log("ask for positionsWithZero");
-      }
-    });
   }
 
   openModal = () => {

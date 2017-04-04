@@ -1,3 +1,4 @@
+import { askInstrument } from './action_instruments'
 ////////////POSITIONS
 export const ADD_POSITIONS = 'ADD_POSITIONS'
 export const ADD_POSITION = 'ADD_POSITION'
@@ -39,6 +40,12 @@ export const askPositions = () => (dispatch, getState) => {
     //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       dispatch(addPositions(jsonResult.results));
+      jsonResult.results.forEach((instrument)=>{
+        if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+          dispatch(askInstrument(instrument.instrument));
+          console.log("ask for positions");
+        }
+      });
     }
     else {
       //jsonResult[Object.keys(jsonResult)[0]][0])
@@ -99,6 +106,12 @@ export const askPositionsWithZero = () => (dispatch, getState) => {
     //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       dispatch(addPositionsWithZero(jsonResult.results));
+      jsonResult.results.forEach((instrument)=>{
+        if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+          dispatch(askInstrument(instrument.instrument));
+          console.log("ask for positionsWithZero");
+        }
+      });
     }
     else {
       //jsonResult[Object.keys(jsonResult)[0]][0])

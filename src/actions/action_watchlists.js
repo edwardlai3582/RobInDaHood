@@ -1,3 +1,4 @@
+import { askInstrument } from './action_instruments'
 ////////////WATCHLISTS
 export const ADD_WATCHLISTS = 'ADD_WATCHLISTS'
 export const ADD_WATCHLIST  = 'ADD_WATCHLIST'
@@ -44,6 +45,12 @@ export const askWatchlists = () => (dispatch, getState) => {
     //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       dispatch(addWatchlists(jsonResult.results));
+      jsonResult.results.forEach((instrument)=>{
+        if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+          dispatch(askInstrument(instrument.instrument));
+          console.log("ask for watchlists");
+        }
+      });
     }
     else {
       //jsonResult[Object.keys(jsonResult)[0]][0])
