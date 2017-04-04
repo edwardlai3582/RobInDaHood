@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import WithoutTimeTooltip   from './WithoutTimeTooltip'
 import WithTimeTooltip from './WithTimeTooltip'
 import '../styles/Quotes.css'
@@ -7,6 +7,7 @@ import '../styles/Quotes.css'
 class Quotes extends Component {
   static propTypes = {
     historicals: PropTypes.array.isRequired,
+    previous_close: PropTypes.string.isRequired,
     selectedButtonName: PropTypes.string.isRequired
   }
 
@@ -31,7 +32,7 @@ class Quotes extends Component {
   }
 
   render() {
-    const { selectedButtonName, historicals } = this.props;
+    const { selectedButtonName, historicals, previous_close } = this.props;
     let data = historicals;//this.props.quotes.historicals
     if(selectedButtonName === "1M"){
       data = data.slice(Math.max(data.length - 30))
@@ -53,6 +54,9 @@ class Quotes extends Component {
               <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px'}} content={<WithTimeTooltip/>}/>:
               <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px' }} content={<WithoutTimeTooltip/>}/>
             }
+            {(selectedButtonName==="1D")? (
+              <ReferenceLine y={Number(previous_close)} stroke="white" strokeDasharray="3 3" />
+            ):null}
           </LineChart>
         </ResponsiveContainer>
 

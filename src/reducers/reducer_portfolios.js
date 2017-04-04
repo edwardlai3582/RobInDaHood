@@ -21,6 +21,7 @@ const portfoliosReducer = (state = {
         //instruments: [],
       }
       case ADD_PORTFOLIOS:
+      console.log(action.portfolios)
         return {
           ...state,
           portfolios: action.portfolios

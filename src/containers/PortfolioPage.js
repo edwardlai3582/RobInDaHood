@@ -54,8 +54,10 @@ class PortfolioPage extends Component {
     }
 
     let quotesBlock = (historicalsPortfolios[span+interval])?
-      (<QuotesForPortfolios historicals={historicalsPortfolios[span+interval].equity_historicals}
-               selectedButtonName={selectedButtonName}
+      (<QuotesForPortfolios
+          historicals={historicalsPortfolios[span+interval].equity_historicals}
+          selectedButtonName={selectedButtonName}
+          previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
 
     return (

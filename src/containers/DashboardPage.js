@@ -61,21 +61,25 @@ class DashboardPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.watchlists !== this.props.watchlists){
-      nextProps.watchlists.forEach((instrument)=>{
+    nextProps.watchlists.forEach((instrument)=>{
+      if(!this.props.instruments[instrument.instrument]){
         this.props.dispatch(askInstrument(instrument.instrument));
-      });
-    }
-    if(nextProps.positions !== this.props.positions){
-      nextProps.positions.forEach((instrument)=>{
+        console.log("ask for watchlists");
+      }
+    });
+    nextProps.positions.forEach((instrument)=>{
+      if(!this.props.instruments[instrument.instrument]){
         this.props.dispatch(askInstrument(instrument.instrument));
-      });
-    }
-    if(nextProps.positionsWithZero !== this.props.positionsWithZero){
-      nextProps.positionsWithZero.forEach((instrument)=>{
+        console.log("ask for positions");
+      }
+    });
+
+    nextProps.positionsWithZero.forEach((instrument)=>{
+      if(!this.props.instruments[instrument.instrument]){
         this.props.dispatch(askInstrument(instrument.instrument));
-      });
-    }
+        console.log("ask for positionsWithZero");
+      }
+    });
   }
 
   openModal = () => {

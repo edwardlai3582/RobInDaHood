@@ -27,5 +27,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] shouldCloseOnOverlayClick={false} when cancellin order
 - [ ] push current data to chart's data
 - [ ] extended_hours order
-- [ ] DAshboardPage's componentWillReceiveProps needs improvement *********
+- [x] DAshboardPage's componentWillReceiveProps needs improvement *********
 - [ ] placeorder style

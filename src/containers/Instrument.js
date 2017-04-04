@@ -230,6 +230,7 @@ class Instrument extends Component {
     let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])?
       (<Quotes historicals={historicalsQuotes[symbol+span+interval+bounds].historicals}
                selectedButtonName={selectedButtonName}
+               previous_close={quotes[symbol].previous_close}
       />): <DummyQuotes />;
     let ordersBlock = (ownHistoricalsOrders.length === 0)? null : (
       <SectionWrapper SectionTitle={"Orders"}>

@@ -35,7 +35,7 @@ class PlaceOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderStage: "notyet", //"ing", "succeeded", "failed"
+      orderStage: "notyet", //"ing", "Succeeded", "Failed"
       modalIsOpen: false,
       shouldCloseOnOverlayClick: true,
       typeName: typeNames.MARKET,
@@ -378,16 +378,16 @@ class PlaceOrder extends Component {
               </section>
             </div>
           ):(orderStage==="ing")?(
-            <div>Ordering...</div>
+            <div className="orderingDiv">Ordering...</div>
           ):(
-            <div>
-              <div>{`Order ${orderStage}`}</div>
+            <div className="orderedDivWrapper">
+              <div className="orderedDiv">{`Order ${orderStage}`}</div>
               {(orderPlacedResult !== "succeeded")?(
-                <div>
+                <div className="orderedReasonDiv">
                   {orderPlacedResult}
                 </div>
               ):null}
-              <button onClick={this.closeModal}>CLOSE</button>
+              <button onClick={this.closeModal} className="orderedButton">CLOSE</button>
             </div>
           )}
 
