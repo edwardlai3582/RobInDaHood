@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react'
 import '../styles/SectionWrapper.css'
 
-const SectionWrapper = ({ SectionTitle, children }) => {
+const SectionWrapper = ({ SectionTitle, children, backgroundColor }) => {
+  if(!backgroundColor) backgroundColor = "teal"
+
   return (
     <section className="SectionWrapper">
       <h3 className="sectionH3">{SectionTitle}</h3>
-      <div className="sectionChildrenWrapper">{children}</div>
+      <div className="sectionChildrenWrapper" style={{ backgroundColor: backgroundColor }}>{children}</div>
     </section>
   )
 }

@@ -1,7 +1,8 @@
 import {
   REFILL_HIS_ORDERS, ADD_HIS_ORDERS, DELETE_HIS_ORDERS, DELETE_HIS__ORDERS_NEXT_LINK,
   ASKING_CURRENT_ORDER, ASK_CURRENT_ORDER_FAILED, ADD_CURRENT_ORDER,
-  CANCELLING_CURRENT_ORDER, CANCEL_CURRENT_ORDER_FAILED, CANCEL_CURRENT_ORDER_SUCCEEDED
+  CANCELLING_CURRENT_ORDER, CANCEL_CURRENT_ORDER_FAILED, CANCEL_CURRENT_ORDER_SUCCEEDED,
+  PLACING_ORDER, ORDER_PLACED, ORDER_DIDNT_PLACE, RESET_PLACE_ORDER_RELATED
 } from '../actions'
 
 const ordersReducer = (state = {
@@ -12,9 +13,35 @@ const ordersReducer = (state = {
   currentOrderFailedReason: "",
   //CancelCurrentOrderState: noteven, ing, failed, succeeded
   cancelCurrentOrderState: "noteven",
-  cancelFailedReason: ""
+  cancelFailedReason: "",
+  placingOrder: false,
+  orderPlacedResult: ""
 }, action) => {
   switch (action.type) {
+    case RESET_PLACE_ORDER_RELATED:
+      return {
+        ...state,
+        placingOrder: false,
+        orderPlacedResult: ""
+      }
+    case PLACING_ORDER:
+      return {
+        ...state,
+        placingOrder: true,
+        orderPlacedResult: ""
+      }
+    case ORDER_PLACED:
+      return {
+        ...state,
+        placingOrder: false,
+        orderPlacedResult: "succeeded"
+      }
+    case ORDER_DIDNT_PLACE:
+      return {
+        ...state,
+        placingOrder: false,
+        orderPlacedResult: action.reason
+      }
     case CANCELLING_CURRENT_ORDER:
       return {
         ...state,

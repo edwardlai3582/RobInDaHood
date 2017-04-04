@@ -5,7 +5,7 @@ import {
 const accountReducer = (state = {
   isAskingAccount: false,
   accountError: "",
-  account: undefined,
+  account: {},
   accountNumber: ""
 }, action) => {
   switch (action.type) {
@@ -26,9 +26,11 @@ const accountReducer = (state = {
         ...state,
         isAskingAccount: false,
         accountError: action.error,
-        account: undefined
+        account: {}
       }
     case ADD_ACCOUNT:
+      console.log("ACCOUNT INFO");
+      console.log(action.account);
       return {
         ...state,
         isAskingAccount: false,
@@ -38,7 +40,7 @@ const accountReducer = (state = {
     case DELETE_ACCOUNT:
       return {
         ...state,
-        account: undefined,
+        account: {},
         accountNumber: ""
       }
     default:

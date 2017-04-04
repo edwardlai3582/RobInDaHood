@@ -44,6 +44,16 @@ class Orders extends Component {
     this.setState({ modalIsOpen: true });
   }
 
+  typeName = (trigger, type) => {
+    let typeName = ""
+    if(trigger === "immediate" && type === "market") {typeName="Market"}
+    else if(trigger === "immediate" && type === "limit") {typeName="Limit"}
+    else if(trigger === "stop" && type === "market") {typeName="Stop Loss"}
+    else if(trigger === "stop" && type === "limit") {typeName="Stop Limit"}
+
+    return typeName;
+  }
+
   render() {
     const { historicalsOrders, historicalsOrdersNextLink,
             isAskingCurrentOrder, currentOrder, currentOrderFailedReason,
@@ -57,7 +67,7 @@ class Orders extends Component {
       return (
         <div key={i} className="orderWrapper" onClick={()=> this.openModalAndAskCurrentOrder(order.id)} >
           <div>
-            {((forInstrument)? "" : instruments[order.instrument].symbol+": ")+capFirst(order.type)+" "+capFirst(order.side)}
+            {((forInstrument)? "" : instruments[order.instrument].symbol+": ")+this.typeName(order.trigger, order.type)+" "+capFirst(order.side)}
             <div className="orderHisDate">
               {printDate(order.updated_at)}
             </div>

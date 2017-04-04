@@ -18,6 +18,7 @@ const instrumentsReducer = (state = {
         ...state
       }
     case ADD_INSTRUMENT:
+    console.log("ADD_INSTRUMENT");
       let newInstruments = Object.assign({}, state.instruments);
       newInstruments[action.instrument.url] = action.instrument;
       return {

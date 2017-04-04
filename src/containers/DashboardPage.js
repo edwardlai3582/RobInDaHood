@@ -2,10 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { deleteToken,
+         askAccount,
          askWatchlists,
          askPositions, askPositionsWithZero,
          askInstrument,
-         addTab, selectTab
+         addTab, selectTab,
+         resetPlaceOrderRelated
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
@@ -50,6 +52,8 @@ class DashboardPage extends Component {
     dispatch(askWatchlists());
     dispatch(askPositions());
     dispatch(askPositionsWithZero());
+    dispatch(askAccount());
+    dispatch(resetPlaceOrderRelated());
     //if no tabs, show portfolio page
     if(keys.length === 0){
       this.handleaddNonStockTab("portfolio")

@@ -11,6 +11,61 @@ export const CANCEL_CURRENT_ORDER_SUCCEEDED = 'CANCEL_CURRENT_ORDER_SUCCEEDED'
 export const ASK_CURRENT_ORDER_FAILED = 'ASK_CURRENT_ORDER_FAILED'
 export const ADD_CURRENT_ORDER = 'ADD_CURRENT_ORDER'
 export const DELETE_HIS__ORDERS_NEXT_LINK = 'DELETE_HIS__ORDERS_NEXT_LINK'
+export const PLACING_ORDER = 'PLACING_ORDER'
+export const ORDER_PLACED = 'ORDER_PLACED'
+export const ORDER_DIDNT_PLACE = 'ORDER_DIDNT_PLACE'
+
+export const RESET_PLACE_ORDER_RELATED = 'RESET_PLACE_ORDER_RELATED'
+
+export const resetPlaceOrderRelated = () => ({
+  type: RESET_PLACE_ORDER_RELATED
+})
+
+export const placingOrder = () => ({
+  type: PLACING_ORDER
+})
+
+export const orderPlaced = () => ({
+  type: ORDER_PLACED
+})
+
+export const orderDidntPlace = (reason) => ({
+  type: ORDER_DIDNT_PLACE,
+  reason
+})
+
+export const placeOrder = (order) => (dispatch, getState) => {
+  dispatch(placingOrder());
+
+  let form = new FormData();
+  Object.keys(order).forEach((key) => {
+    form.append(key, order[key]);
+  });
+
+  return fetch(`https://api.robinhood.com/orders/`, {
+    method: 'POST',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token,
+    }),
+    body: form
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    console.log(jsonResult);
+    if(jsonResult.url){
+      dispatch(orderPlaced());
+    }
+    else{
+      dispatch(orderDidntPlace(JSON.stringify(jsonResult)));
+    }
+  })
+  .catch(function(reason) {
+    console.log(reason);
+    dispatch(orderDidntPlace(reason));
+  });
+
+}
 
 export const refillHistoricalsOrders = (orders, next) => ({
   type: REFILL_HIS_ORDERS,

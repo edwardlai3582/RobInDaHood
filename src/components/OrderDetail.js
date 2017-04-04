@@ -16,10 +16,6 @@ class OrderDetail extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
     let { currentOrder, isAskingCurrentOrder, currentOrderFailedReason, cancelCurrentOrderState, instrument, cancelOrder } = this.props;
 
@@ -38,11 +34,17 @@ class OrderDetail extends Component {
       else if ( currentOrder.time_in_force === "opg" ){ timeInForce = "On the Open" }
       else { timeInForce = currentOrder.time_in_force }
 
+      let typeName = ""
+      if(currentOrder.trigger === "immediate" && currentOrder.type === "market") {typeName="Market"}
+      else if(currentOrder.trigger === "immediate" && currentOrder.type === "limit") {typeName="Limit"}
+      else if(currentOrder.trigger === "stop" && currentOrder.type === "market") {typeName="Stop Loss"}
+      else if(currentOrder.trigger === "stop" && currentOrder.type === "limit") {typeName="Stop Limit"}
+
       return (
         <div className="orderDetailWrapper" >
           <header>
             <h6>
-              {capFirst(currentOrder.type)+" "+capFirst(currentOrder.side)}
+                {`${typeName} ${capFirst(currentOrder.side)}`}
             </h6>
             <h2>
               {instrument.name}
@@ -71,9 +73,17 @@ class OrderDetail extends Component {
               <li>
                 <div className="orderDetailType" > Entered Price </div>
                 <div className="orderDetailValue">
-                  {capFirst(currentOrder.type)}
+                  {(currentOrder.type==="market")?"Market":`$${Number(currentOrder.price).toFixed(2)}`}
                 </div>
               </li>
+              {(currentOrder.stop_price)?(
+                <li>
+                  <div className="orderDetailType" > Stop Price </div>
+                  <div className="orderDetailValue">
+                    {`$${Number(currentOrder.stop_price).toFixed(2)}`}
+                  </div>
+                </li>
+              ):null}
               <li>
                 <div className="orderDetailType" > Entered Quantity </div>
                 <div className="orderDetailValue">
@@ -94,7 +104,7 @@ class OrderDetail extends Component {
                 <div className="orderDetailValue">
                   {(Number(currentOrder.cumulative_quantity) === 0)?
                     Number(currentOrder.cumulative_quantity)
-                    :Number(currentOrder.cumulative_quantity)+" shares at $"+Number(currentOrder.average_price)
+                    :Number(currentOrder.cumulative_quantity)+" shares at $"+Number(currentOrder.average_price).toFixed(2)
                   }
                 </div>
               </li>
@@ -102,14 +112,18 @@ class OrderDetail extends Component {
                 <li>
                   <div className="orderDetailType" > Settlement Date</div>
                   <div className="orderDetailValue">
-                    { printDateOnly(currentOrder.executions[currentOrder.executions.length-1].settlement_date) }
+                    { currentOrder.executions[currentOrder.executions.length-1].settlement_date }
                   </div>
                 </li>
               )}
               <li>
                 <div className="orderDetailType" > Total Notional</div>
                 <div className="orderDetailValue">
-                  {(currentOrder.state === "cancelled")? "Canceled" : "$"+(Number(currentOrder.cumulative_quantity)*Number(currentOrder.average_price)).toFixed(2)}
+                  {(currentOrder.state === "filled")? (
+                    "$"+(Number(currentOrder.cumulative_quantity)*Number(currentOrder.average_price)).toFixed(2)
+                  ): (
+                    capFirst(currentOrder.state)
+                  )}
                 </div>
               </li>
             </ul>

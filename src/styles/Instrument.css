@@ -54,3 +54,12 @@
 .selectedButton {
   background: #46e3c1;
 }
+
+.notTradeable {
+  width: 100%;
+  padding: 10px 0;
+  background-color: grey;
+  border-radius: 5px;
+  color: black;
+  text-align: center;
+}

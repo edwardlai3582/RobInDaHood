@@ -1,0 +1,132 @@
+.tradeButtonWrapper {
+  margin: 20px 0 5px 0;
+  width: 100%;
+  display: flex;
+  justify-content:space-around;
+}
+
+.tradeButton {
+  width: 45%;
+  margin: 0 2.5%;
+  padding: 10px 0;
+  background-color: white;
+  border-radius: 5px;
+  color: black;
+  text-align: center;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  flex: 1;
+}
+
+.tradeButton:hover {
+  background-color: #E0F7F1;
+}
+
+.placeOrderWrapper {
+
+}
+
+.placeOrderHeader {
+  background-color: var(--main-color);
+}
+
+.placeOrderHeader > h2 {
+  font-size: 1.8rem;
+  padding: 10px;
+  color: white;
+}
+
+.placeOrderHeader > h3 {
+  font-size: 1.4rem;
+  padding: 6px 10px;
+  font-weight: bold;
+  background-color: #A9F5EB;
+  color: black;
+}
+
+.placeOrderSection{
+  padding: 20px;
+}
+
+.orderOptionWrapper {
+  width: 100%;
+  display: flex;
+  align-items:center;
+  border-bottom: 1px solid var(--main-color);
+  padding: 5px 0;
+  margin-top: 10px;
+}
+
+.orderOptionName {
+  width: 35%;
+  margin-left: 5px;
+}
+
+.orderOption {
+  width: 65%;
+}
+
+.orderWarning {
+  margin-top: 3px;
+  color: red;
+}
+
+.green {
+  color: var(--main-color);
+  margin-top: 0;
+}
+
+.grey {
+  color: grey;
+  margin-top: 0;
+  border-bottom: 3px solid grey;
+}
+
+.resultWrapper {
+  width: 100%;
+  display: flex;
+  padding: 5px 0;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  align-items:center;
+}
+
+.placeOrderButtonsWrapper {
+  margin-top: 40px;
+  display: flex;
+  justify-content:space-between;
+}
+
+.placeOrderButton {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.placeOrderButton:hover {
+  background-color: #D8D8D8;
+}
+
+.cancel {
+  background-color: #FA5882;
+  color: white;
+}
+
+.cancel:hover {
+  background-color: #F78181;
+}
+
+.orderingDiv {
+  width: 100%;
+  color: black;
+  text-align: center;
+  padding-top: 50px;
+}

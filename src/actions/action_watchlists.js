@@ -35,7 +35,6 @@ export const askWatchlists = () => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/watchlists/Default/`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
