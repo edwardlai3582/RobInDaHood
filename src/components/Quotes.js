@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import WithoutTimeTooltip   from './WithoutTimeTooltip'
 import WithTimeTooltip from './WithTimeTooltip'
+import { dateDiffInDays } from '../utils'
 import '../styles/Quotes.css'
 
 class Quotes extends Component {
@@ -33,15 +34,28 @@ class Quotes extends Component {
 
   render() {
     const { selectedButtonName, historicals, previous_close } = this.props;
-    let data = historicals;//this.props.quotes.historicals
+    let data = [];
     if(selectedButtonName === "1M"){
-      data = data.slice(Math.max(data.length - 30))
+      historicals.forEach((eachData)=>{
+        if(dateDiffInDays(eachData.begins_at) <= 31){
+          data.push(eachData);
+        }
+      })
     }
-    if(selectedButtonName === "3M"){
-      data = data.slice(Math.max(data.length - 90))
+    else if(selectedButtonName === "3M"){
+      historicals.forEach((eachData)=>{
+        if(dateDiffInDays(eachData.begins_at) <= 92){
+          data.push(eachData);
+        }
+      })
+    }
+    else {
+      data = historicals;
     }
 
-    const strokeColor = (data[0].close_price < data[data.length-1].close_price)? '#00FF73' : '#F33900';
+    const strokeColor = (selectedButtonName==="1D")? (
+      (previous_close < data[data.length-1].close_price)? '#00FF73' : '#F33900'
+    ):(data[0].close_price < data[data.length-1].close_price)? '#00FF73' : '#F33900';
 
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >

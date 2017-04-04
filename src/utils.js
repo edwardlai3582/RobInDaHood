@@ -38,3 +38,16 @@ export const printDateOnly = (dateString) => {
 
   return `${newsDate.getMonth()+1}/${newsDate.getDate()}/${newsDate.getFullYear()}`;
 }
+
+
+// a and b are string
+export const dateDiffInDays = (a) => {
+  const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+  let aDate = new Date(a);
+  let bDate = new Date();
+  // Discard the time and time-zone information.
+  var utc1 = Date.UTC(aDate.getFullYear(), aDate.getMonth(), aDate.getDate());
+  var utc2 = Date.UTC(bDate.getFullYear(), bDate.getMonth(), bDate.getDate());
+
+  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}

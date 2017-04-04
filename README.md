@@ -28,4 +28,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] push current data to chart's data
 - [ ] extended_hours order
 - [x] DAshboardPage's componentWillReceiveProps remove to action
-- [ ] placeorder style
+- [x] 1m, 3m charts need to check date 
