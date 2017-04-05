@@ -59,7 +59,7 @@ class PlaceOrder extends Component {
     if(nextProps.placingOrder){
       this.setState({orderStage: "ing"});
     }
-    if(!nextProps.placingOrder && this.props.placingOrder && this.state.orderStage === "confirmPage"){
+    if(!nextProps.placingOrder && this.props.placingOrder && this.state.orderStage === "ing"){
       if(nextProps.orderPlacedResult === "succeeded"){
         this.setState({orderStage: "Succeeded"});
       }
