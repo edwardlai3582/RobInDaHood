@@ -35,7 +35,7 @@ class PlaceOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderStage: "notyet", //"ing", "Succeeded", "Failed"
+      orderStage: "notyet", //"ing", "confirmPage", "Succeeded", "Failed"
       modalIsOpen: false,
       shouldCloseOnOverlayClick: true,
       typeName: typeNames.MARKET,
@@ -59,7 +59,7 @@ class PlaceOrder extends Component {
     if(nextProps.placingOrder){
       this.setState({orderStage: "ing"});
     }
-    if(!nextProps.placingOrder && this.props.placingOrder){
+    if(!nextProps.placingOrder && this.props.placingOrder && this.state.orderStage === "confirmPage"){
       if(nextProps.orderPlacedResult === "succeeded"){
         this.setState({orderStage: "Succeeded"});
       }
@@ -151,8 +151,8 @@ class PlaceOrder extends Component {
   }
 
   handleOrder = () => {
-    const { typeName, quantity, price, stop_price, side, time_in_force, type, trigger } = this.state;
-    const { symbol, currentPrice, shares, cashCanUse, placeOrder, accountUrl, instrumentUrl } = this.props;
+    const { typeName, quantity, price, stop_price, side, type, trigger } = this.state;
+    const { currentPrice, shares, cashCanUse } = this.props;
     //check input==0
     if(quantity === 0) {
       this.setState({quantityWarning: "Need to be larger than 0."});
@@ -187,8 +187,18 @@ class PlaceOrder extends Component {
         this.setState({resultWarning: `You only have ${Number(shares)} shares to sell!`});
       }
     }
-    //request
-    //this.setState({shouldCloseOnOverlayClick:false;})
+
+    this.setState({orderStage: "confirmPage"});
+  }
+
+  backToNotYet = () => {
+    this.setState({orderStage: "notyet"});
+  }
+
+  confirmOrder = () => {
+    const { quantity, price, stop_price, side, time_in_force, type, trigger } = this.state;
+    const { symbol, currentPrice, placeOrder, accountUrl, instrumentUrl } = this.props;
+
     let orderObj = {};
     orderObj.account = accountUrl;
     orderObj.instrument = instrumentUrl;
@@ -377,7 +387,75 @@ class PlaceOrder extends Component {
 
               </section>
             </div>
-          ):(orderStage==="ing")?(
+          ):(orderStage==="confirmPage")?(
+            <div>
+              <header className="placeOrderHeader">
+                <h2> { symbol } </h2>
+                <h3> { side.toUpperCase() } </h3>
+              </header>
+
+              <section className="placeOrderSection">
+                <div className="orderOptionWrapper">
+                  <div className="orderOptionName"> Type </div>
+                  <div className="orderOption">
+                    { typeName }
+                  </div>
+                </div>
+
+                {(typeName !== typeNames.MARKET)? (
+                  <div className="orderOptionWrapper">
+                    <div className="orderOptionName">Time in Force</div>
+                    <div className="orderOption">
+                      {(time_in_force === GFD)?"Good for day":"Good till canceled"}
+                    </div>
+                  </div>
+                ) : null}
+
+                {(typeName === typeNames.MARKET)? (
+                  <div className="orderOptionWrapper">
+                    <div className="orderOptionName">Market Price</div>
+                    <div className="orderOption">
+                      { `$${Number(currentPrice).toFixed(2)}` }
+                    </div>
+                  </div>
+                ) : null}
+
+                {(trigger === STOP)? (
+                  <div className="orderOptionWrapper">
+                    <div className="orderOptionName">Stop Price</div>
+                    <div className="orderOption">
+                      {`$${stop_price}`}
+                    </div>
+                  </div>
+                ): null}
+
+                {(type === LIMIT)? (
+                  <div className="orderOptionWrapper">
+                    <div className="orderOptionName">Limit Price</div>
+                    <div className="orderOption">
+                      {`$${price}`}
+                    </div>
+                  </div>
+                ): null}
+
+                <div className="orderOptionWrapper">
+                  <div className="orderOptionName">Shares of {this.props.symbol}</div>
+                  <div className="orderOption">
+                    { quantity }
+                  </div>
+                </div>
+
+                { cashOrSharesBloack }
+                { resultBlock }
+
+                <div className="placeOrderButtonsWrapper">
+                  <button className="placeOrderButton cancel" onClick={this.backToNotYet}>CANCEL</button>
+                  <button className="placeOrderButton" onClick={this.confirmOrder}>CONFIRM</button>
+                </div>
+
+              </section>
+            </div>
+          ) : (orderStage==="ing")?(
             <div className="orderingDiv">Ordering...</div>
           ):(
             <div className="orderedDivWrapper">
