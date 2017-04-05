@@ -32,10 +32,13 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
     //parse string to number
     //open_price, close_price, high_price, low_price
     jsonResult.historicals.forEach((historical, index, theArray)=>{
-      theArray[index].open_price= Number(historical.open_price)
-      theArray[index].close_price= Number(historical.close_price)
-      theArray[index].high_price= Number(historical.high_price)
-      theArray[index].low_price= Number(historical.low_price)
+      theArray[index].open_price= Number(historical.open_price);
+      theArray[index].close_price= Number(historical.close_price);
+      theArray[index].high_price= Number(historical.high_price);
+      theArray[index].low_price= Number(historical.low_price);
+      //custom
+      theArray[index].not_reg_close_price = Number(historical.close_price);
+      theArray[index].reg_close_price= (historical.session !== "reg")? undefined : Number(historical.close_price);
     })
 
     dispatch(addHistoricalsQuotes(symbol, span+interval+bounds, jsonResult));
@@ -94,7 +97,7 @@ export const askMultipleQuotes = () => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     if(jsonResult.results){
       dispatch(addMultipleQuotes(jsonResult.results));
     }

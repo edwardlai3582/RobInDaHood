@@ -70,7 +70,7 @@ class PlaceOrder extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    //if(nextProps.shares === this.props.shares && nextState.modalIsOpen === this.state.modalIsOpen) return false;
+    if(nextState.modalIsOpen === false && this.state.modalIsOpen === false) return false;
     return true;
   }
 

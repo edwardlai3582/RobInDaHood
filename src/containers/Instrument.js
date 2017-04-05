@@ -21,6 +21,10 @@ import Orders from '../components/Orders'
 import PlaceOrder from '../components/PlaceOrder'
 import '../styles/Instrument.css'
 
+const isLater = (newDateStr, oldDateStr) => {
+    return new Date(newDateStr) > new Date(oldDateStr);
+}
+
 class Instrument extends Component {
   static propTypes = {
     instrument: PropTypes.string.isRequired,
@@ -44,6 +48,7 @@ class Instrument extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      twoMinutesInterval: undefined,
       isInPositions: false,
       isInWatchLists: false,
       quotes: {
@@ -83,6 +88,22 @@ class Instrument extends Component {
         this.setState({isInWatchLists:true});
         break;
       }
+    }
+
+    // store intervalId in the state so it can be accessed later:
+    let intervalTwo = setInterval(this.twoMinutesJobs, 120000);
+    this.setState({twoMinutesInterval: intervalTwo});
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.twoMinutesInterval);
+  }
+
+  twoMinutesJobs = () => {
+    const { symbol, dispatch } = this.props;
+    const { span, interval, bounds, selectedButtonName } = this.state.quotes;
+    if(selectedButtonName === "1D"){
+      dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
     }
   }
 
@@ -222,16 +243,63 @@ class Instrument extends Component {
     const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
             isAskingOwnCurrentOrder, OwnCurrentOrder, OwnCurrentOrderFailedReason } = this.state;
 
+
     //show null if not cuttent page
     if(!this.props.isCurrent){ return null; }
 
+    let historicals = [];
+    if(historicalsQuotes[symbol+span+interval+bounds]){
+      historicals = historicalsQuotes[symbol+span+interval+bounds].historicals;
+      if(selectedButtonName === "1D"){
+        if(historicals[historicals.length-1].add_by_me){
+          if(isLater(quotes[symbol].updated_at ,historicals[historicals.length-1].begins_at)){
+            console.log("push current quote!");
+            historicals.push({
+              "begins_at": quotes[symbol].updated_at,
+              "open_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "high_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "low_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "volume": 0,
+              "add_by_me": true,
+              "session": historicals[historicals.length-1].session,
+              "not_reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "interpolated": false
+            })
+          }
+        }
+        else{
+          if(isLater(quotes[symbol].updated_at ,historicals[historicals.length-1].begins_at)){
+            console.log("push current quote!");
+            historicals[historicals.length-1] = {
+              "begins_at": quotes[symbol].updated_at,
+              "open_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "high_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "low_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "volume": 0,
+              "add_by_me": true,
+              "session": historicals[historicals.length-1].session,
+              "not_reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "interpolated": false
+            };
+          }
+        }
+      }
+
+    }
+
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
+
     let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds] )?
-      (<Quotes historicals={historicalsQuotes[symbol+span+interval+bounds].historicals}
+      (<Quotes historicals={ historicals }
                selectedButtonName={selectedButtonName}
                previous_close={quotes[symbol].previous_close}
       />): <DummyQuotes />;
+
     let ordersBlock = (ownHistoricalsOrders.length === 0)? null : (
       <SectionWrapper SectionTitle={"Orders"}>
         <Orders
@@ -298,7 +366,7 @@ class Instrument extends Component {
                     onClick={() => this.changeHisQuotes("5year", "week", "regular", "5Y")}>5Y</button>
           </div>
 
-          {(quotes[symbol] && instruments[instrument].tradeable )?(
+          {(quotes[symbol] && instruments[instrument].tradeable && account && account.margin_balances)?(
             <PlaceOrder symbol={symbol}
                         shares={(eachPosition[instrument])? eachPosition[instrument].quantity : 0}
                         cashCanUse={account.margin_balances.unallocated_margin_cash}

@@ -32,9 +32,13 @@ const quotesReducer = (state = {
         ...state,
       }
     case ADD_MULTIPLE_QUOTES:
+      let tempQuotesObj = {};
+      action.quotesArray.forEach((quote)=>{
+        tempQuotesObj[quote.symbol] = quote;
+      })
       return {
         ...state,
-        quotes: Object.assign({}, state.quotes, action.quotesArray)
+        quotes: Object.assign({}, state.quotes, tempQuotesObj)
       }
     default:
       return state

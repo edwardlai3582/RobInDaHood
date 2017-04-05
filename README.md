@@ -25,7 +25,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [x] if not current tab => return null
 - [x] cancel order button *****
 - [x] shouldCloseOnOverlayClick={false} when cancellin order
-- [ ] push current data to chart's data
+- [x] push current data to chart's data (KINDA not really like it)
 - [ ] extended_hours order
 - [x] DAshboardPage's componentWillReceiveProps remove to action
 - [x] 1m, 3m charts need to check date

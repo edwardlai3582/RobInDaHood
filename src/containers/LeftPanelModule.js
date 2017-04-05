@@ -23,11 +23,18 @@ class LeftPanelModule extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    /*
+    for(let i=0; i< nextProps.moduleData.length; i++){
+      if(Number(nextProps.quotes[nextProps.moduleData[i].symbol].last_trade_price) !== Number(this.props.quotes[nextProps.moduleData[i].symbol].last_trade_price)){
+        console.log(nextProps.moduleData[i].symbol);
+      }
+    }
+    */
     return true;
   }
 
-  handleClick = event => {
-    this.props.callback(this.props.moduleData[event.target.id]);
+  handleClick = (id) => {
+    this.props.callback(this.props.moduleData[id]);
   }
 
   openClose = () => {
@@ -48,7 +55,7 @@ class LeftPanelModule extends Component {
           key={instrument.symbol}
           symbol={instrument.symbol}
           id={index}
-          onClick={this.handleClick}
+          onClick={()=>this.handleClick(index)}
           className={this.props.selectedKey === instrument.symbol? "moduleDiv selectedModuleDiv" : "moduleDiv"}
         >
 

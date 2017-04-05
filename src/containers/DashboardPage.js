@@ -46,7 +46,7 @@ class DashboardPage extends Component {
     super(props);
     this.state = {
       modalIsOpen: false,
-      twentySecondsInterval: undefined
+      fifteenSecondsInterval: undefined
     };
   }
 
@@ -95,6 +95,7 @@ class DashboardPage extends Component {
   logout = () => { this.props.dispatch(deleteToken()) }
 
   handleaddTab = (data) => {
+    console.log(data);
     const key = data.symbol;
 
     if(this.props.keys.indexOf(key) !== -1) {
