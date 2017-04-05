@@ -5,7 +5,7 @@ import {
          askNews,
          askInstrument,
          askPosition, askPositions,
-         askHistoricalsQuotes, askQuotes,
+         askHistoricalsQuotes, askQuote,
          askWatchlists, addToWatchlists, removeFromWatchlists,
          placeOrder
        } from '../actions'
@@ -70,7 +70,7 @@ class Instrument extends Component {
     dispatch(askFundamental(symbol));
     dispatch(askNews(symbol));
     dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
-    dispatch(askQuotes(symbol));
+    dispatch(askQuote(symbol));
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
         this.setState({isInPositions:true});
@@ -227,7 +227,7 @@ class Instrument extends Component {
 
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
-    let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds])?
+    let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds] )?
       (<Quotes historicals={historicalsQuotes[symbol+span+interval+bounds].historicals}
                selectedButtonName={selectedButtonName}
                previous_close={quotes[symbol].previous_close}

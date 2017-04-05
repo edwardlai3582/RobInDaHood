@@ -1,8 +1,10 @@
 import { askInstrument } from './action_instruments'
 ////////////POSITIONS
 export const ADD_POSITIONS = 'ADD_POSITIONS'
+export const ADD_MORE_POSITIONS = 'ADD_MORE_POSITIONS'
 export const ADD_POSITION = 'ADD_POSITION'
 export const ADD_POSITIONS_WITH_ZERO = 'ADD_POSITIONS_WITH_ZERO'
+export const ADD_MORE_POSITIONS_WITH_ZERO = 'ADD_MORE_POSITIONS_WITH_ZERO'
 export const DELETE_POSITIONS = 'DELETE_POSITIONS'
 export const ASKING_POSITIONS = 'ASKING_POSITIONS'
 export const ASKING_POSITIONS_FAILED = 'ASKING_POSITIONS_FAILED'
@@ -21,14 +23,20 @@ export const addPositions = positions => ({
   positions
 })
 
+export const addMorePositions = positions => ({
+  type: ADD_MORE_POSITIONS,
+  positions
+})
+
 export const deletePositions = () => ({
   type: DELETE_POSITIONS
 })
 
-export const askPositions = () => (dispatch, getState) => {
+export const askPositions = (...theArgs) => (dispatch, getState) => {
+  let link = (theArgs.length === 0)? `https://api.robinhood.com/positions/?nonzero=true` : theArgs[0];
   dispatch(askingPositions());
   //searcg non zero
-  return fetch(`https://api.robinhood.com/positions/?nonzero=true`, {
+  return fetch(link, {
     method: 'GET',
     headers: new Headers({
       'Accept': 'application/json',
@@ -39,13 +47,29 @@ export const askPositions = () => (dispatch, getState) => {
   .then(jsonResult => {
     //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
-      dispatch(addPositions(jsonResult.results));
-      jsonResult.results.forEach((instrument)=>{
-        if(!getState().instrumentsReducer.instruments[instrument.instrument]){
-          dispatch(askInstrument(instrument.instrument));
-          console.log("ask for positions");
-        }
-      });
+      if(theArgs.length === 0){
+        dispatch(addPositions(jsonResult.results));
+        jsonResult.results.forEach((instrument)=>{
+          if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+            dispatch(askInstrument(instrument.instrument));
+            console.log("ask for positions");
+          }
+        });
+      }
+      else {
+        console.log("more watchlists!")
+        dispatch(addMorePositions(jsonResult.results));
+        jsonResult.results.forEach((instrument)=>{
+          if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+            dispatch(askInstrument(instrument.instrument));
+            console.log("ask for positions");
+          }
+        });
+      }
+
+      if(jsonResult.next){
+        dispatch(askPositions(jsonResult.next));
+      }
     }
     else {
       //jsonResult[Object.keys(jsonResult)[0]][0])
@@ -91,10 +115,15 @@ export const addPositionsWithZero = positions => ({
   positions
 })
 
-export const askPositionsWithZero = () => (dispatch, getState) => {
+export const addMorePositionsWithZero = positions => ({
+  type: ADD_MORE_POSITIONS_WITH_ZERO,
+  positions
+})
 
+export const askPositionsWithZero = (...theArgs) => (dispatch, getState) => {
+  let link = (theArgs.length === 0)? "https://api.robinhood.com/positions/" : theArgs[0];
   //searcg non zero
-  return fetch(`https://api.robinhood.com/positions/`, {
+  return fetch(link, {
     method: 'GET',
     headers: new Headers({
       'Accept': 'application/json',
@@ -105,13 +134,29 @@ export const askPositionsWithZero = () => (dispatch, getState) => {
   .then(jsonResult => {
     //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
-      dispatch(addPositionsWithZero(jsonResult.results));
-      jsonResult.results.forEach((instrument)=>{
-        if(!getState().instrumentsReducer.instruments[instrument.instrument]){
-          dispatch(askInstrument(instrument.instrument));
-          console.log("ask for positionsWithZero");
-        }
-      });
+      if(theArgs.length === 0){
+        dispatch(addPositionsWithZero(jsonResult.results));
+        jsonResult.results.forEach((instrument)=>{
+          if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+            dispatch(askInstrument(instrument.instrument));
+            console.log("ask for positionsWithZero");
+          }
+        });
+      }
+      else {
+        console.log("more PositionsWithZero!")
+        dispatch(addMorePositionsWithZero(jsonResult.results));
+        jsonResult.results.forEach((instrument)=>{
+          if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+            dispatch(askInstrument(instrument.instrument));
+            console.log("ask for positionsWithZero");
+          }
+        });
+      }
+
+      if(jsonResult.next){
+        dispatch(askPositionsWithZero(jsonResult.next));
+      }
     }
     else {
       //jsonResult[Object.keys(jsonResult)[0]][0])

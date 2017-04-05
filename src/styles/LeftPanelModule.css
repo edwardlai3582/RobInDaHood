@@ -46,3 +46,15 @@
   background-color: var(--main-color);/*#016262;*/
   color: white;
 }
+
+.redDown {
+  color: #F35A2B;
+}
+
+.whiteNomove {
+  color: white;
+}
+
+.greenUp {
+  color: #00FF73;
+}

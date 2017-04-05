@@ -1,8 +1,9 @@
 ////////////QUOTES
 export const ADD_HIS_QUOTES = 'ADD_HIS_QUOTES'
 export const DELETE_HIS_QUOTES = 'DELETE_HIS_QUOTES'
-export const ADD_QUOTES = 'ADD_QUOTES'
-export const DELETE_QUOTES = 'DELETE_QUOTES'
+export const ADD_QUOTE = 'ADD_QUOTE'
+export const DELETE_QUOTE = 'DELETE_QUOTE'
+export const ADD_MULTIPLE_QUOTES = 'ADD_MULTIPLE_QUOTES'
 
 export const addHistoricalsQuotes = (symbol, hisType, quotes) => ({
   type: ADD_HIS_QUOTES,
@@ -21,7 +22,6 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
   return fetch(`https://api.robinhood.com/quotes/historicals/${symbol}/?span=${span}&interval=${interval}&bounds=${bounds}`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
@@ -45,23 +45,22 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
   });
 }
 
-export const addQuotes = (symbol, quotes) => ({
-  type: ADD_QUOTES,
+export const addQuote = (symbol, quote) => ({
+  type: ADD_QUOTE,
   symbol,
-  quotes
+  quote
 })
 
-export const deleteQuotes = (symbol) => ({
-  type: DELETE_QUOTES,
+export const deleteQuote = (symbol) => ({
+  type: DELETE_QUOTE,
   symbol
 })
 
-export const askQuotes = (symbol) => (dispatch, getState) => {
-  //dispatch(askingFundamental());
+export const askQuote = (symbol) => (dispatch, getState) => {
+
   return fetch(`https://api.robinhood.com/quotes/${symbol}/`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
@@ -69,7 +68,36 @@ export const askQuotes = (symbol) => (dispatch, getState) => {
   .then(response => response.json())
   .then(jsonResult => {
     //console.log(jsonResult);
-    dispatch(addQuotes(symbol, jsonResult));
+    dispatch(addQuote(symbol, jsonResult));
+  })
+  .catch(function(reason) {
+    console.log(reason);
+  });
+}
+
+export const addMultipleQuotes = (quotesArray) => ({
+  type: ADD_MULTIPLE_QUOTES,
+  quotesArray
+})
+
+export const askMultipleQuotes = () => (dispatch, getState) => {
+  let symbolArray = Object.keys(getState().instrumentsReducer.instruments).map((instrumentKey)=>{
+    return getState().instrumentsReducer.instruments[instrumentKey].symbol;
+  });
+
+  return fetch(`https://api.robinhood.com/quotes/?symbols=${symbolArray.join(',')}`, {
+    method: 'GET',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token
+    })
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    console.log(jsonResult);
+    if(jsonResult.results){
+      dispatch(addMultipleQuotes(jsonResult.results));
+    }
   })
   .catch(function(reason) {
     console.log(reason);

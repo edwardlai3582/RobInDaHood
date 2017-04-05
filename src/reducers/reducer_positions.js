@@ -1,6 +1,7 @@
 import {
-  ADD_POSITIONS, DELETE_POSITIONS, ASKING_POSITIONS, ASKING_POSITIONS_FAILED,
-  ADD_POSITIONS_WITH_ZERO,
+  ADD_POSITIONS, ADD_MORE_POSITIONS,
+  DELETE_POSITIONS, ASKING_POSITIONS, ASKING_POSITIONS_FAILED,
+  ADD_POSITIONS_WITH_ZERO, ADD_MORE_POSITIONS_WITH_ZERO,
   ADD_POSITION
 } from '../actions'
 
@@ -65,6 +66,12 @@ const positionsReducer = (state = {
         isAskingPositions: false,
         positions: action.positions,
       }
+    case ADD_MORE_POSITIONS:
+      return {
+        ...state,
+        isAskingPositions: false,
+        positions: state.positions.concat(action.positions)
+      }
     case DELETE_POSITIONS:
       return {
         ...state,
@@ -81,6 +88,11 @@ const positionsReducer = (state = {
       return {
         ...state,
         positionsWithZero: action.positions,
+      }
+    case ADD_MORE_POSITIONS_WITH_ZERO:
+      return {
+        ...state,
+        positionsWithZero: state.positionsWithZero.concat(action.positions)
       }
     default:
       return state

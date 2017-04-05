@@ -54,8 +54,8 @@ class Quotes extends Component {
     }
 
     const strokeColor = (selectedButtonName==="1D")? (
-      (previous_close < data[data.length-1].close_price)? '#00FF73' : '#F33900'
-    ):(data[0].close_price < data[data.length-1].close_price)? '#00FF73' : '#F33900';
+      (previous_close < data[data.length-1].close_price)? '#00FF73' : '#F35A2B'
+    ):(data[0].close_price < data[data.length-1].close_price)? '#00FF73' : '#F35A2B';
 
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >

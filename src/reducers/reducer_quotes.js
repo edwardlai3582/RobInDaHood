@@ -1,6 +1,7 @@
 import {
   ADD_HIS_QUOTES, DELETE_HIS_QUOTES,
-  ADD_QUOTES, DELETE_QUOTES
+  ADD_QUOTE, DELETE_QUOTE,
+  ADD_MULTIPLE_QUOTES
 } from '../actions'
 
 const quotesReducer = (state = {
@@ -18,20 +19,23 @@ const quotesReducer = (state = {
     case DELETE_HIS_QUOTES:
       return {
         ...state,
-        //instruments: [],
       }
-      case ADD_QUOTES:
-        let newQuotes = Object.assign({}, state.quotes);
-        newQuotes[action.symbol] = action.quotes;
-        return {
-          ...state,
-          quotes: newQuotes
-        }
-      case DELETE_QUOTES:
-        return {
-          ...state,
-          //instruments: [],
-        }
+    case ADD_QUOTE:
+      let newQuotes = Object.assign({}, state.quotes);
+      newQuotes[action.symbol] = action.quote;
+      return {
+        ...state,
+        quotes: newQuotes
+      }
+    case DELETE_QUOTE:
+      return {
+        ...state,
+      }
+    case ADD_MULTIPLE_QUOTES:
+      return {
+        ...state,
+        quotes: Object.assign({}, state.quotes, action.quotesArray)
+      }
     default:
       return state
   }

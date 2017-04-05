@@ -3,8 +3,6 @@ import {
 } from '../actions'
 
 const instrumentsReducer = (state = {
-  //isAskingWatchlists: false,
-  //error: "",
   instruments: {}
 }, action) => {
   switch (action.type) {

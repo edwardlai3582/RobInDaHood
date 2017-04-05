@@ -1,3 +1,4 @@
+import { askQuote } from './action_quotes'
 ////////////INSTRUMENTS
 export const ADD_INSTRUMENT = 'ADD_INSTRUMENT'
 export const DELETE_INSTRUMENT = 'DELETE_INSTRUMENT'
@@ -37,6 +38,7 @@ export const askInstrument = (instrument) => (dispatch, getState) => {
   .then(jsonResult => {
     //console.log(jsonResult);
     dispatch(addInstrument(jsonResult));
+    dispatch(askQuote(jsonResult.symbol));
   })
   .catch(function(reason) {
     console.log(reason);

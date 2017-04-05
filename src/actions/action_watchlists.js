@@ -1,6 +1,7 @@
 import { askInstrument } from './action_instruments'
 ////////////WATCHLISTS
 export const ADD_WATCHLISTS = 'ADD_WATCHLISTS'
+export const ADD_MORE_WATCHLISTS = 'ADD_MORE_WATCHLISTS'
 export const ADD_WATCHLIST  = 'ADD_WATCHLIST'
 export const DELETE_WATCHLISTS = 'DELETE_WATCHLISTS'
 export const REMOVE_FROM_WATCHLISTS = 'REMOVE_FROM_WATCHLISTS'
@@ -22,6 +23,11 @@ export const addWatchlists = watchlists => ({
   watchlists
 })
 
+export const addMoreWatchlists = watchlists => ({
+  type: ADD_MORE_WATCHLISTS,
+  watchlists
+})
+
 export const addWatchlist = watchlist => ({
   type: ADD_WATCHLIST,
   watchlist
@@ -31,9 +37,10 @@ export const deleteWatchlists = () => ({
   type: DELETE_WATCHLISTS
 })
 
-export const askWatchlists = () => (dispatch, getState) => {
+export const askWatchlists = (...theArgs) => (dispatch, getState) => {
+  let link = (theArgs.length === 0)? "https://api.robinhood.com/watchlists/Default/" : theArgs[0];
   dispatch(askingWatchlists());
-  return fetch(`https://api.robinhood.com/watchlists/Default/`, {
+  return fetch(link, {
     method: 'GET',
     headers: new Headers({
       'Accept': 'application/json',
@@ -44,13 +51,29 @@ export const askWatchlists = () => (dispatch, getState) => {
   .then(jsonResult => {
     //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
-      dispatch(addWatchlists(jsonResult.results));
-      jsonResult.results.forEach((instrument)=>{
-        if(!getState().instrumentsReducer.instruments[instrument.instrument]){
-          dispatch(askInstrument(instrument.instrument));
-          console.log("ask for watchlists");
-        }
-      });
+      if(theArgs.length === 0){
+        dispatch(addWatchlists(jsonResult.results));
+        jsonResult.results.forEach((instrument)=>{
+          if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+            dispatch(askInstrument(instrument.instrument));
+            console.log("ask for watchlists");
+          }
+        });
+      }
+      else {
+        console.log("more watchlists!")
+        dispatch(addMoreWatchlists(jsonResult.results));
+        jsonResult.results.forEach((instrument)=>{
+          if(!getState().instrumentsReducer.instruments[instrument.instrument]){
+            dispatch(askInstrument(instrument.instrument));
+            console.log("ask for watchlists");
+          }
+        });
+      }
+
+      if(jsonResult.next){
+        dispatch(askWatchlists(jsonResult.next));
+      }
     }
     else {
       //jsonResult[Object.keys(jsonResult)[0]][0])

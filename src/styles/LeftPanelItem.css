@@ -1,0 +1,14 @@
+.leftPanelItemWrapper {
+  display: flex;
+  justify-content:space-between;
+  align-items:baseline;
+}
+
+.symbolDiv {
+
+}
+
+.infoDiv {
+  margin-right: 5px;
+  font-size: 0.8rem;
+}

@@ -10,6 +10,7 @@ import newsReducer from './reducer_news'
 import quotesReducer from './reducer_quotes'
 import portfoliosReducer from './reducer_portfolios'
 import ordersReducer from './reducer_orders'
+import marketsReducer from './reducer_markets'
 import uiReducer from './reducer_ui'
 
 const rootReducer = combineReducers({
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   quotesReducer,
   portfoliosReducer,
   ordersReducer,
+  marketsReducer,
   uiReducer
 })
 

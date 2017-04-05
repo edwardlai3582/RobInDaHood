@@ -1,5 +1,5 @@
 import {
-  ADD_WATCHLISTS,
+  ADD_WATCHLISTS, ADD_MORE_WATCHLISTS,
   ADD_WATCHLIST,
   REMOVE_WATCHLIST,
   DELETE_WATCHLISTS,
@@ -31,6 +31,12 @@ const watchlistsReducer = (state = {
         ...state,
         isAskingWatchlists: false,
         watchlists: action.watchlists,
+      }
+    case ADD_MORE_WATCHLISTS:
+      return {
+        ...state,
+        isAskingWatchlists: false,
+        watchlists: state.watchlists.concat(action.watchlists)
       }
     case DELETE_WATCHLISTS:
       return {

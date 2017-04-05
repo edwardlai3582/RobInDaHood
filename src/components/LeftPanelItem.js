@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react'
+import '../styles/LeftPanelItem.css'
 
-const LeftPanelItem = ({ symbol, id, onClick, className }) => (
-  <div id={id} onClick={onClick} className={className} >
-    {symbol}
+const LeftPanelItem = ({ symbol, id, onClick, className, children }) => (
+  <div id={id} onClick={onClick} className={`leftPanelItemWrapper ${className}`} >
+    <div className="symbolDiv">{symbol}</div>
+    <div className="infoDiv">{children}</div>
   </div>
 )
 

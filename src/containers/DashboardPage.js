@@ -5,6 +5,7 @@ import { deleteToken,
          askAccount,
          askWatchlists,
          askPositions, askPositionsWithZero,
+         askMultipleQuotes,
          addTab, selectTab,
          resetPlaceOrderRelated
        } from '../actions'
@@ -43,7 +44,10 @@ class DashboardPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { modalIsOpen: false};
+    this.state = {
+      modalIsOpen: false,
+      twentySecondsInterval: undefined
+    };
   }
 
   componentDidMount() {
@@ -53,14 +57,24 @@ class DashboardPage extends Component {
     dispatch(askPositionsWithZero());
     dispatch(askAccount());
     dispatch(resetPlaceOrderRelated());
+
+    dispatch(askMultipleQuotes());
     //if no tabs, show portfolio page
     if(keys.length === 0){
       this.handleaddNonStockTab("portfolio")
     }
+
+    let intervalFifteen = setInterval(this.fifteenSecondsJobs, 15000);
+    // store intervalId in the state so it can be accessed later:
+    this.setState({fifteenSecondsInterval: intervalFifteen});
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillUnmount() {
+    clearInterval(this.state.fifteenSecondsInterval);
+  }
 
+  fifteenSecondsJobs = () => {
+    this.props.dispatch(askMultipleQuotes());
   }
 
   openModal = () => {
