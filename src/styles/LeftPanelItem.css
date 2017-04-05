@@ -1,7 +1,7 @@
 .leftPanelItemWrapper {
   display: flex;
-  justify-content:space-between;
-  align-items:baseline;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .symbolDiv {

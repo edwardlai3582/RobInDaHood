@@ -25,6 +25,13 @@ class HistoryPage extends Component {
     this.props.dispatch(askHistoricalsOrders());
   }
 
+  componentWillReceiveProps(nextProps){
+    //reload no that time sensitive stuff (news) here
+    if(nextProps.isCurrent && !this.props.isCurrent){
+      this.props.dispatch(askHistoricalsOrders());
+    }
+  }
+
   addMoreHistoricalsOrder = () => {
     this.props.dispatch(askHistoricalsOrders(this.props.historicalsOrdersNextLink))
   }

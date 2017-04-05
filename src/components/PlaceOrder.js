@@ -75,6 +75,7 @@ class PlaceOrder extends Component {
   }
 
   openModal = (side) => {
+    this.props.askAccount();
     this.setState({
       orderStage: "notyet",
       modalIsOpen: true, side: side,

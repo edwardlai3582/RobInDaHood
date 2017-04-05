@@ -24,9 +24,11 @@ const instrumentsReducer = (state = {
         instruments: newInstruments
       }
     case DELETE_INSTRUMENT:
+      let newDeletedInstruments = Object.assign({}, state.instruments);
+      delete newDeletedInstruments[action.instrumentId];
       return {
         ...state,
-        //instruments: [],
+        instruments: newDeletedInstruments,
       }
     default:
       return state

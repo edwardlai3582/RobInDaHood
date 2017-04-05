@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
+         askAccount,
          askFundamental,
          askNews,
-         askInstrument,
+         askInstrument, deleteInstrument,
          askPosition, askPositions,
          askHistoricalsQuotes, askQuote,
          askWatchlists, addToWatchlists, removeFromWatchlists,
@@ -97,6 +98,18 @@ class Instrument extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.twoMinutesInterval);
+
+    let thisIsInWatchlists = false;
+    for(let i=0; i< this.props.watchlists.length; i++){
+      if(this.props.watchlists[i].instrument === this.props.instrument){
+        thisIsInWatchlists = true;
+        break;
+      }
+    }
+    if(!thisIsInWatchlists){
+      console.log("this instrument is not in watchlists, so killed");
+      this.props.dispatch(deleteInstrument(this.props.instrument));
+    }
   }
 
   twoMinutesJobs = () => {
@@ -105,12 +118,14 @@ class Instrument extends Component {
     if(selectedButtonName === "1D"){
       dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
     }
+    dispatch(askFundamental(symbol));
   }
 
   componentWillReceiveProps(nextProps){
     //reload no that time sensitive stuff (news) here
     if(nextProps.isCurrent && !this.props.isCurrent){
-      this.props.dispatch(askInstrument(this.props.instrument))
+      this.props.dispatch(askInstrument(this.props.instrument));
+      this.askOwnHistoricalsOrders();
     }
 
     for(let i=0; i< nextProps.watchlists.length; i++){
@@ -121,7 +136,6 @@ class Instrument extends Component {
     }
     this.setState({isInWatchLists:false});
   }
-
 
   askOwnHistoricalsOrders = (...theArgs) => {
     let link = (theArgs.length === 0)? `https://api.robinhood.com/orders/?instrument=${this.props.instrument}` : theArgs[0];
@@ -238,7 +252,7 @@ class Instrument extends Component {
   }
 
   render() {
-    const { symbol, instrument, type, fundamentals, instruments, newsAll, historicalsQuotes, quotes, eachPosition, account, placingOrder, orderPlacedResult } = this.props
+    const { symbol, instrument, fundamentals, instruments, newsAll, historicalsQuotes, quotes, eachPosition, account, placingOrder, orderPlacedResult } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
             isAskingOwnCurrentOrder, OwnCurrentOrder, OwnCurrentOrderFailedReason } = this.state;
@@ -248,7 +262,7 @@ class Instrument extends Component {
     if(!this.props.isCurrent){ return null; }
 
     let historicals = [];
-    if(historicalsQuotes[symbol+span+interval+bounds]){
+    if(quotes[symbol] && historicalsQuotes[symbol+span+interval+bounds]){
       historicals = historicalsQuotes[symbol+span+interval+bounds].historicals;
       if(selectedButtonName === "1D"){
         if(historicals[historicals.length-1].add_by_me){
@@ -294,7 +308,7 @@ class Instrument extends Component {
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
     let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
 
-    let quotesBlock = (historicalsQuotes[symbol+span+interval+bounds] )?
+    let quotesBlock = (quotes[symbol] && historicalsQuotes[symbol+span+interval+bounds] )?
       (<Quotes historicals={ historicals }
                selectedButtonName={selectedButtonName}
                previous_close={quotes[symbol].previous_close}
@@ -376,6 +390,7 @@ class Instrument extends Component {
                         placeOrder={(order)=>this.props.dispatch(placeOrder(order))}
                         placingOrder={placingOrder}
                         orderPlacedResult={orderPlacedResult}
+                        askAccount={()=> this.props.dispatch(askAccount())}
             />
           ):(
             <div className="notTradeable">not tradeable</div>
@@ -383,7 +398,7 @@ class Instrument extends Component {
         </SectionWrapper>
 
 
-        {(type === "position")?
+        {(eachPosition[instrument])?
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}
           </SectionWrapper>

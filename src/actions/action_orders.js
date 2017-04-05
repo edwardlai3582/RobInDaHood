@@ -34,39 +34,6 @@ export const orderDidntPlace = (reason) => ({
   reason
 })
 
-export const placeOrder = (order) => (dispatch, getState) => {
-  dispatch(placingOrder());
-
-  let form = new FormData();
-  Object.keys(order).forEach((key) => {
-    form.append(key, order[key]);
-  });
-
-  return fetch(`https://api.robinhood.com/orders/`, {
-    method: 'POST',
-    headers: new Headers({
-      'Accept': 'application/json',
-      'Authorization': getState().tokenReducer.token,
-    }),
-    body: form
-  })
-  .then(response => response.json())
-  .then(jsonResult => {
-    console.log(jsonResult);
-    if(jsonResult.url){
-      dispatch(orderPlaced());
-    }
-    else{
-      dispatch(orderDidntPlace(JSON.stringify(jsonResult)));
-    }
-  })
-  .catch(function(reason) {
-    console.log(reason);
-    dispatch(orderDidntPlace(reason));
-  });
-
-}
-
 export const refillHistoricalsOrders = (orders, next) => ({
   type: REFILL_HIS_ORDERS,
   orders,
@@ -203,5 +170,41 @@ export const cancelOrder = (cancelLink, orderId) => (dispatch, getState) => {
     console.log(reason);
     dispatch(cancelCurrentOrderFailed(JSON.stringify(reason)));
     dispatch(askCurrentOrder(orderId));
+  });
+}
+
+export const placeOrder = (order) => (dispatch, getState) => {
+  dispatch(placingOrder());
+
+  let form = new FormData();
+  Object.keys(order).forEach((key) => {
+    form.append(key, order[key]);
+  });
+
+  return fetch(`https://api.robinhood.com/orders/`, {
+    method: 'POST',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token,
+    }),
+    body: form
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    console.log(jsonResult);
+    if(jsonResult.url){
+      dispatch(orderPlaced());
+      dispatch(askHistoricalsOrders());
+      //reload watchlist & positions after order cancelled
+      dispatch(askWatchlists());
+      dispatch(askPositions());
+    }
+    else{
+      dispatch(orderDidntPlace(JSON.stringify(jsonResult)));
+    }
+  })
+  .catch(function(reason) {
+    console.log(reason);
+    dispatch(orderDidntPlace(reason));
   });
 }

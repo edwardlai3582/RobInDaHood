@@ -15,13 +15,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] logout delete everything ?
 - [x] http://recharts.org/#/en-US/api/ReferenceLine Previous day close
 - [ ] https://github.com/ameyms/react-animated-number
-- [ ] add change tab type(watchlist <-> position) function
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity ******
 - [ ] electron right click close tab
 - [x] if no tab, show portfolio
 - [ ] https://github.com/mariotacke/redux-electron-ipc
 - [ ] https://github.com/jschr/electron-react-redux-boilerplate
-- [ ] if current tab => setInterval
+- [x] if current tab => setInterval
 - [x] if not current tab => return null
 - [x] cancel order button *****
 - [x] shouldCloseOnOverlayClick={false} when cancellin order
@@ -29,3 +28,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] extended_hours order
 - [x] DAshboardPage's componentWillReceiveProps remove to action
 - [x] 1m, 3m charts need to check date
+- [ ] if has queued orders, keep checkin
