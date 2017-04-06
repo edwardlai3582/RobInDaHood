@@ -6,14 +6,7 @@ import { toggleWatchlistsModule,
 import '../styles/LeftPanelModule.css'
 import arrow from '../styles/arrow.png';
 import LeftPanelItem from '../components/LeftPanelItem'
-
-const displayPercentage = (newString, oldString) => {
-  let newNum = Number(newString);
-  let oldNum = Number(oldString);
-  let negPos = (newNum - oldNum > 0)? "+" : "";
-
-  return  negPos + ((newNum - oldNum) / oldNum * 100).toFixed(2) + "%"
-}
+import { displayPercentage } from '../utils'
 
 class LeftPanelModule extends Component {
   static propTypes = {

@@ -26,6 +26,14 @@ class Quotes extends Component {
     window.removeEventListener('resize', this.resetDimensions);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps.selectedButtonName !== "1D" && this.props.selectedButtonName === nextProps.selectedButtonName) {
+      return false;
+    }
+
+    return true;
+  }
+
   resetDimensions = () => {
     this.setState({width: this.qw.offsetWidth });
     //console.log(this.state.width);

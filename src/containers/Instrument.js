@@ -20,11 +20,9 @@ import RemoveButton from '../components/RemoveButton'
 import SectionWrapper from '../components/SectionWrapper'
 import Orders from '../components/Orders'
 import PlaceOrder from '../components/PlaceOrder'
+import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
+import { isLater } from '../utils'
 import '../styles/Instrument.css'
-
-const isLater = (newDateStr, oldDateStr) => {
-    return new Date(newDateStr) > new Date(oldDateStr);
-}
 
 class Instrument extends Component {
   static propTypes = {
@@ -340,6 +338,23 @@ class Instrument extends Component {
       positionBlock = (eachPosition[instrument] && quotes[symbol])? <Position quotes={quotes[symbol]} position={eachPosition[instrument]} /> : "Loading...";
     }
 
+    let last_price = (quotes[symbol].last_extended_hours_trade_price)? Number(quotes[symbol].last_extended_hours_trade_price).toFixed(2) : Number(quotes[symbol].last_trade_price).toFixed(2);
+    let priceRelatedBlock = (quotes[symbol])? (
+      <div className="priceRelatedWrapper">
+        <div className="last_trade_price">
+          { `$${last_price}` }
+        </div>
+        <HistoryPriceDisplay
+          selectedButtonName={selectedButtonName}
+          historicals={historicals}
+          previous_close={quotes[symbol].previous_close}
+          last_trade_price={quotes[symbol].last_trade_price}
+          last_extended_hours_trade_price={quotes[symbol].last_extended_hours_trade_price}
+          updated_at={quotes[symbol].updated_at}
+        />
+      </div>
+    ) : null;
+
     return (
       <div className="instrumentWrapper">
         <div className="instrumentFake"></div>
@@ -356,14 +371,8 @@ class Instrument extends Component {
           }
         </header>
 
-        { (quotes[symbol])?
-            (quotes[symbol].last_extended_hours_trade_price)?
-              quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price :
-            null
-        }
-
-
         <SectionWrapper SectionTitle={""}>
+          {priceRelatedBlock}
           {quotesBlock}
           <div className="quotesButtonsWrapper">
             <button className={selectedButtonName==="1D"? "quotesButton selectedButton": "quotesButton"}

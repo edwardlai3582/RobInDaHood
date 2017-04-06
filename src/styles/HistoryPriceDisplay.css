@@ -1,0 +1,10 @@
+.priceRelatedWrapper {
+  background-color: black;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.priceRelatedWrapper > .last_trade_price {
+  font-size: 1.4rem;
+  margin-bottom: 3px;
+}

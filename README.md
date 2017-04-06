@@ -1,15 +1,18 @@
-## RobInDaHood
-
-npm run dev
-
-
-https://medium.freecodecamp.com/building-an-electron-application-with-create-react-app-97945861647c#.pf5yr1mgt
-
-
+# RobInDaHood
+A desktop app for Robinhood
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-### todos
+Project setup: https://medium.freecodecamp.com/building-an-electron-application-with-create-react-app-97945861647c#.pf5yr1mgt
+
+## How to run the code
+```shell
+npm install
+npm run dev
+```
+
+
+## todos
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [ ] logout delete everything ?
 - [ ] https://github.com/ameyms/react-animated-number
@@ -19,6 +22,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] https://github.com/jschr/electron-react-redux-boilerplate
 - [x] push current data to chart's data (KINDA not really like it)
 - [ ] extended_hours order
-- [ ] if has queued orders, keep checkin
 - [ ] Dividends
 - [ ] Markets related
+- [ ] queue for pending oreders, if completed => new window notification
+- [ ] enable addin folders

@@ -51,3 +51,15 @@ export const dateDiffInDays = (a) => {
 
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
+
+export const displayPercentage = (newString, oldString) => {
+  let newNum = Number(newString);
+  let oldNum = Number(oldString);
+  let negPos = (newNum - oldNum > 0)? "+" : "";
+
+  return  negPos + ((newNum - oldNum) / oldNum * 100).toFixed(2) + "%"
+}
+
+export const isLater = (newDateStr, oldDateStr) => {
+    return new Date(newDateStr) > new Date(oldDateStr);
+}

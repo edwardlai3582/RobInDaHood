@@ -21,7 +21,7 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
   //check if already requested on sameday
   if( span !== "day" && getState().quotesReducer.historicalsQuotes[ symbol+span+interval+bounds ] ){
     if( getState().quotesReducer.historicalsQuotes[symbol+span+interval+bounds].timestamp === (new Date()).toISOString().substring(0, 10) ){
-      console.log("same day no need to request!");
+      //console.log("same day no need to request!");
       return;
     }
   }
