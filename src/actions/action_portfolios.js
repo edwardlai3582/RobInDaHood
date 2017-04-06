@@ -15,6 +15,13 @@ export const deleteHistoricalsPortfolios = (hisType) => ({
 })
 
 export const askHistoricalsPortfolios = (span, interval, bounds) => (dispatch, getState) => {
+  if( span !== "day" && getState().portfoliosReducer.historicalsPortfolios[span+interval] ){
+    if( getState().portfoliosReducer.historicalsPortfolios[span+interval].timestamp === (new Date()).toISOString().substring(0, 10) ){
+      //console.log("same day no need to request!");
+      return;
+    }
+  }
+
   return fetch(`https://api.robinhood.com/portfolios/historicals/${getState().accountReducer.accountNumber}?span=${span}&interval=${interval}&bounds=${bounds}`, {
     method: 'GET',
     headers: new Headers({
@@ -37,6 +44,8 @@ export const askHistoricalsPortfolios = (span, interval, bounds) => (dispatch, g
         theArray[index].open_equity = Number(historical.open_equity)
         theArray[index].close_equity = Number(historical.close_equity)
       })
+      //add timestamp so dont need to request everytime
+      jsonResult.timestamp = (new Date()).toISOString().substring(0, 10);
       dispatch(addHistoricalsPortfolios(span+interval, jsonResult));
     }
     else {

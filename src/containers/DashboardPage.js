@@ -64,8 +64,8 @@ class DashboardPage extends Component {
       this.handleaddNonStockTab("portfolio")
     }
 
-    let intervalFifteen = setInterval(this.fifteenSecondsJobs, 15000);
     // store intervalId in the state so it can be accessed later:
+    let intervalFifteen = setInterval(this.fifteenSecondsJobs, 15000);
     this.setState({fifteenSecondsInterval: intervalFifteen});
   }
 
@@ -138,7 +138,7 @@ class DashboardPage extends Component {
     let watchlistsMenu = "loading watchlists...";
     let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
-    
+
     for(let i=0; i< watchlists.length; i++){
       if(typeof instruments[watchlists[i].instrument] === "undefined"){
         instrumentsHasAllNeeded = false;

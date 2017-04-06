@@ -23,16 +23,32 @@ class PortfolioPage extends Component {
         interval: "5minute",
         bounds: "trading",
         selectedButtonName: "1D"
-      }
+      },
+      threeMinutesInterval: undefined
     };
   }
 
   componentDidMount(){
     this.props.dispatch(askHistoricalsPortfolios("day", "5minute", "trading"));
     this.props.dispatch(askPortfolios());
+
+    // store intervalId in the state so it can be accessed later:
+    let intervalThree = setInterval(this.threeMinutesJobs, 180000);
+    this.setState({threeMinutesInterval: intervalThree});
   }
 
-  changeHisQuotes = (span, interval, bounds, selectedButtonName)=>{
+  componentWillUnmount() {
+    clearInterval(this.state.threeMinutesInterval);
+  }
+
+  threeMinutesJobs = () => {
+    const { span, interval, bounds, selectedButtonName } = this.state.quotes;
+    if(selectedButtonName === "1D"){
+      this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
+    }
+  }
+
+  changeHisQuotes = (span, interval, bounds, selectedButtonName) => {
     this.setState({ quotes: { span: span, interval: interval, bounds: bounds, selectedButtonName: selectedButtonName } });
     this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
   }

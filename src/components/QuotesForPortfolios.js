@@ -60,7 +60,7 @@ class QuotesForPortfolios extends Component {
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >
         <ResponsiveContainer width="100%" height="100%" minHeight={1} debounce={3}>
           <LineChart data={data} margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
-            <Line type="monotone" dataKey="adjusted_open_equity" stroke={strokeColor} dot={false} />
+            <Line type="monotone" dataKey="adjusted_open_equity" stroke={strokeColor} strokeWidth="3" dot={false} />
             <XAxis dataKey="begins_at" tick={false} hide={true} />
             <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />
             {selectedButtonName==="1D" || selectedButtonName==="1W"?
