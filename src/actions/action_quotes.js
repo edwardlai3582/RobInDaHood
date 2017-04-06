@@ -18,7 +18,14 @@ export const deleteHistoricalsQuotes = (symbol) => ({
 })
 
 export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatch, getState) => {
-  //dispatch(askingFundamental());
+  //check if already requested on sameday
+  if( span !== "day" && getState().quotesReducer.historicalsQuotes[ symbol+span+interval+bounds ] ){
+    if( getState().quotesReducer.historicalsQuotes[symbol+span+interval+bounds].timestamp === (new Date()).toISOString().substring(0, 10) ){
+      console.log("same day no need to request!");
+      return;
+    }
+  }
+
   return fetch(`https://api.robinhood.com/quotes/historicals/${symbol}/?span=${span}&interval=${interval}&bounds=${bounds}`, {
     method: 'GET',
     headers: new Headers({
@@ -41,6 +48,8 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
       theArray[index].reg_close_price= (historical.session !== "reg")? undefined : Number(historical.close_price);
     })
 
+    //add timestamp so dont need to request everytime
+    jsonResult.timestamp = (new Date()).toISOString().substring(0, 10);
     dispatch(addHistoricalsQuotes(symbol, span+interval+bounds, jsonResult));
   })
   .catch(function(reason) {
