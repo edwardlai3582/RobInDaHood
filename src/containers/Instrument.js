@@ -338,11 +338,10 @@ class Instrument extends Component {
       positionBlock = (eachPosition[instrument] && quotes[symbol])? <Position quotes={quotes[symbol]} position={eachPosition[instrument]} /> : "Loading...";
     }
 
-    let last_price = (quotes[symbol].last_extended_hours_trade_price)? Number(quotes[symbol].last_extended_hours_trade_price).toFixed(2) : Number(quotes[symbol].last_trade_price).toFixed(2);
     let priceRelatedBlock = (quotes[symbol])? (
       <div className="priceRelatedWrapper">
         <div className="last_trade_price">
-          { `$${last_price}` }
+          { `$${(quotes[symbol].last_extended_hours_trade_price)? Number(quotes[symbol].last_extended_hours_trade_price).toFixed(2) : Number(quotes[symbol].last_trade_price).toFixed(2)}` }
         </div>
         <HistoryPriceDisplay
           selectedButtonName={selectedButtonName}
