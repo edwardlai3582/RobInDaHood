@@ -27,3 +27,4 @@ npm run dev
 - [ ] queue for pending oreders, if completed => new window notification
 - [ ] enable addin folders
 - [ ] portfolio page
+- [ ] change portfolio time of interval

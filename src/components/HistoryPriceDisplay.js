@@ -72,8 +72,8 @@ class HistoryPriceDisplay extends Component {
       );
     }
     else if(data[0]) {
-      let firstDayPrice = data[0].close_price;
-      let lastDayPrice = data[data.length-1].close_price;
+      let firstDayPrice = data[0].close_price || data[0].adjusted_open_equity;
+      let lastDayPrice = data[data.length-1].close_price || data[data.length-1].adjusted_open_equity;
 
       displayBlock = (
         <p>

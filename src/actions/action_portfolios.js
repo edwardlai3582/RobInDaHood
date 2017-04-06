@@ -15,9 +15,10 @@ export const deleteHistoricalsPortfolios = (hisType) => ({
 })
 
 export const askHistoricalsPortfolios = (span, interval, bounds) => (dispatch, getState) => {
+
   if( span !== "day" && getState().portfoliosReducer.historicalsPortfolios[span+interval] ){
     if( getState().portfoliosReducer.historicalsPortfolios[span+interval].timestamp === (new Date()).toISOString().substring(0, 10) ){
-      //console.log("same day no need to request!");
+      console.log("same day no need to request!");
       return;
     }
   }
@@ -43,6 +44,9 @@ export const askHistoricalsPortfolios = (span, interval, bounds) => (dispatch, g
         theArray[index].net_return = Number(historical.net_return)
         theArray[index].open_equity = Number(historical.open_equity)
         theArray[index].close_equity = Number(historical.close_equity)
+        //custom
+        theArray[index].not_reg_close_equity = Number(historical.adjusted_close_equity);
+        theArray[index].reg_close_equity = (historical.session !== "reg")? undefined : Number(historical.adjusted_close_equity);
       })
       //add timestamp so dont need to request everytime
       jsonResult.timestamp = (new Date()).toISOString().substring(0, 10);

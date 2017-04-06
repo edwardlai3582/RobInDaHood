@@ -6,6 +6,7 @@ import {
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
 import SectionWrapper from '../components/SectionWrapper'
+import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
 import '../styles/PortfolioPage.css'
 
 class PortfolioPage extends Component {
@@ -24,7 +25,8 @@ class PortfolioPage extends Component {
         bounds: "trading",
         selectedButtonName: "1D"
       },
-      threeMinutesInterval: undefined
+      threeMinutesInterval: undefined,
+      oneMinuteInterval: undefined
     };
   }
 
@@ -35,17 +37,30 @@ class PortfolioPage extends Component {
     // store intervalId in the state so it can be accessed later:
     let intervalThree = setInterval(this.threeMinutesJobs, 180000);
     this.setState({threeMinutesInterval: intervalThree});
+    let intervalOne = setInterval(this.oneMinuteJobs, 30000);
+    this.setState({oneMinuteInterval: intervalOne})
   }
 
   componentWillUnmount() {
     clearInterval(this.state.threeMinutesInterval);
+    clearInterval(this.state.oneMinuteInterval);
   }
 
   threeMinutesJobs = () => {
+    /*
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     if(selectedButtonName === "1D"){
       this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
     }
+    */
+  }
+
+  oneMinuteJobs = () => {
+    const { span, interval, bounds, selectedButtonName } = this.state.quotes;
+    if(selectedButtonName === "1D"){
+      this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
+    }
+    this.props.dispatch(askPortfolios());
   }
 
   changeHisQuotes = (span, interval, bounds, selectedButtonName) => {
@@ -61,15 +76,24 @@ class PortfolioPage extends Component {
     //show null if not cuttent page
     if(!this.props.isCurrent){ return null; }
 
-    let equity = ""
-    if(portfolios.extended_hours_equity){
-      equity = Number(portfolios.extended_hours_equity).toFixed(2)
-    }
-    else if (portfolios.equity){
-      equity = portfolios.equity.toFixed(2)
-    }
 
-    let quotesBlock = (historicalsPortfolios[span+interval])?
+    let priceRelatedBlock = (portfolios && historicalsPortfolios[span+interval])? (
+      <div className="priceRelatedWrapper">
+        <div className="last_trade_price">
+          { `$${(portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity).toFixed(2) : Number(portfolios.last_core_equity).toFixed(2)}` }
+        </div>
+        <HistoryPriceDisplay
+          selectedButtonName={selectedButtonName}
+          historicals={historicalsPortfolios[span+interval].equity_historicals}
+          previous_close={portfolios.adjusted_equity_previous_close.toString()}
+          last_trade_price={portfolios.last_core_equity}
+          last_extended_hours_trade_price={portfolios.extended_hours_equity}
+          updated_at={historicalsPortfolios[span+interval].open_time}
+        />
+      </div>
+    ) : null;
+
+    let quotesBlock = (portfolios && historicalsPortfolios[span+interval])?
       (<QuotesForPortfolios
           historicals={historicalsPortfolios[span+interval].equity_historicals}
           selectedButtonName={selectedButtonName}
@@ -85,11 +109,8 @@ class PortfolioPage extends Component {
           </div>
         </header>
 
-        <SectionWrapper SectionTitle={" "}>
-          ${equity}
-        </SectionWrapper>
-
         <SectionWrapper SectionTitle={""}>
+          {priceRelatedBlock}
           {quotesBlock}
           <div className="quotesButtonsWrapper">
             <button className={selectedButtonName==="1D"? "quotesButton selectedButton": "quotesButton"}

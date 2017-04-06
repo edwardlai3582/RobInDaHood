@@ -276,7 +276,7 @@ class Instrument extends Component {
               "add_by_me": true,
               "session": historicals[historicals.length-1].session,
               "not_reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
-              "reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "reg_close_price": (historicals[historicals.length-1].session !== "reg")?undefined:Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
               "interpolated": false
             })
           }
@@ -294,7 +294,7 @@ class Instrument extends Component {
               "add_by_me": true,
               "session": historicals[historicals.length-1].session,
               "not_reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
-              "reg_close_price": Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
+              "reg_close_price": (historicals[historicals.length-1].session !== "reg")?undefined:Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price).toFixed(2),
               "interpolated": false
             };
           }
