@@ -19,3 +19,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] extended_hours order
 - [ ] if has queued orders, keep checkin
 - [ ] Dividends
+- [ ] Markets related
