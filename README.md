@@ -11,8 +11,7 @@ npm install
 npm run dev
 ```
 
-
-## todos
+## Todos
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [ ] https://github.com/ameyms/react-animated-number
 - [ ] electron right click close tab
