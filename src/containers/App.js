@@ -31,4 +31,5 @@ const mapStateToProps = state => {
   return { token, accountNumber }
 }
 
+
 export default connect(mapStateToProps)(App)

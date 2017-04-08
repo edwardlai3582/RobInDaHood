@@ -48,17 +48,17 @@ class Dashboard extends Component {
   }
 
   componentDidMount(){
-    this.dbDrag.addEventListener('mousedown', this.mousedown);
-    document.addEventListener('mousemove', this.mousemove);
-    document.addEventListener('mouseup', this.mouseup);
-    window.addEventListener('resize', this.resize);
+    //this.dbDrag.addEventListener('mousedown', this.mousedown);
+    //document.addEventListener('mousemove', this.mousemove);
+    //document.addEventListener('mouseup', this.mouseup);
+    //window.addEventListener('resize', this.resize);
   }
 
   componentWillUnmount(){
-    this.dbDrag.removeEventListener('mousedown', this.mousedown);
-    document.removeEventListener('mousemove', this.mousemove);
-    document.removeEventListener('mouseup', this.mouseup);
-    window.removeEventListener('resize', this.resize);
+    //this.dbDrag.removeEventListener('mousedown', this.mousedown);
+    //document.removeEventListener('mousemove', this.mousemove);
+    //document.removeEventListener('mouseup', this.mouseup);
+    //window.removeEventListener('resize', this.resize);
   }
 
   render() {

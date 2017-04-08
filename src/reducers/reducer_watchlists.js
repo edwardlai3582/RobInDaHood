@@ -10,7 +10,7 @@ import {
 const watchlistsReducer = (state = {
   isAskingWatchlists: false,
   error: "",
-  watchlists: [],
+  watchlists: []
 }, action) => {
   switch (action.type) {
     case ASKING_WATCHLISTS:

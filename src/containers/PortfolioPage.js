@@ -9,6 +9,8 @@ import SectionWrapper from '../components/SectionWrapper'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
 import '../styles/PortfolioPage.css'
 
+import Container from '../components/Container'
+
 class PortfolioPage extends Component {
   static propTypes = {
     historicalsPortfolios: PropTypes.object.isRequired,
@@ -127,6 +129,11 @@ class PortfolioPage extends Component {
                     onClick={() => this.changeHisQuotes("all", "", "", "ALL")}>ALL</button>
           </div>
         </SectionWrapper>
+
+        <SectionWrapper SectionTitle={"Watchlist"}>
+          <Container />
+        </SectionWrapper>
+
       </div>
     )
   }
