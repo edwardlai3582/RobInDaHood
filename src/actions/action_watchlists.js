@@ -1,4 +1,6 @@
 import { askInstrument } from './action_instruments'
+
+import { addLocalWatchlists, addMoreLocalWatchlists, addLocalWatchlist, removeLocalWatchlist } from './action_local'
 ////////////WATCHLISTS
 export const ADD_WATCHLISTS = 'ADD_WATCHLISTS'
 export const ADD_MORE_WATCHLISTS = 'ADD_MORE_WATCHLISTS'
@@ -53,6 +55,7 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addWatchlists(jsonResult.results));
+        dispatch(addLocalWatchlists(jsonResult.results));
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
@@ -63,6 +66,9 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
       else {
         console.log("more watchlists!")
         dispatch(addMoreWatchlists(jsonResult.results));
+        if( !jsonResult.next ){
+          dispatch(addMoreLocalWatchlists([...getState().watchlistsReducer.watchlists, ...jsonResult.results]));
+        }
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
@@ -102,7 +108,8 @@ export const addToWatchlists = (instrumentSymbol) => (dispatch, getState) => {
   .then(jsonResult => {
     console.log(jsonResult);
     if(jsonResult[0].created_at){
-      dispatch(addWatchlist(jsonResult[0]))
+      dispatch(addWatchlist(jsonResult[0]));
+      dispatch(addLocalWatchlist(jsonResult[0]));
     }
   })
   .catch(function(reason) {
@@ -125,7 +132,8 @@ export const removeFromWatchlists = (instrumentId) => (dispatch, getState) =>{
   })
   .then(response => {
     console.log(response);
-    dispatch(removeWatchlist(instrumentId))
+    dispatch(removeLocalWatchlist(instrumentId));
+    dispatch(removeWatchlist(instrumentId));
   })
   .catch(function(reason) {
     console.log(reason);

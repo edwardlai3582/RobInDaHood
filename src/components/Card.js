@@ -41,7 +41,7 @@ const cardTarget = {
   hover(props, monitor) {
     const { id: draggedId } = monitor.getItem();
     const { id: overId } = props;
-    console.log("fff");
+    //console.log("fff");
 
     if (draggedId !== overId) {
       const { index: overIndex } = props.findCard(overId);

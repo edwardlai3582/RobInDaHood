@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
-         askHistoricalsPortfolios, askPortfolios
+         askHistoricalsPortfolios, askPortfolios,
+         reorderWatchlist
        } from '../actions'
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
@@ -15,7 +16,11 @@ class PortfolioPage extends Component {
   static propTypes = {
     historicalsPortfolios: PropTypes.object.isRequired,
     portfolios: PropTypes.object.isRequired,
-    isCurrent: PropTypes.bool.isRequired
+    isCurrent: PropTypes.bool.isRequired,
+    localWatchlists: PropTypes.array.isRequired,
+    positions: PropTypes.array.isRequired,
+    instruments: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -48,6 +53,10 @@ class PortfolioPage extends Component {
     clearInterval(this.state.oneMinuteInterval);
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps.localWatchlists);
+  }
+
   threeMinutesJobs = () => {
     /*
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
@@ -72,12 +81,11 @@ class PortfolioPage extends Component {
 
 
   render() {
-    const { historicalsPortfolios, portfolios } = this.props
+    const { historicalsPortfolios, portfolios, localWatchlists, instruments, positions } = this.props
     const { span, interval, selectedButtonName } = this.state.quotes;
 
     //show null if not cuttent page
     if(!this.props.isCurrent){ return null; }
-
 
     let priceRelatedBlock = (portfolios && historicalsPortfolios[span+interval])? (
       <div className="priceRelatedWrapper">
@@ -101,7 +109,7 @@ class PortfolioPage extends Component {
           selectedButtonName={selectedButtonName}
           previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
-
+    console.log(localWatchlists);
     return (
       <div className="instrumentWrapper">
         <div className="instrumentFake"></div>
@@ -131,7 +139,14 @@ class PortfolioPage extends Component {
         </SectionWrapper>
 
         <SectionWrapper SectionTitle={"Watchlist"}>
-          <Container />
+          {localWatchlists.map((localWatchlist, index)=>{
+            return <Container key={index}
+                              index={index}
+                              localWatchlist={localWatchlist}
+                              instruments={instruments}
+                              positions={positions}
+                              reorderWatchlist={(index, watchlist)=>this.props.dispatch(reorderWatchlist(index, watchlist))}/>
+          })}
         </SectionWrapper>
 
       </div>
@@ -143,10 +158,13 @@ class PortfolioPage extends Component {
 
 */
 const mapStateToProps = state => {
-  const { portfoliosReducer } = state
+  const { portfoliosReducer, localReducer, instrumentsReducer, positionsReducer } = state
   const { historicalsPortfolios, portfolios } = portfoliosReducer || { historicalsPortfolios: {}, portfolios: {} }
+  const { localWatchlists } = localReducer || { localWatchlists: []}
+  const { positions } = positionsReducer || { positions: [] }
+  const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { historicalsPortfolios, portfolios }
+  return { historicalsPortfolios, portfolios, localWatchlists, instruments, positions }
 }
 
 export default connect(mapStateToProps)(PortfolioPage)

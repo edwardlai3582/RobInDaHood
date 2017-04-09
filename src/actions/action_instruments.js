@@ -29,7 +29,6 @@ export const askInstrument = (instrument) => (dispatch, getState) => {
   return fetch(instrument, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })

@@ -39,6 +39,7 @@ class DashboardPage extends Component {
     positions: PropTypes.array.isRequired,
     positionsWithZero: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
+    localWatchlists: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -134,10 +135,11 @@ class DashboardPage extends Component {
   }
 
   render() {
-    const { watchlists, positions, instruments, selectedKey } = this.props
+    const { watchlists, positions, instruments, selectedKey, localWatchlists } = this.props
     let watchlistsMenu = "loading watchlists...";
     let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
+
 
     for(let i=0; i< watchlists.length; i++){
       if(typeof instruments[watchlists[i].instrument] === "undefined"){
@@ -146,8 +148,9 @@ class DashboardPage extends Component {
       }
     }
 
-    if(instrumentsHasAllNeeded){
-      let watchlistData = watchlists.filter((instrument)=>{
+
+    if(instrumentsHasAllNeeded && localWatchlists.length > 0){      
+      let watchlistData = localWatchlists[0].watchlist.filter((instrument)=>{
         for(let i=0; i< positions.length; i++){
           if((positions[i].instrument === instrument.instrument)){
             return false;
@@ -155,7 +158,7 @@ class DashboardPage extends Component {
         }
         return true;
       })
-      .map((instrument)=>{
+      .map((instrument, i)=>{
         return {
           instrument: instrument.instrument,
           symbol: instruments[instrument.instrument].symbol,
@@ -236,15 +239,16 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, positionsReducer, instrumentsReducer } = state
+  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, positionsReducer, instrumentsReducer, localReducer } = state
   const { token } = tokenReducer || { token: "" }
   const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
   const { accountNumber } = accountReducer || { accountNumber: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
+  const { localWatchlists } = localReducer || { localWatchlists: []}
   const { positions, positionsWithZero } = positionsReducer || { positions: [], positionsWithZero:[]}
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments}
+  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments, localWatchlists}
 }
 
 export default connect(mapStateToProps)(DashboardPage)

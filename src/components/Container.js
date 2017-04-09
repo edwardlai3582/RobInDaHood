@@ -8,13 +8,15 @@ import ItemTypes from './ItemTypes';
 import {flow} from '../utils';//'lodash/flow';
 
 const style = {
-  width: 400,
+  width: 100,
   padding: 5,
   backgroundColor: 'yellow',
 };
 
 const cardTarget = {
-  drop() {
+  drop(props,monitor,component) {
+    console.log("Drop!");
+    props.reorderWatchlist(props.index, component.state.watchlistData);
   },
 };
 
@@ -28,42 +30,69 @@ const cardTarget = {
 class Container extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
+
+    index: PropTypes.number.isRequired,
+    localWatchlist: PropTypes.object.isRequired,
+    instruments: PropTypes.object.isRequired,
+    positions: PropTypes.array.isRequired,
+    reorderWatchlist: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
-    this.moveCard = this.moveCard.bind(this);
-    this.findCard = this.findCard.bind(this);
     this.state = {
-      cards: [{
-        id: 1,
-        text: 'Write a cool JS library',
-      }, {
-        id: 2,
-        text: 'Make it generic enough',
-      }, {
-        id: 3,
-        text: 'Write README',
-      }, {
-        id: 4,
-        text: 'Create some examples',
-      }, {
-        id: 5,
-        text: 'Spam in Twitter and IRC to promote it',
-      }, {
-        id: 6,
-        text: '???',
-      }, {
-        id: 7,
-        text: 'PROFIT',
-      }],
+      watchlistData:[],
     };
   }
 
-  moveCard(id, atIndex) {
+  setWatchlistData = (localWatchlist, instruments, positions) => {
+    let instrumentsHasAllNeeded = true;
+
+    for(let i=0; i< localWatchlist.watchlist.length; i++){
+      if(typeof instruments[localWatchlist.watchlist[i].instrument] === "undefined"){
+        instrumentsHasAllNeeded = false;
+        return null;
+      }
+    }
+
+    if(instrumentsHasAllNeeded && localWatchlist){
+      let temp = localWatchlist.watchlist.filter((instrument)=>{
+        for(let i=0; i< positions.length; i++){
+          if((positions[i].instrument === instrument.instrument)){
+            return false;
+          }
+        }
+        return true;
+      })
+      .map((instrument, i)=>{
+        return {
+          id: i,
+          instrument: instrument.instrument,
+          symbol: instruments[instrument.instrument].symbol,
+          type: 'watchlist'
+        };
+      });
+
+      this.setState({watchlistData: temp})
+    }
+  }
+
+  componentDidMount(){
+    const { localWatchlist, instruments, positions } = this.props;
+    if(!localWatchlist) return;
+    this.setWatchlistData(localWatchlist, instruments, positions);
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { localWatchlist, instruments, positions } = nextProps;
+    if(!localWatchlist) return;
+    this.setWatchlistData(localWatchlist, instruments, positions);
+  }
+
+  moveCard = (id, atIndex) => {
     const { card, index } = this.findCard(id);
     this.setState(update(this.state, {
-      cards: {
+      watchlistData: {
         $splice: [
           [index, 1],
           [atIndex, 0, card],
@@ -72,27 +101,28 @@ class Container extends Component {
     }));
   }
 
-  findCard(id) {
-    const { cards } = this.state;
-    const card = cards.filter(c => c.id === id)[0];
+  findCard = (id) => {
+    const { watchlistData } = this.state;
+    const card = watchlistData.filter(c => c.id === id)[0];
 
     return {
       card,
-      index: cards.indexOf(card),
+      index: watchlistData.indexOf(card),
     };
   }
 
   render() {
-    const { connectDropTarget } = this.props;
-    const { cards } = this.state;
+    const { connectDropTarget, localWatchlist } = this.props;
+    const { watchlistData } = this.state;
 
     return connectDropTarget(
       <div style={style}>
-        {cards.map(card => (
+        <h3 style={{backgroundColor: "salmon", marginBottom: "5px"}} >{localWatchlist.name}</h3>
+        {watchlistData.map(card => (
           <Card
             key={card.id}
             id={card.id}
-            text={card.text}
+            text={card.symbol}
             moveCard={this.moveCard}
             findCard={this.findCard}
           />
