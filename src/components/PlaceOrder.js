@@ -70,8 +70,12 @@ class PlaceOrder extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    if(nextState.modalIsOpen === false && this.state.modalIsOpen === false) return false;
+    if(nextState.modalIsOpen === false && this.state.modalIsOpen === false && nextProps.shares === this.props.shares) return false;
     return true;
+  }
+
+  componentDidMount(){
+    //console.log(this.props.shares);
   }
 
   openModal = (side) => {

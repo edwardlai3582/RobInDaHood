@@ -4,7 +4,6 @@ import ItemTypes from './ItemTypes';
 
 import {flow} from '../utils';
 
-
 const style = {
   border: '1px dashed gray',
   padding: '0.5rem 1rem',
@@ -49,15 +48,6 @@ const cardTarget = {
     }
   },
 };
-/*
-@DropTarget(ItemTypes.CARD, cardTarget, connect => ({
-  connectDropTarget: connect.dropTarget(),
-}))
-@DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-}))
-*/
 
 class Card extends Component {
   static propTypes = {

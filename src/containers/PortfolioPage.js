@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
          askHistoricalsPortfolios, askPortfolios,
-         reorderWatchlist
+         reorderLocalWatchlist, addLocalWatchlistFolder
        } from '../actions'
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
@@ -10,7 +10,7 @@ import SectionWrapper from '../components/SectionWrapper'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
 import '../styles/PortfolioPage.css'
 
-import Container from '../components/Container'
+import ListContainer from '../components/ListContainer'
 
 class PortfolioPage extends Component {
   static propTypes = {
@@ -54,7 +54,7 @@ class PortfolioPage extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps.localWatchlists);
+    //console.log(nextProps.localWatchlists);
   }
 
   threeMinutesJobs = () => {
@@ -109,7 +109,7 @@ class PortfolioPage extends Component {
           selectedButtonName={selectedButtonName}
           previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
-    console.log(localWatchlists);
+
     return (
       <div className="instrumentWrapper">
         <div className="instrumentFake"></div>
@@ -139,16 +139,14 @@ class PortfolioPage extends Component {
         </SectionWrapper>
 
         <SectionWrapper SectionTitle={"Watchlist"}>
-          {localWatchlists.map((localWatchlist, index)=>{
-            return <Container key={index}
-                              index={index}
-                              localWatchlist={localWatchlist}
-                              instruments={instruments}
-                              positions={positions}
-                              reorderWatchlist={(index, watchlist)=>this.props.dispatch(reorderWatchlist(index, watchlist))}/>
-          })}
+            <ListContainer
+              localWatchlists={localWatchlists}
+              instruments={instruments}
+              positions={positions}
+              reorderLocalWatchlist={(index, watchlist)=>this.props.dispatch(reorderLocalWatchlist(index, watchlist))}
+            />
         </SectionWrapper>
-
+        <button onClick={()=>this.props.dispatch(addLocalWatchlistFolder("temp"))}>add folder</button>
       </div>
     )
   }

@@ -1,41 +1,35 @@
 import React, { Component, PropTypes } from 'react';
 import update from 'react/lib/update';
-import { DropTarget, DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DropTarget } from 'react-dnd';
+//import HTML5Backend from 'react-dnd-html5-backend';
 import Card from './Card';
 import ItemTypes from './ItemTypes';
 
-import {flow} from '../utils';//'lodash/flow';
+import {flow} from '../utils';
 
 const style = {
   width: 100,
-  padding: 5,
+  padding: '5px 5px 20px',
   backgroundColor: 'yellow',
+  marginRight: '10px'
 };
 
 const cardTarget = {
   drop(props,monitor,component) {
     console.log("Drop!");
-    props.reorderWatchlist(props.index, component.state.watchlistData);
+    props.reorderLocalWatchlist(props.watchlistIndex, component.state.watchlistData);
   },
 };
 
-//@DragDropContext(HTML5Backend)
-/*
-@DropTarget(ItemTypes.CARD, cardTarget, connect => ({
-  connectDropTarget: connect.dropTarget(),
-}))
-*/
-
-class Container extends Component {
+class List extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
 
-    index: PropTypes.number.isRequired,
+    watchlistIndex: PropTypes.number.isRequired,
     localWatchlist: PropTypes.object.isRequired,
     instruments: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
-    reorderWatchlist: PropTypes.func.isRequired
+    reorderLocalWatchlist: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -133,6 +127,5 @@ class Container extends Component {
 }
 
 export default flow([
-  DropTarget( ItemTypes.CARD, cardTarget, connect => ({ connectDropTarget: connect.dropTarget() }) ),
-  DragDropContext(HTML5Backend),
-])(Container);
+  DropTarget( ItemTypes.CARD, cardTarget, connect => ({ connectDropTarget: connect.dropTarget() }) )
+])(List);

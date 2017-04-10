@@ -1,5 +1,5 @@
 import {
-  ADD_LOCAL_WATCHLISTS, ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_WATCHLIST
+  ADD_LOCAL_WATCHLISTS, ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLIST, ADD_WATCHLIST_FOLDER
 
 } from '../actions'
 
@@ -8,7 +8,12 @@ const localReducer = (state = {
   localWatchlists: []
 }, action) => {
   switch (action.type) {
-    case REORDER_WATCHLIST:
+    case ADD_WATCHLIST_FOLDER:
+      return {
+        ...state,
+        localWatchlists: [...state.localWatchlists, {name: action.name, watchlist:[]}]
+      }
+    case REORDER_LOCAL_WATCHLIST:
     console.log("dddd");
       let tempLocalWatchlists = state.localWatchlists.slice(0);
       tempLocalWatchlists[action.index].watchlist = action.watchlist;
