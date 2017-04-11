@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
          askHistoricalsPortfolios, askPortfolios,
-         reorderLocalWatchlist, addLocalWatchlistFolder
+         reorderLocalWatchlists, addLocalWatchlistFolder
        } from '../actions'
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
@@ -143,7 +143,7 @@ class PortfolioPage extends Component {
               localWatchlists={localWatchlists}
               instruments={instruments}
               positions={positions}
-              reorderLocalWatchlist={(index, watchlist)=>this.props.dispatch(reorderLocalWatchlist(index, watchlist))}
+              reorderLocalWatchlists={(watchlistIndex, watchlist)=>this.props.dispatch(reorderLocalWatchlists(watchlistIndex, watchlist))}
             />
         </SectionWrapper>
         <button onClick={()=>this.props.dispatch(addLocalWatchlistFolder("temp"))}>add folder</button>
