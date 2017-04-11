@@ -149,23 +149,49 @@ class DashboardPage extends Component {
     }
 
 
-    if(instrumentsHasAllNeeded && localWatchlists.length > 0){      
-      let watchlistData = localWatchlists[0].watchlist.filter((instrument)=>{
-        for(let i=0; i< positions.length; i++){
-          if((positions[i].instrument === instrument.instrument)){
-            return false;
+    if(instrumentsHasAllNeeded && localWatchlists.length > 0){
+      let watchlistsData = [];
+      localWatchlists.forEach((watchlist) => {
+        let watchlistData = watchlist.watchlist.filter((instrument)=>{
+          for(let i=0; i< positions.length; i++){
+            if((positions[i].instrument === instrument.instrument)){
+              return false;
+            }
           }
-        }
-        return true;
-      })
-      .map((instrument, i)=>{
-        return {
-          instrument: instrument.instrument,
-          symbol: instruments[instrument.instrument].symbol,
-          type: 'watchlist'
-        };
+          return true;
+        })
+        .map((instrument, i)=>{
+          return {
+            instrument: instrument.instrument,
+            symbol: instruments[instrument.instrument].symbol,
+            type: 'watchlist'
+          };
+        });
+
+        watchlistsData.push(watchlistData);
       });
 
+      watchlistsMenu= [];
+
+      watchlistsData.forEach((watchlistData,index) => {
+        watchlistsMenu.push(
+          (<LeftPanelModule
+            key={index}
+            moduleName="WATCHLIST"
+            moduleData={watchlistData}
+            selectedKey={selectedKey}
+            callback={this.handleaddTab}
+          />)
+        )
+      })
+      /*
+      watchlistsMenu = (<LeftPanelModule
+        moduleName="WATCHLIST"
+        moduleData={watchlistData}
+        selectedKey={selectedKey}
+        callback={this.handleaddTab}
+      />);
+      */
       let positionsData = positions.map((instrument)=>{
         return {
           instrument: instrument.instrument,
@@ -173,13 +199,6 @@ class DashboardPage extends Component {
           type: 'position'
         };
       });
-
-      watchlistsMenu = (<LeftPanelModule
-        moduleName="WATCHLIST"
-        moduleData={watchlistData}
-        selectedKey={selectedKey}
-        callback={this.handleaddTab}
-      />);
 
       positionsMenu = (<LeftPanelModule
         moduleName="POSITIONS"

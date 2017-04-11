@@ -1,0 +1,25 @@
+.listWrapper {
+  margin-bottom: 5px;
+  color: black;
+  width: 100px;
+  background-color: yellow;
+  width: 100%;
+}
+
+.listWrapper:last-child {
+  margin-bottom: 0px;
+}
+
+.listWrapper > h3 {
+  background-color: var(--main-color);
+  padding: 5px;
+  text-align: center;
+  color: white;
+}
+
+.listWrapper > section {
+  display: flex;
+  flex-wrap:wrap;
+  width: 100%;
+  padding-bottom: 1rem;
+}

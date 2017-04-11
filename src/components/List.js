@@ -7,7 +7,7 @@ import Symbol from './Symbol';
 
 import {flow} from '../utils';
 
-
+import '../styles/List.css'
 
 
 class List extends Component {
@@ -55,29 +55,27 @@ class List extends Component {
 
 	render() {
 		const { watchlist } = this.state;
-		const { canDrop, isOver, connectDropTarget } = this.props;
+		const { canDrop, isOver, connectDropTarget, listName } = this.props;
 		const isActive = canDrop && isOver;
-		const style = {
-			width: "200px",
-			height: "404px",
-			border: '1px dashed gray'
-		};
 
-		const backgroundColor = isActive ? 'lightgreen' : '#FFF';
+		const backgroundColor = isActive ? '#E0F7F1' : '#FFF';
 
 		return connectDropTarget(
-			<div style={{...style, backgroundColor}}>
-				{watchlist.map((card, i) => {
-					return (
-						<Symbol
-							key={card.id}
-							index={i}
-							listId={this.props.id}
-							card={card}
-							removeCard={this.removeCard.bind(this)}
-							moveCard={this.moveCard.bind(this)} />
-					);
-				})}
+			<div style={{backgroundColor}} className="listWrapper">
+				<h3>{listName}</h3>
+				<section>
+					{watchlist.map((card, i) => {
+						return (
+							<Symbol
+								key={card.id}
+								index={i}
+								listId={this.props.id}
+								card={card}
+								removeCard={this.removeCard.bind(this)}
+								moveCard={this.moveCard.bind(this)} />
+						);
+					})}
+				</section>
 			</div>
 		);
   }

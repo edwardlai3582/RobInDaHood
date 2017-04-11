@@ -7,8 +7,8 @@ import { findDOMNode } from 'react-dom';
 
 const style = {
 	border: '1px dashed gray',
-	padding: '0.5rem 1rem',
-	margin: '.5rem',
+	padding: '5px 10px',
+	margin: '5px',
 	backgroundColor: 'white',
   color: 'black',
 	cursor: 'move'

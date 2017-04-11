@@ -146,7 +146,7 @@ class PortfolioPage extends Component {
               reorderLocalWatchlists={(watchlistIndex, watchlist)=>this.props.dispatch(reorderLocalWatchlists(watchlistIndex, watchlist))}
             />
         </SectionWrapper>
-        <button onClick={()=>this.props.dispatch(addLocalWatchlistFolder("temp"))}>add folder</button>
+        <button onClick={()=>this.props.dispatch(addLocalWatchlistFolder(localWatchlists.length))}>add folder</button>
       </div>
     )
   }
