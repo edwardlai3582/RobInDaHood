@@ -9,6 +9,7 @@ import { deleteToken,
          addTab, selectTab,
          resetPlaceOrderRelated,
          toggleLocalWatchlist,
+         toggleLocalPosition,
          toggleWatchlistsModule, togglePositionsModule
        } from '../actions'
 import Dashboard from '../components/Dashboard'
@@ -137,7 +138,7 @@ class DashboardPage extends Component {
   }
 
   render() {
-    const { watchlists, positions, instruments, selectedKey, localWatchlists, dispatch, quotes, watchlistsModuleOpen } = this.props
+    const { watchlists, positions, instruments, selectedKey, localWatchlists, localPositions, dispatch, quotes, watchlistsModuleOpen, positionsModuleOpen } = this.props
     let watchlistsMenu = "loading watchlists...";
     let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
@@ -186,22 +187,31 @@ class DashboardPage extends Component {
         />
       )
 
-      /*
-      let positionsData = positions.map((instrument)=>{
-        return {
-          instrument: instrument.instrument,
-          symbol: instruments[instrument.instrument].symbol,
-          type: 'position'
-        };
-      });
+      let positionsData = [];
+      localPositions.forEach((position) => {
+        let positionData = position.list.map((instrument, i)=>{
+          return {
+            instrument: instrument.instrument,
+            symbol: instruments[instrument.instrument].symbol,
+            type: 'position'
+          };
+        });
 
+        positionsData.push(positionData);
+      });
+    
       positionsMenu = (<LeftPanelModule
         moduleName="POSITIONS"
-        moduleData={positionsData}
+        localLists={localPositions}
+        listsData={positionsData}
         selectedKey={selectedKey}
         callback={this.handleaddTab}
+        toggleLocallist={(index)=>dispatch(toggleLocalPosition(index))}
+        toggleModule={()=>dispatch(togglePositionsModule())}
+        moduleOpen={positionsModuleOpen}
+        quotes={quotes}
       />);
-      */
+
     }
 
     return (
@@ -259,13 +269,13 @@ const mapStateToProps = state => {
   const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
   const { accountNumber } = accountReducer || { accountNumber: "" }
   const { watchlists } = watchlistsReducer || { watchlists: []}
-  const { localWatchlists } = localReducer || { localWatchlists: []}
+  const { localWatchlists, localPositions } = localReducer || { localWatchlists: [], localPositions: []}
   const { positions, positionsWithZero } = positionsReducer || { positions: [], positionsWithZero:[]}
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer || { watchlistsModuleOpen: false, positionsModuleOpen:false }
   const { quotes } = quotesReducer || { quotes: {} }
 
-  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments, localWatchlists, watchlistsModuleOpen, positionsModuleOpen, quotes }
+  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments, localWatchlists, localPositions, watchlistsModuleOpen, positionsModuleOpen, quotes }
 }
 
 export default connect(mapStateToProps)(DashboardPage)

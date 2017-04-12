@@ -1,4 +1,6 @@
 import { askInstrument } from './action_instruments'
+
+import { addLocalPositions, addMoreLocalPositions } from './action_local'
 ////////////POSITIONS
 export const ADD_POSITIONS = 'ADD_POSITIONS'
 export const ADD_MORE_POSITIONS = 'ADD_MORE_POSITIONS'
@@ -49,6 +51,7 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addPositions(jsonResult.results));
+        dispatch(addLocalPositions(jsonResult.results));
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
@@ -59,6 +62,9 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
       else {
         console.log("more watchlists!")
         dispatch(addMorePositions(jsonResult.results));
+        if( !jsonResult.next ){
+          dispatch(addMoreLocalPositions([...getState().positionsReducer.positions, ...jsonResult.results]));
+        }
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));

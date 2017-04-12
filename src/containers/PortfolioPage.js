@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
          askHistoricalsPortfolios, askPortfolios,
-         reorderLocalWatchlist, addLocalWatchlistFolder, deleteLocalWatchlistFolder, reorderLocalWatchlists, renameLocalWatchlistFolder
+         reorderLocalWatchlist, addLocalWatchlistFolder, deleteLocalWatchlistFolder, reorderLocalWatchlists, renameLocalWatchlistFolder,
+         reorderLocalPosition, addLocalPositionFolder, deleteLocalPositionFolder, reorderLocalPositions, renameLocalPositionFolder
        } from '../actions'
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
@@ -81,7 +82,7 @@ class PortfolioPage extends Component {
 
 
   render() {
-    const { isCurrent, historicalsPortfolios, portfolios, localWatchlists, instruments, positions, dispatch } = this.props
+    const { isCurrent, historicalsPortfolios, portfolios, localWatchlists, localPositions, instruments, positions, dispatch } = this.props
     const { span, interval, selectedButtonName } = this.state.quotes;
 
     //show null if not cuttent page
@@ -138,7 +139,25 @@ class PortfolioPage extends Component {
           </div>
         </SectionWrapper>
 
-        <SectionWrapper SectionTitle={"Watchlist"}>
+        <SectionWrapper SectionTitle={"Positions"}>
+          <div className="addFolderWrapper">
+            <button className="addFolderButton" onClick={()=>dispatch(addLocalPositionFolder(localPositions.length))}>
+              ADD FOLDER
+            </button>
+          </div>
+
+          <ListContainer
+            localLists={localPositions}
+            instruments={instruments}
+            positions={[]}
+            reorderLocalList={(positionIndex, position)=>dispatch(reorderLocalPosition(positionIndex, position))}
+            deleteLocalListFolder={(index)=>dispatch(deleteLocalPositionFolder(index))}
+            reorderLocalLists={(aI, bI)=>dispatch(reorderLocalPositions(aI, bI))}
+            renameLocallistFolder={(index, name)=>dispatch(renameLocalPositionFolder(index, name))}
+          />
+        </SectionWrapper>
+
+        <SectionWrapper SectionTitle={"Watchlists"}>
           <div className="addFolderWrapper">
             <button className="addFolderButton" onClick={()=>dispatch(addLocalWatchlistFolder(localWatchlists.length))}>
               ADD FOLDER
@@ -166,11 +185,11 @@ class PortfolioPage extends Component {
 const mapStateToProps = state => {
   const { portfoliosReducer, localReducer, instrumentsReducer, positionsReducer } = state
   const { historicalsPortfolios, portfolios } = portfoliosReducer || { historicalsPortfolios: {}, portfolios: {} }
-  const { localWatchlists } = localReducer || { localWatchlists: []}
+  const { localPositions, localWatchlists } = localReducer || { localPositions: [], localWatchlists: []}
   const { positions } = positionsReducer || { positions: [] }
   const { instruments } = instrumentsReducer || { instruments: {}}
 
-  return { historicalsPortfolios, portfolios, localWatchlists, instruments, positions }
+  return { historicalsPortfolios, portfolios, localPositions, localWatchlists, instruments, positions }
 }
 
 export default connect(mapStateToProps)(PortfolioPage)
