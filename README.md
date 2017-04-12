@@ -20,7 +20,7 @@ npm run dev
 
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity ******
 - [ ] extended_hours order
-- [ ] cash account check
+- [ ] cash account check for placein order **************
 - [ ] Dividends
 - [ ] Markets related
 - [ ] queue for pending oreders, if completed => new window notification

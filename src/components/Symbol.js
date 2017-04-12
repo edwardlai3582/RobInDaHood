@@ -8,7 +8,7 @@ import { findDOMNode } from 'react-dom';
 const style = {
 	border: '1px dashed gray',
 	padding: '5px 10px',
-	margin: '5px',
+	margin: '2px',
 	backgroundColor: 'white',
   color: 'black',
 	cursor: 'move'
@@ -34,7 +34,8 @@ const cardSource = {
 		return {
 			index: props.index,
 			listId: props.listId,
-			card: props.card
+			card: props.card,
+			type: 'CARD'
 		};
 	},
 

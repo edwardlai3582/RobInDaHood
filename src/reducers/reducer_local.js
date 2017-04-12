@@ -1,5 +1,5 @@
 import {
-  ADD_LOCAL_WATCHLISTS, ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLISTS, ADD_WATCHLIST_FOLDER
+  ADD_LOCAL_WATCHLISTS, ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLISTS, ADD_WATCHLIST_FOLDER
 
 } from '../actions'
 
@@ -95,9 +95,19 @@ const localReducer = (state = {
         ...state,
         localWatchlists: tempLocalWatchlists,
       }
-    case REORDER_LOCAL_WATCHLISTS:
+    case REORDER_LOCAL_WATCHLIST:
       tempLocalWatchlists = state.localWatchlists.slice(0);
       tempLocalWatchlists[action.watchlistIndex].watchlist = action.watchlist;
+      return {
+        ...state,
+        localWatchlists: tempLocalWatchlists
+      }
+    case REORDER_LOCAL_WATCHLISTS:
+      tempLocalWatchlists = state.localWatchlists.slice(0);
+      const firstItem = tempLocalWatchlists[action.aI];
+      tempLocalWatchlists[action.aI] = state.localWatchlists[action.bI];
+      tempLocalWatchlists[action.bI] = firstItem;
+
       return {
         ...state,
         localWatchlists: tempLocalWatchlists
