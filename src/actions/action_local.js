@@ -5,6 +5,12 @@ export const REMOVE_LOCAL_WATCHLIST = 'REMOVE_LOCAL_WATCHLIST'
 export const REORDER_LOCAL_WATCHLIST = 'REORDER_LOCAL_WATCHLIST'
 export const REORDER_LOCAL_WATCHLISTS = 'REORDER_LOCAL_WATCHLISTS'
 export const ADD_WATCHLIST_FOLDER = 'ADD_WATCHLIST_FOLDER'
+export const TOGGLE_LOCAL_WATCHLIST = 'TOGGLE_LOCAL_WATCHLIST'
+
+export const toggleLocalWatchlist = (index) => ({
+  type: TOGGLE_LOCAL_WATCHLIST,
+  index
+})
 
 export const addLocalWatchlistFolder = (name) => ({
   type: ADD_WATCHLIST_FOLDER,

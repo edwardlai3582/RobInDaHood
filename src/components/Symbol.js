@@ -2,8 +2,6 @@ import React, { Component } from 'react'; //, PropTypes
 import { DragSource, DropTarget } from 'react-dnd';
 
 import {flow} from '../utils';
-import { findDOMNode } from 'react-dom';
-
 
 const style = {
 	border: '1px dashed gray',
@@ -21,7 +19,7 @@ class Symbol extends Component {
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
-			<div style={{ ...style, opacity }}>
+			<div style={{ ...style, opacity }} ref={node => (this.node = node)}>
 				{card.text}
 			</div>
 		));
@@ -62,7 +60,7 @@ const cardTarget = {
 		}
 
 		// Determine rectangle on screen
-		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+		const hoverBoundingRect = component.node.getBoundingClientRect();
 
 		// Get vertical middle
 		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;

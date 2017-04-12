@@ -7,7 +7,8 @@ import { deleteToken,
          askPositions, askPositionsWithZero,
          askMultipleQuotes,
          addTab, selectTab,
-         resetPlaceOrderRelated
+         resetPlaceOrderRelated,
+         toggleLocalWatchlist
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
@@ -190,10 +191,11 @@ class DashboardPage extends Component {
       watchlistsMenu = (
         <LeftPanelModule
           moduleName="WATCHLIST"
-          localWatchlists={localWatchlists}
-          watchlistsData={watchlistsData}
+          localLists={localWatchlists}
+          listsData={watchlistsData}
           selectedKey={selectedKey}
           callback={this.handleaddTab}
+          toggleLocallist={(index)=>this.props.dispatch(toggleLocalWatchlist(index))}
         />
       )
 

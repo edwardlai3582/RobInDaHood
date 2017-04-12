@@ -16,14 +16,8 @@ class LeftPanelFolder extends Component {
     moduleData: PropTypes.array.isRequired,
     selectedKey: PropTypes.string.isRequired,
     callback: PropTypes.func.isRequired,
+    toggleLocallist: PropTypes.func.isRequired,
     quotes: PropTypes.object.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      folderIsOpen: false
-    };
   }
 
   handleClick = (id) => {
@@ -31,7 +25,7 @@ class LeftPanelFolder extends Component {
   }
 
   openClose = () => {
-    this.setState({folderIsOpen: !this.state.folderIsOpen});
+    this.props.toggleLocallist();
   }
 
   render() {
@@ -84,7 +78,7 @@ class LeftPanelFolder extends Component {
       open = this.props.positionsModuleOpen;
     }
     */
-    let open = this.state.folderIsOpen;
+    let open = this.props.open;
 
     return (
       <div className="moduleWrapper" >

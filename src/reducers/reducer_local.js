@@ -1,5 +1,5 @@
 import {
-  ADD_LOCAL_WATCHLISTS, ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLISTS, ADD_WATCHLIST_FOLDER
+  ADD_LOCAL_WATCHLISTS, ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLISTS, ADD_WATCHLIST_FOLDER, TOGGLE_LOCAL_WATCHLIST
 
 } from '../actions'
 
@@ -8,17 +8,25 @@ const localReducer = (state = {
   localWatchlists: []
 }, action) => {
   switch (action.type) {
+    case TOGGLE_LOCAL_WATCHLIST:
+      let tempLocalWatchlists = state.localWatchlists.slice(0);
+      tempLocalWatchlists[action.index].open = !state.localWatchlists[action.index].open
+      return {
+        ...state,
+        localWatchlists: tempLocalWatchlists
+      }
     case ADD_WATCHLIST_FOLDER:
       return {
         ...state,
-        localWatchlists: [...state.localWatchlists, {name: action.name, watchlist:[]}]
+        localWatchlists: [...state.localWatchlists, {name: action.name, open: false, watchlist:[]}]
       }
     case ADD_LOCAL_WATCHLISTS:
-      let tempLocalWatchlists = state.localWatchlists.slice(0);
+      tempLocalWatchlists = state.localWatchlists.slice(0);
       let temp = [];
       if(tempLocalWatchlists.length === 0){
         let defaultWatchlist = {};
         defaultWatchlist.name = "default";
+        defaultWatchlist.open = false;
         defaultWatchlist.watchlist = action.watchlists;
         tempLocalWatchlists.push(defaultWatchlist);
       }

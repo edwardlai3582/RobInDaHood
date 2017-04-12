@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { toggleWatchlistsModule,
-         togglePositionsModule
+         togglePositionsModule,
        } from '../actions'
 import '../styles/LeftPanelModule.css'
 import arrow from '../styles/arrow.png';
@@ -15,7 +15,7 @@ class LeftPanelModule extends Component {
     dispatch: PropTypes.func.isRequired,
 
     moduleName: PropTypes.string.isRequired,
-    watchlistsData: PropTypes.array.isRequired,
+    listsData: PropTypes.array.isRequired,
     selectedKey: PropTypes.string.isRequired,
     callback: PropTypes.func.isRequired
   }
@@ -30,16 +30,19 @@ class LeftPanelModule extends Component {
   }
 
   render() {
-    let { quotes, watchlistsData, callback, selectedKey, localWatchlists } =this.props;
+    let { quotes, listsData, callback, selectedKey, localLists, toggleLocallist } =this.props;
 
-    let data = watchlistsData.map((watchlistData,index) => {
+    let data = listsData.map((listData,index) => {
         return (<LeftPanelFolder
           key={index}
-          moduleName={""+localWatchlists[index].name}
-          moduleData={watchlistData}
+          index={index}
+          open={localLists[index].open}
+          moduleName={`${localLists[index].name}`}
+          moduleData={listData}
           selectedKey={selectedKey}
           callback={callback}
           quotes={quotes}
+          toggleLocallist={()=>toggleLocallist(index)}
         />)
     })
 

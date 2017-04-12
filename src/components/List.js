@@ -37,17 +37,7 @@ class List extends Component {
     let tempWatchlist = this.state.watchlist.slice(0);
     tempWatchlist[dragIndex] = tempWatchlist[hoverIndex];
     tempWatchlist[hoverIndex] = dragCard;
-    /*
-		this.setState(update(this.state, {
-			watchlist: {
-				$splice: [
-					[dragIndex, 1],
-					[hoverIndex, 0, dragCard]
-				]
-			}
-		}));
-    this.props.reorderLocalWatchlists();
-    */
+
     this.setState({ watchlist: tempWatchlist });
     this.props.reorderLocalWatchlist(tempWatchlist);
 	}
@@ -120,7 +110,7 @@ const cardListTarget = {
   },
 
   hover(props, monitor) {
-    const { id: draggedId, originalIndex, type } = monitor.getItem();
+    const { id: draggedId, type } = monitor.getItem(); //originalIndex
     const { id: overId } = props;
 
 		if(type === "CARD" || props.id === "default" ) {
@@ -148,7 +138,6 @@ const cardListTarget = {
 		};
 	}
 };
-
 
 export default flow([
   DropTarget(["CARD", "LIST"], cardListTarget, (connect, monitor) => ({

@@ -14,7 +14,7 @@
   cursor: pointer;
   padding: 5px 0 5px 10px;
   background-color: #313E3B;
-  color: #98A89E;
+  color: white;
 }
 
 .open {
@@ -35,7 +35,7 @@
 }
 
 .moduleDiv {
-  padding-left: calc( 25px + 0.6rem);
+  padding-left: calc( 25px + 1rem);
   cursor: pointer;
   background-color: #575B58;
   padding-top: 2px;
