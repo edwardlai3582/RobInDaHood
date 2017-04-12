@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react'; //, PropTypes
 import { DragSource, DropTarget } from 'react-dnd';
 
 import {flow} from '../utils';

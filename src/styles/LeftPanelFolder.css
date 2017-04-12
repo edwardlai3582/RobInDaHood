@@ -1,0 +1,62 @@
+.moduleWrapper {
+  text-align: left;
+}
+
+.moduleArrow{
+  position: relative;
+  background-color: none;
+  z-index: 1;
+  padding-left: 10px;
+}
+
+.folderTitle {
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 0 5px 10px;
+  background-color: #313E3B;
+  color: #98A89E;
+}
+
+.open {
+  top: -2px;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: 0px;
+  padding-right: 5px;
+  transform: rotate(0deg);
+}
+
+.close {
+  top: 0px;
+  width: 0.6rem;
+  height: 0.6rem;
+  padding-right: 5px;
+  transform: rotate(-90deg);
+}
+
+.moduleDiv {
+  padding-left: calc( 25px + 0.6rem);
+  cursor: pointer;
+  background-color: #575B58;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid black;
+  color: white;
+}
+
+.selectedModuleDiv {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.redDown {
+  color: #F35A2B;
+}
+
+.whiteNomove {
+  color: white;
+}
+
+.greenUp {
+  color: #00FF73;
+}

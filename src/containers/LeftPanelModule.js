@@ -5,29 +5,19 @@ import { toggleWatchlistsModule,
        } from '../actions'
 import '../styles/LeftPanelModule.css'
 import arrow from '../styles/arrow.png';
-import LeftPanelItem from '../components/LeftPanelItem'
-import { displayPercentage } from '../utils'
+import LeftPanelFolder from '../components/LeftPanelFolder'
 
 class LeftPanelModule extends Component {
   static propTypes = {
     watchlistsModuleOpen: PropTypes.bool.isRequired,
+    positionsModuleOpen: PropTypes.bool.isRequired,
     quotes: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
-  }
+    dispatch: PropTypes.func.isRequired,
 
-  shouldComponentUpdate(nextProps, nextState) {
-    /*
-    for(let i=0; i< nextProps.moduleData.length; i++){
-      if(Number(nextProps.quotes[nextProps.moduleData[i].symbol].last_trade_price) !== Number(this.props.quotes[nextProps.moduleData[i].symbol].last_trade_price)){
-        console.log(nextProps.moduleData[i].symbol);
-      }
-    }
-    */
-    return true;
-  }
-
-  handleClick = (id) => {
-    this.props.callback(this.props.moduleData[id]);
+    moduleName: PropTypes.string.isRequired,
+    watchlistsData: PropTypes.array.isRequired,
+    selectedKey: PropTypes.string.isRequired,
+    callback: PropTypes.func.isRequired
   }
 
   openClose = () => {
@@ -40,45 +30,18 @@ class LeftPanelModule extends Component {
   }
 
   render() {
-    let { quotes } =this.props;
+    let { quotes, watchlistsData, callback, selectedKey, localWatchlists } =this.props;
 
-    let data = this.props.moduleData.map((instrument, index) => {
-      return(
-        <LeftPanelItem
-          key={instrument.symbol}
-          symbol={instrument.symbol}
-          id={index}
-          onClick={()=>this.handleClick(index)}
-          className={this.props.selectedKey === instrument.symbol? "moduleDiv selectedModuleDiv" : "moduleDiv"}
-        >
-
-        {(quotes[instrument.symbol])?
-          (quotes[instrument.symbol].last_extended_hours_trade_price)?(
-            <div className={
-                (Number(quotes[instrument.symbol].last_extended_hours_trade_price) > Number(quotes[instrument.symbol].previous_close))?
-                  "greenUp"
-                  :
-                  (Number(quotes[instrument.symbol].last_extended_hours_trade_price) === Number(quotes[instrument.symbol].previous_close))?
-                  "whiteNomove":"redDown"
-            }>
-              {displayPercentage(quotes[instrument.symbol].last_extended_hours_trade_price, quotes[instrument.symbol].previous_close)}
-            </div>
-          ):(
-            <div className={
-                (Number(quotes[instrument.symbol].last_trade_price) > Number(quotes[instrument.symbol].previous_close))?
-                  "greenUp"
-                  :
-                  (Number(quotes[instrument.symbol].last_trade_price) === Number(quotes[instrument.symbol].previous_close))?
-                  "whiteNomove":"redDown"
-            }>
-              {displayPercentage(quotes[instrument.symbol].last_trade_price, quotes[instrument.symbol].previous_close)}
-            </div>
-
-        ): null}
-
-      </LeftPanelItem>
-      );
-    });
+    let data = watchlistsData.map((watchlistData,index) => {
+        return (<LeftPanelFolder
+          key={index}
+          moduleName={""+localWatchlists[index].name}
+          moduleData={watchlistData}
+          selectedKey={selectedKey}
+          callback={callback}
+          quotes={quotes}
+        />)
+    })
 
     let open = false;
     if(this.props.moduleName === "WATCHLIST"){

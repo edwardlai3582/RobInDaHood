@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react'; //, PropTypes
 //import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
 

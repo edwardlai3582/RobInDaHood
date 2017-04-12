@@ -148,7 +148,6 @@ class DashboardPage extends Component {
       }
     }
 
-
     if(instrumentsHasAllNeeded && localWatchlists.length > 0){
       let watchlistsData = [];
       localWatchlists.forEach((watchlist) => {
@@ -171,7 +170,9 @@ class DashboardPage extends Component {
         watchlistsData.push(watchlistData);
       });
 
+      /*
       watchlistsMenu= [];
+
 
       watchlistsData.forEach((watchlistData,index) => {
         watchlistsMenu.push(
@@ -184,14 +185,19 @@ class DashboardPage extends Component {
           />)
         )
       })
-      /*
-      watchlistsMenu = (<LeftPanelModule
-        moduleName="WATCHLIST"
-        moduleData={watchlistData}
-        selectedKey={selectedKey}
-        callback={this.handleaddTab}
-      />);
       */
+
+      watchlistsMenu = (
+        <LeftPanelModule
+          moduleName="WATCHLIST"
+          localWatchlists={localWatchlists}
+          watchlistsData={watchlistsData}
+          selectedKey={selectedKey}
+          callback={this.handleaddTab}
+        />
+      )
+
+      /*
       let positionsData = positions.map((instrument)=>{
         return {
           instrument: instrument.instrument,
@@ -206,6 +212,7 @@ class DashboardPage extends Component {
         selectedKey={selectedKey}
         callback={this.handleaddTab}
       />);
+      */
     }
 
     return (
