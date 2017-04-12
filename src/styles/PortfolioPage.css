@@ -1,1 +1,19 @@
+.addFolderWrapper {
+  display: flex;
+  justify-content:flex-end;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #46E3C1;
+}
 
+.addFolderButton {
+  background-color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #2B756A;
+  margin-bottom: 5px;
+}
+
+.addFolderButton:hover {
+  background-color: #E0F7F1;
+}

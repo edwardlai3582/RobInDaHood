@@ -2,7 +2,7 @@ import React, { Component,PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
 import '../styles/Search.css'
-import { addInstrument       } from '../actions'
+import { addInstrument } from '../actions'
 /* ----------- */
 /*    Utils    */
 /* ----------- */

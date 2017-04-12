@@ -5,6 +5,8 @@ export const REMOVE_LOCAL_WATCHLIST = 'REMOVE_LOCAL_WATCHLIST'
 export const REORDER_LOCAL_WATCHLIST = 'REORDER_LOCAL_WATCHLIST'
 export const REORDER_LOCAL_WATCHLISTS = 'REORDER_LOCAL_WATCHLISTS'
 export const ADD_WATCHLIST_FOLDER = 'ADD_WATCHLIST_FOLDER'
+export const DELETE_WATCHLIST_FOLDER = 'DELETE_WATCHLIST_FOLDER'
+export const RENAME_WATCHLIST_FOLDER = 'RENAME_WATCHLIST_FOLDER'
 export const TOGGLE_LOCAL_WATCHLIST = 'TOGGLE_LOCAL_WATCHLIST'
 
 export const toggleLocalWatchlist = (index) => ({
@@ -12,15 +14,26 @@ export const toggleLocalWatchlist = (index) => ({
   index
 })
 
+export const renameLocalWatchlistFolder = (index, name) => ({
+  type: RENAME_WATCHLIST_FOLDER,
+  index,
+  name
+})
+
 export const addLocalWatchlistFolder = (name) => ({
   type: ADD_WATCHLIST_FOLDER,
   name
 })
 
-export const reorderLocalWatchlist = (watchlistIndex, watchlist) => ({
+export const deleteLocalWatchlistFolder = (index) => ({
+  type: DELETE_WATCHLIST_FOLDER,
+  index
+})
+
+export const reorderLocalWatchlist = (listIndex, list) => ({
   type: REORDER_LOCAL_WATCHLIST,
-  watchlistIndex,
-  watchlist
+  listIndex,
+  list
 })
 
 export const reorderLocalWatchlists = (aI, bI) => ({
@@ -28,14 +41,14 @@ export const reorderLocalWatchlists = (aI, bI) => ({
   aI, bI
 })
 
-export const addLocalWatchlists = watchlists => ({
+export const addLocalWatchlists = lists => ({
   type: ADD_LOCAL_WATCHLISTS,
-  watchlists
+  lists
 })
 
-export const addLocalWatchlist = watchlist => ({
+export const addLocalWatchlist = list => ({
   type: ADD_LOCAL_WATCHLIST,
-  watchlist
+  list
 })
 
 export const removeLocalWatchlist = instrumentId => ({

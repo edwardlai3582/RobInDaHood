@@ -19,49 +19,52 @@ class ListContainer extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
 
-    localWatchlists: PropTypes.array.isRequired,
+    localLists: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
-    reorderLocalWatchlist: PropTypes.func.isRequired
+    reorderLocalList: PropTypes.func.isRequired,
+    reorderLocalLists: PropTypes.func.isRequired,
+    deleteLocalListFolder: PropTypes.func.isRequired,
+    renameLocallistFolder: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      watchlists:[]
+      lists:[]
     };
   }
 
   componentDidMount(){
-    const { localWatchlists, instruments, positions } = this.props;
-    if(!localWatchlists) return;
-    //this.setState({watchlists: localWatchlists})
-    this.setWatchlistsData(localWatchlists, instruments, positions);
+    const { localLists, instruments, positions } = this.props;
+    if(!localLists) return;
+
+    this.setListsData(localLists, instruments, positions);
   }
 
   componentWillReceiveProps(nextProps){
-    const { localWatchlists, instruments, positions } = nextProps;
-    if(!localWatchlists) return;
-    //this.setState({watchlists: localWatchlists})
-    this.setWatchlistsData(localWatchlists, instruments, positions);
+    const { localLists, instruments, positions } = nextProps;
+    if(!localLists) return;
+
+    this.setListsData(localLists, instruments, positions);
   }
 
-  setWatchlistsData = (localWatchlists, instruments, positions) => {
+  setListsData = (localLists, instruments, positions) => {
     let instrumentsHasAllNeeded = true;
 
-    for(let i=0; i<localWatchlists.length; i++ ){
-      for(let j=0; j< localWatchlists[i].watchlist.length; j++){
-        if(typeof instruments[localWatchlists[i].watchlist[j].instrument] === "undefined"){
+    for(let i=0; i<localLists.length; i++ ){
+      for(let j=0; j< localLists[i].list.length; j++){
+        if(typeof instruments[localLists[i].list[j].instrument] === "undefined"){
           instrumentsHasAllNeeded = false;
           return null;
         }
       }
     }
 
-    if(instrumentsHasAllNeeded && localWatchlists){
-      let tempWatchlists = localWatchlists.map((tempwatchlist) => {
+    if(instrumentsHasAllNeeded && localLists){
+      let tempLists = localLists.map((tempList) => {
         let temp = {}
-        temp.list = tempwatchlist.watchlist.filter((instrument)=>{
+        temp.list = tempList.list.filter((instrument)=>{
           for(let i=0; i< positions.length; i++){
             if((positions[i].instrument === instrument.instrument)){
               return false;
@@ -79,11 +82,11 @@ class ListContainer extends Component {
           };
         });
 
-        temp.id = tempwatchlist.name;
+        temp.id = tempList.name;
         return temp;
       });
 
-      this.setState({ watchlists: tempWatchlists });
+      this.setState({ lists: tempLists });
     }
 
   }
@@ -91,7 +94,7 @@ class ListContainer extends Component {
   moveList = (id, atIndex) => {
     const { list, index } = this.findList(id);
     this.setState(update(this.state, {
-      watchlists: {
+      lists: {
         $splice: [
           [index, 1],
           [atIndex, 0, list],
@@ -102,30 +105,33 @@ class ListContainer extends Component {
   }
 
   findList = (id) => {
-    const { watchlists } = this.state;
-    const list = watchlists.filter(c => c.id === id)[0];
+    const { lists } = this.state;
+    const list = lists.filter(c => c.id === id)[0];
 
     return {
       list,
-      index: watchlists.indexOf(list),
+      index: lists.indexOf(list),
     };
   }
 
   render() {
-    const { reorderLocalWatchlists, reorderLocalWatchlist, connectDropTarget } = this.props;
-    const { watchlists } = this.state;
+    const { reorderLocalLists, reorderLocalList, deleteLocalListFolder, connectDropTarget, renameLocallistFolder } = this.props;
+    const { lists } = this.state;
+
 
     return connectDropTarget(
-      <div className="draggableWatchlistsWrapper">
-        {watchlists.map((localWatchlist, index)=>{
-          return <List key={localWatchlist.id}
-                       id={localWatchlist.id}
-                       listName={localWatchlist.id}
-                       list={localWatchlist.list}
-                       reorderLocalWatchlist={(watchlist)=>reorderLocalWatchlist(index, watchlist)}
+      <div className="draggableListsWrapper">
+        {lists.map((localList, index)=>{
+          return <List key={localList.id}
+                       id={localList.id}
+                       listName={localList.id}
+                       list={localList.list}
+                       reorderLocalList={(list)=>reorderLocalList(index, list)}
                        moveList={this.moveList}
                        findList={this.findList}
-                       reorderLocalWatchlists={reorderLocalWatchlists}
+                       reorderLocalLists={reorderLocalLists}
+                       deleteLocalListFolder={()=>deleteLocalListFolder(index)}
+                       renameLocallistFolder={(name)=>renameLocallistFolder(index, name)}
                   />
         })}
       </div>

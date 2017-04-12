@@ -8,12 +8,13 @@ import { deleteToken,
          askMultipleQuotes,
          addTab, selectTab,
          resetPlaceOrderRelated,
-         toggleLocalWatchlist
+         toggleLocalWatchlist,
+         toggleWatchlistsModule, togglePositionsModule
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
 import Search from './Search'
-import LeftPanelModule from './LeftPanelModule'
+import LeftPanelModule from '../components/LeftPanelModule'
 import RightPanel from './RightPanel'
 import '../styles/DashboardPage.css'
 
@@ -136,7 +137,7 @@ class DashboardPage extends Component {
   }
 
   render() {
-    const { watchlists, positions, instruments, selectedKey, localWatchlists } = this.props
+    const { watchlists, positions, instruments, selectedKey, localWatchlists, dispatch, quotes, watchlistsModuleOpen } = this.props
     let watchlistsMenu = "loading watchlists...";
     let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
@@ -152,7 +153,7 @@ class DashboardPage extends Component {
     if(instrumentsHasAllNeeded && localWatchlists.length > 0){
       let watchlistsData = [];
       localWatchlists.forEach((watchlist) => {
-        let watchlistData = watchlist.watchlist.filter((instrument)=>{
+        let watchlistData = watchlist.list.filter((instrument)=>{
           for(let i=0; i< positions.length; i++){
             if((positions[i].instrument === instrument.instrument)){
               return false;
@@ -171,23 +172,6 @@ class DashboardPage extends Component {
         watchlistsData.push(watchlistData);
       });
 
-      /*
-      watchlistsMenu= [];
-
-
-      watchlistsData.forEach((watchlistData,index) => {
-        watchlistsMenu.push(
-          (<LeftPanelModule
-            key={index}
-            moduleName="WATCHLIST"
-            moduleData={watchlistData}
-            selectedKey={selectedKey}
-            callback={this.handleaddTab}
-          />)
-        )
-      })
-      */
-
       watchlistsMenu = (
         <LeftPanelModule
           moduleName="WATCHLIST"
@@ -195,7 +179,10 @@ class DashboardPage extends Component {
           listsData={watchlistsData}
           selectedKey={selectedKey}
           callback={this.handleaddTab}
-          toggleLocallist={(index)=>this.props.dispatch(toggleLocalWatchlist(index))}
+          toggleLocallist={(index)=>dispatch(toggleLocalWatchlist(index))}
+          toggleModule={()=>dispatch(toggleWatchlistsModule())}
+          moduleOpen={watchlistsModuleOpen}
+          quotes={quotes}
         />
       )
 
@@ -267,7 +254,7 @@ class DashboardPage extends Component {
 }
 
 const mapStateToProps = state => {
-  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, positionsReducer, instrumentsReducer, localReducer } = state
+  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, positionsReducer, instrumentsReducer, localReducer, uiReducer, quotesReducer } = state
   const { token } = tokenReducer || { token: "" }
   const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
   const { accountNumber } = accountReducer || { accountNumber: "" }
@@ -275,8 +262,10 @@ const mapStateToProps = state => {
   const { localWatchlists } = localReducer || { localWatchlists: []}
   const { positions, positionsWithZero } = positionsReducer || { positions: [], positionsWithZero:[]}
   const { instruments } = instrumentsReducer || { instruments: {}}
+  const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer || { watchlistsModuleOpen: false, positionsModuleOpen:false }
+  const { quotes } = quotesReducer || { quotes: {} }
 
-  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments, localWatchlists}
+  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments, localWatchlists, watchlistsModuleOpen, positionsModuleOpen, quotes }
 }
 
 export default connect(mapStateToProps)(DashboardPage)

@@ -10,11 +10,28 @@
   margin-bottom: 0px;
 }
 
-.listWrapper > h3 {
+.listHeaderWrapper {
+  display: flex;
+  justify-content:space-between;
+  flex-direction:row;
   background-color: var(--main-color);
+  cursor: move;
+}
+
+.listHeaderWrapper > h3 {
   padding: 5px;
   text-align: center;
   color: white;
+  margin-left: 5px;
+}
+
+.listHeaderWrapper > button {
+  border: none;
+  background-color: #FA5882;
+  color: white;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .listWrapper > section {
