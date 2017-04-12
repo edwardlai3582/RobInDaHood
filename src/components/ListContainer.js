@@ -21,7 +21,7 @@ class ListContainer extends Component {
 
     localLists: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
-    positions: PropTypes.array.isRequired,
+    checkLists: PropTypes.array.isRequired,
     reorderLocalList: PropTypes.func.isRequired,
     reorderLocalLists: PropTypes.func.isRequired,
     deleteLocalListFolder: PropTypes.func.isRequired,
@@ -36,20 +36,20 @@ class ListContainer extends Component {
   }
 
   componentDidMount(){
-    const { localLists, instruments, positions } = this.props;
+    const { localLists, instruments, checkLists } = this.props;
     if(!localLists) return;
 
-    this.setListsData(localLists, instruments, positions);
+    this.setListsData(localLists, instruments, checkLists);
   }
 
   componentWillReceiveProps(nextProps){
-    const { localLists, instruments, positions } = nextProps;
+    const { localLists, instruments, checkLists } = nextProps;
     if(!localLists) return;
 
-    this.setListsData(localLists, instruments, positions);
+    this.setListsData(localLists, instruments, checkLists);
   }
 
-  setListsData = (localLists, instruments, positions) => {
+  setListsData = (localLists, instruments, checkLists) => {
     let instrumentsHasAllNeeded = true;
 
     for(let i=0; i<localLists.length; i++ ){
@@ -65,8 +65,8 @@ class ListContainer extends Component {
       let tempLists = localLists.map((tempList) => {
         let temp = {}
         temp.list = tempList.list.filter((instrument)=>{
-          for(let i=0; i< positions.length; i++){
-            if((positions[i].instrument === instrument.instrument)){
+          for(let i=0; i< checkLists.length; i++){
+            if((checkLists[i].instrument === instrument.instrument)){
               return false;
             }
           }

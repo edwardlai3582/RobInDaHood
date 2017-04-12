@@ -149,7 +149,7 @@ class PortfolioPage extends Component {
           <ListContainer
             localLists={localPositions}
             instruments={instruments}
-            positions={[]}
+            checkLists={[]}
             reorderLocalList={(positionIndex, position)=>dispatch(reorderLocalPosition(positionIndex, position))}
             deleteLocalListFolder={(index)=>dispatch(deleteLocalPositionFolder(index))}
             reorderLocalLists={(aI, bI)=>dispatch(reorderLocalPositions(aI, bI))}
@@ -167,7 +167,7 @@ class PortfolioPage extends Component {
           <ListContainer
             localLists={localWatchlists}
             instruments={instruments}
-            positions={positions}
+            checkLists={positions}
             reorderLocalList={(watchlistIndex, watchlist)=>dispatch(reorderLocalWatchlist(watchlistIndex, watchlist))}
             deleteLocalListFolder={(index)=>dispatch(deleteLocalWatchlistFolder(index))}
             reorderLocalLists={(aI, bI)=>dispatch(reorderLocalWatchlists(aI, bI))}
