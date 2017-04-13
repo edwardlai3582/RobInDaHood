@@ -21,14 +21,11 @@ npm run dev
 - [ ] https://github.com/ameyms/react-animated-number
 - [x] right click close tab (contextmenu) CANT DO NOW
 - [ ] https://github.com/mariotacke/redux-electron-ipc
-- [ ] https://github.com/jschr/electron-react-redux-boilerplate
-
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity ******
 - [ ] extended_hours order
 - [x] cash account check for placein order **************
 - [ ] Dividends
 - [ ] Markets related
-- [ ] queue for pending oreders, if completed => new window notification
+- [ ] queue for pending oreders, if completed => new window notification <= just use /midlands/notifications/stack/ ?
 - [x] enable addin folders
-- [ ] portfolio page
-- [ ] change portfolio time of interval
+- [ ] portfolio page PieChart

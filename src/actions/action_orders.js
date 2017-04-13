@@ -200,7 +200,8 @@ export const placeOrder = (order) => (dispatch, getState) => {
       dispatch(askPositions());
     }
     else{
-      dispatch(orderDidntPlace(JSON.stringify(jsonResult)));
+      console.log(jsonResult);
+      dispatch(orderDidntPlace(jsonResult.detail));
     }
   })
   .catch(function(reason) {

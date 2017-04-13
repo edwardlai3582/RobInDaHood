@@ -126,6 +126,10 @@ class Instrument extends Component {
       this.askOwnHistoricalsOrders();
     }
 
+    if(nextProps.placingOrder === false && this.props.placingOrder === true) {
+      this.askOwnHistoricalsOrders();  
+    }
+
     for(let i=0; i< nextProps.watchlists.length; i++){
       if(nextProps.watchlists[i].instrument === this.props.instrument){
         this.setState({isInWatchLists:true});

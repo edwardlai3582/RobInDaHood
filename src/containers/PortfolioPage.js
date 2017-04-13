@@ -142,7 +142,7 @@ class PortfolioPage extends Component {
         <SectionWrapper SectionTitle={""}>
           <div className="addFolderWrapper">
             <h6> Positions </h6>
-            <button className="addFolderButton" onClick={()=>dispatch(addLocalPositionFolder(localPositions.length))}>
+            <button className="addFolderButton" onClick={()=>dispatch(addLocalPositionFolder(`Folder ${localPositions.length}`))}>
               ADD FOLDER
             </button>
           </div>
@@ -161,7 +161,7 @@ class PortfolioPage extends Component {
         <SectionWrapper SectionTitle={""}>
           <div className="addFolderWrapper">
             <h6> Watchlists </h6>
-            <button className="addFolderButton" onClick={()=>dispatch(addLocalWatchlistFolder(localWatchlists.length))}>
+            <button className="addFolderButton" onClick={()=>dispatch(addLocalWatchlistFolder(`Folder ${localWatchlists.length}`))}>
               ADD FOLDER
             </button>
           </div>
