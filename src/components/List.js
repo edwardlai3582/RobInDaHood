@@ -85,6 +85,7 @@ class List extends Component {
 		              text={`${listName}`}
 		              paramName="message"
 		              change={this.dataChanged}
+									style={{cursor:"text"}}
 		            />
 							)}
 

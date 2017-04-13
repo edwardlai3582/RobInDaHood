@@ -96,6 +96,9 @@ export const askMultipleQuotes = () => (dispatch, getState) => {
   let symbolArray = Object.keys(getState().instrumentsReducer.instruments).map((instrumentKey)=>{
     return getState().instrumentsReducer.instruments[instrumentKey].symbol;
   });
+  if(symbolArray.length === 0) {
+    return;
+  }
   //console.log(getState().instrumentsReducer);
   //console.log(symbolArray);
   return fetch(`https://api.robinhood.com/quotes/?symbols=${symbolArray.join(',')}`, {

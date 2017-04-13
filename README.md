@@ -11,10 +11,15 @@ npm install
 npm run dev
 ```
 
+## build
+1. Run `npm run dist`
+2. Rename build directory to built_by_create_react_app
+3. Create a directory build in the root and save an icon.ico (Windows app icon) into it.
+
 ## Todos
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [ ] https://github.com/ameyms/react-animated-number
-- [ ] electron right click close tab
+- [x] right click close tab (contextmenu) CANT DO NOW
 - [ ] https://github.com/mariotacke/redux-electron-ipc
 - [ ] https://github.com/jschr/electron-react-redux-boilerplate
 
@@ -24,6 +29,6 @@ npm run dev
 - [ ] Dividends
 - [ ] Markets related
 - [ ] queue for pending oreders, if completed => new window notification
-- [ ] enable addin folders
+- [x] enable addin folders
 - [ ] portfolio page
 - [ ] change portfolio time of interval

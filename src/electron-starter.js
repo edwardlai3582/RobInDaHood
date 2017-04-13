@@ -24,7 +24,7 @@ function createWindow() {
 
     // and load the index.html of the app.
     const startUrl = process.env.ELECTRON_START_URL || url.format({
-            pathname: path.join(__dirname, '/../build/index.html'),
+            pathname: path.join(__dirname, '/../built_by_create_react_app/index.html'),
             protocol: 'file:',
             slashes: true
         });
