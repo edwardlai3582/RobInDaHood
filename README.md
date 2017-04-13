@@ -11,9 +11,9 @@ npm install
 npm run dev
 ```
 
-## build
-1. Run `npm run dist`
-2. Rename build directory to built_by_create_react_app
+## Build
+1. Run `npm run dist`.
+2. Rename `build` directory to `built_by_create_react_app`.
 3. Create a directory build in the root and save an icon.ico (Windows app icon) into it.
 
 ## Todos
