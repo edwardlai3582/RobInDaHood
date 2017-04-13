@@ -388,13 +388,13 @@ class Instrument extends Component {
                     onClick={() => this.changeHisQuotes("5year", "week", "regular", "5Y")}>5Y</button>
           </div>
 
-          {(quotes[symbol] && instruments[instrument].tradeable && account && account.margin_balances)?(
+          {(quotes[symbol] && instruments[instrument].tradeable && account )?(
             <PlaceOrder symbol={symbol}
-                        shares={(eachPosition[instrument])? eachPosition[instrument].quantity : 0}
-                        cashCanUse={account.margin_balances.unallocated_margin_cash}
+                        shares={(eachPosition[instrument])? eachPosition[instrument].quantity : 0 }
+                        cashCanUse={(account.type === "margin")? account.margin_balances.unallocated_margin_cash : account.cash_balances.buying_power }
                         accountUrl={account.url}
                         instrumentUrl={instrument}
-                        currentPrice={quotes[symbol].last_extended_hours_trade_price || quotes[symbol].last_trade_price}
+                        currentPrice={ quotes[symbol].last_extended_hours_trade_price || quotes[symbol].last_trade_price }
                         placeOrder={(order)=>this.props.dispatch(placeOrder(order))}
                         placingOrder={placingOrder}
                         orderPlacedResult={orderPlacedResult}

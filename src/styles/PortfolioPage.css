@@ -1,8 +1,13 @@
 .addFolderWrapper {
   display: flex;
-  justify-content:flex-end;
+  justify-content:space-between;
+  align-items:flex-end;
   margin-bottom: 5px;
   border-bottom: 1px solid #46E3C1;
+}
+
+.addFolderWrapper > h6 {
+  font-size: 2rem;
 }
 
 .addFolderButton {

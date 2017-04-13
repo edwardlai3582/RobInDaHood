@@ -139,8 +139,9 @@ class PortfolioPage extends Component {
           </div>
         </SectionWrapper>
 
-        <SectionWrapper SectionTitle={"Positions"}>
+        <SectionWrapper SectionTitle={""}>
           <div className="addFolderWrapper">
+            <h6> Positions </h6>
             <button className="addFolderButton" onClick={()=>dispatch(addLocalPositionFolder(localPositions.length))}>
               ADD FOLDER
             </button>
@@ -157,8 +158,9 @@ class PortfolioPage extends Component {
           />
         </SectionWrapper>
 
-        <SectionWrapper SectionTitle={"Watchlists"}>
+        <SectionWrapper SectionTitle={""}>
           <div className="addFolderWrapper">
+            <h6> Watchlists </h6>
             <button className="addFolderButton" onClick={()=>dispatch(addLocalWatchlistFolder(localWatchlists.length))}>
               ADD FOLDER
             </button>
