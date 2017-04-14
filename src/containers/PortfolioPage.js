@@ -1,10 +1,20 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
- askHistoricalsPortfolios, askPortfolios,
- reorderLocalWatchlist, addLocalWatchlistFolder, deleteLocalWatchlistFolder, reorderLocalWatchlists, renameLocalWatchlistFolder,
- reorderLocalPosition, addLocalPositionFolder, deleteLocalPositionFolder, reorderLocalPositions, renameLocalPositionFolder,
- updatePortfolioPageQuote, setPortfolioPageSelectedButton
+ askHistoricalsPortfolios,
+ askPortfolios,
+ reorderLocalWatchlist,
+ addLocalWatchlistFolder,
+ deleteLocalWatchlistFolder,
+ reorderLocalWatchlists,
+ renameLocalWatchlistFolder,
+ reorderLocalPosition,
+ addLocalPositionFolder,
+ deleteLocalPositionFolder,
+ reorderLocalPositions,
+ renameLocalPositionFolder,
+ updatePortfolioPageQuote,
+ setPortfolioPageSelectedButton
 } from '../actions'
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
