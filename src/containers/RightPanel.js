@@ -50,11 +50,6 @@ class RightPanel extends Component {
     dispatch: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
-
   handleTabSelect = (e, key, currentTabs) => {
     this.props.dispatch(selectTab(key));
   }

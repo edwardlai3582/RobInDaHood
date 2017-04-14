@@ -24,8 +24,10 @@ npm run dev
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity ******
 - [ ] extended_hours order
 - [x] cash account check for placein order **************
-- [ ] Dividends
+- [ ] Dividends related
 - [ ] Markets related
 - [ ] queue for pending oreders, if completed => new window notification <= just use /midlands/notifications/stack/ ?
 - [x] enable addin folders
 - [ ] portfolio page PieChart
+- [ ] refactor the code
+- [ ] folder name duplicate check ***

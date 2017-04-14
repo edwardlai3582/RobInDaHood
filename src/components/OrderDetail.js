@@ -11,11 +11,6 @@ class OrderDetail extends Component {
     cancelCurrentOrderState: PropTypes.string.isRequired
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     let { currentOrder, isAskingCurrentOrder, currentOrderFailedReason, cancelCurrentOrderState, instrument, cancelOrder } = this.props;
 

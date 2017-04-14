@@ -54,7 +54,6 @@ class List extends Component {
 			// data = { description: "New validated text comes here" }
 			// Update your model from here
 			let name = listName.message;
-			console.log(name)
 			this.setState({listName: name})
 			this.props.renameLocallistFolder(name);
 	}

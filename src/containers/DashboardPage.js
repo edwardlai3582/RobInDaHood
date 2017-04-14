@@ -199,7 +199,7 @@ class DashboardPage extends Component {
 
         positionsData.push(positionData);
       });
-    
+
       positionsMenu = (<LeftPanelModule
         moduleName="POSITIONS"
         localLists={localPositions}

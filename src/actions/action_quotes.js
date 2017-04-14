@@ -93,6 +93,7 @@ export const addMultipleQuotes = (quotesArray) => ({
 })
 
 export const askMultipleQuotes = () => (dispatch, getState) => {
+  console.log('askMultipleQuotes');
   let symbolArray = Object.keys(getState().instrumentsReducer.instruments).map((instrumentKey)=>{
     return getState().instrumentsReducer.instruments[instrumentKey].symbol;
   });
@@ -110,7 +111,7 @@ export const askMultipleQuotes = () => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
+    console.log(jsonResult.results);
     if(jsonResult.results){
       dispatch(addMultipleQuotes(jsonResult.results));
     }
