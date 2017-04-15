@@ -110,3 +110,18 @@ export const askPortfolios = () => (dispatch, getState) => {
     console.log(reason);
   });
 }
+
+// Refactor - portfolio page
+
+export const PORTFOLIO_PAGE_UPDATE_QUOTES = 'PORTFOLIO_PAGE_UPDATE_QUOTES'
+export const PORTFOLIO_PAGE_SET_SELECTED_BUTTON = 'PORTFOLIO_PAGE_SET_SELECTED_BUTTON'
+
+export const updatePortfolioPageQuote = (quotes) => ({
+  type: PORTFOLIO_PAGE_UPDATE_QUOTES,
+  quotes
+});
+
+export const setPortfolioPageSelectedButton = (selectedButton) => ({
+  type: PORTFOLIO_PAGE_SET_SELECTED_BUTTON,
+  selectedButton
+});

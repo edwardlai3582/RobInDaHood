@@ -1,10 +1,21 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
-         askHistoricalsPortfolios, askPortfolios,
-         reorderLocalWatchlist, addLocalWatchlistFolder, deleteLocalWatchlistFolder, reorderLocalWatchlists, renameLocalWatchlistFolder,
-         reorderLocalPosition, addLocalPositionFolder, deleteLocalPositionFolder, reorderLocalPositions, renameLocalPositionFolder
-       } from '../actions'
+ askHistoricalsPortfolios,
+ askPortfolios,
+ reorderLocalWatchlist,
+ addLocalWatchlistFolder,
+ deleteLocalWatchlistFolder,
+ reorderLocalWatchlists,
+ renameLocalWatchlistFolder,
+ reorderLocalPosition,
+ addLocalPositionFolder,
+ deleteLocalPositionFolder,
+ reorderLocalPositions,
+ renameLocalPositionFolder,
+ updatePortfolioPageQuote,
+ setPortfolioPageSelectedButton
+} from '../actions'
 import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
 import SectionWrapper from '../components/SectionWrapper'
@@ -14,76 +25,168 @@ import '../styles/PortfolioPage.css'
 import ListContainer from '../components/ListContainer'
 
 class PortfolioPage extends Component {
+
   static propTypes = {
     historicalsPortfolios: PropTypes.object.isRequired,
     portfolios: PropTypes.object.isRequired,
     isCurrent: PropTypes.bool.isRequired,
     localWatchlists: PropTypes.array.isRequired,
     positions: PropTypes.array.isRequired,
-    instruments: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
+    instruments: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      quotes: {
-        span: "day",
-        interval: "5minute",
-        bounds: "trading",
-        selectedButtonName: "1D"
-      },
-      threeMinutesInterval: undefined,
-      oneMinuteInterval: undefined
-    };
+    this.oneMinuteInterval = undefined;
+    this.quoteOptions = [{
+      id: '1D',
+      display: '1D',
+      span: 'day',
+      interval: '5minute',
+      bounds: 'trading'
+    },
+    {
+      id: '1W',
+      display: '1W',
+      span: 'week',
+      interval: '10minute',
+      bounds: ''
+    },
+    {
+      id: '1M',
+      display: '1M',
+      span: 'year',
+      interval: 'day',
+      bounds: ''
+    },
+    {
+      id: '3M',
+      display: '3M',
+      span: 'year',
+      interval: 'day',
+      bounds: ''
+    },
+    {
+      id: '1Y',
+      display: '1Y',
+      span: 'year',
+      interval: 'day',
+      bounds: ''
+    },
+    {
+      id: 'all',
+      display: 'ALL',
+      span: 'all',
+      interval: '',
+      bounds: ''
+    }];
+    this.startPortfolioPoller = this.startPortfolioPoller.bind(this);
+    this.clearPortfolioPoller = this.clearPortfolioPoller.bind(this);
+    this.oneMinuteJobs = this.oneMinuteJobs.bind(this);
+    this.renderQuoteChangeButtons = this.renderQuoteChangeButtons.bind(this);
+  }
+
+  oneMinuteJobs() {
+    const { quotes, selectedButton } = this.props;
+    // Only poll history if we are looking at the 1D tab
+    if(selectedButton === '1D'){
+      this.props.onFetchPortfolioHistory(quotes);
+    }
+    this.props.onFetchPortfolio();
+  }
+
+  startPortfolioPoller(){
+    this.oneMinuteInterval = setInterval(this.oneMinuteJobs, 60000);
+  }
+
+  clearPortfolioPoller(){
+    clearInterval(this.oneMinuteInterval);
+  }
+
+  renderQuoteChangeButtons() {
+    const { selectedButton, onQuoteChanged } = this.props;
+    return (
+      <div className="quotesButtonsWrapper">
+        {
+          this.quoteOptions.map(({ id, display, span, interval, bounds }, index) => {
+            const isButtonSelected = selectedButton === id;
+            const buttonClassName = `quotesButton ${ isButtonSelected && selectedButton}`
+            return (
+              <button
+                key={ index }
+                className={ buttonClassName }
+                onClick={ onQuoteChanged.bind(this, id, {
+                  span,
+                  interval,
+                  bounds
+                })}
+              >
+                { display }
+              </button>
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+  shouldFetchHistoryAgain(oldQuotes, newQuotes){
+    return (
+      oldQuotes.span !== newQuotes.span ||
+      oldQuotes.interval !== newQuotes.interval ||
+      oldQuotes.bounds !== newQuotes.bounds
+    )
+  }
+
+  componentWillReceiveProps({ quotes: newQuotes }){
+    // check the old quote and new quotes if it has changed requery for the history
+    const { quotes: oldQuotes, onFetchPortfolioHistory } = this.props;
+    // Should replace this with shallow-compare from react-addons
+    // or some equivalent object equality checker
+    const requeryForHistory = this.shouldFetchHistoryAgain(oldQuotes, newQuotes);
+    if(requeryForHistory){
+      onFetchPortfolioHistory(newQuotes);
+    }
   }
 
   componentDidMount(){
-    this.props.dispatch(askHistoricalsPortfolios("day", "5minute", "trading"));
-    this.props.dispatch(askPortfolios());
-
-    // store intervalId in the state so it can be accessed later:
-    let intervalThree = setInterval(this.threeMinutesJobs, 180000);
-    this.setState({threeMinutesInterval: intervalThree});
-    let intervalOne = setInterval(this.oneMinuteJobs, 30000);
-    this.setState({oneMinuteInterval: intervalOne})
+    // Fetch initial data for the portfolio
+    this.props.onFetchPortfolioHistory(this.props.quotes);
+    this.props.onFetchPortfolio();
+    // Start the 1 minute poller to requery for data
+    this.startPortfolioPoller();
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.threeMinutesInterval);
-    clearInterval(this.state.oneMinuteInterval);
+    this.clearPortfolioPoller();
   }
-
-  componentWillReceiveProps(nextProps){
-    //console.log(nextProps.localWatchlists);
-  }
-
-  threeMinutesJobs = () => {
-    /*
-    const { span, interval, bounds, selectedButtonName } = this.state.quotes;
-    if(selectedButtonName === "1D"){
-      this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
-    }
-    */
-  }
-
-  oneMinuteJobs = () => {
-    const { span, interval, bounds, selectedButtonName } = this.state.quotes;
-    if(selectedButtonName === "1D"){
-      this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
-    }
-    this.props.dispatch(askPortfolios());
-  }
-
-  changeHisQuotes = (span, interval, bounds, selectedButtonName) => {
-    this.setState({ quotes: { span: span, interval: interval, bounds: bounds, selectedButtonName: selectedButtonName } });
-    this.props.dispatch(askHistoricalsPortfolios(span, interval, bounds));
-  }
-
 
   render() {
-    const { isCurrent, historicalsPortfolios, portfolios, localWatchlists, localPositions, instruments, positions, dispatch } = this.props
-    const { span, interval, selectedButtonName } = this.state.quotes;
+    const {
+      isCurrent,
+      historicalsPortfolios,
+      portfolios,
+      localWatchlists,
+      localPositions,
+      instruments,
+      positions,
+      quotes,
+      selectedButton,
+      // position handlers
+      onAddFolder,
+      onDeleteFolder,
+      onReorderPosition,
+      onReorderLocalPosition,
+      onRenameLocalPosition,
+      // watchlist handlers,
+      onAddWatchListFolder,
+      onDeleteWatchListFolder,
+      onReorderWatchList,
+      onReorderLocalWatchList,
+      onRenameWatchListFolder
+    } = this.props
+
+    const { span, interval } = quotes;
 
     //show null if not cuttent page
     if(!isCurrent){ return null; }
@@ -94,7 +197,7 @@ class PortfolioPage extends Component {
           { `$${(portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity).toFixed(2) : Number(portfolios.last_core_equity).toFixed(2)}` }
         </div>
         <HistoryPriceDisplay
-          selectedButtonName={selectedButtonName}
+          selectedButtonName={selectedButton}
           historicals={historicalsPortfolios[span+interval].equity_historicals}
           previous_close={portfolios.adjusted_equity_previous_close.toString()}
           last_trade_price={portfolios.last_core_equity}
@@ -107,7 +210,7 @@ class PortfolioPage extends Component {
     let quotesBlock = (portfolios && historicalsPortfolios[span+interval])?
       (<QuotesForPortfolios
           historicals={historicalsPortfolios[span+interval].equity_historicals}
-          selectedButtonName={selectedButtonName}
+          selectedButtonName={selectedButton}
           previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
 
@@ -123,75 +226,123 @@ class PortfolioPage extends Component {
         <SectionWrapper SectionTitle={""}>
           {priceRelatedBlock}
           {quotesBlock}
-          <div className="quotesButtonsWrapper">
-            <button className={selectedButtonName==="1D"? "quotesButton selectedButton": "quotesButton"}
-                    onClick={() => this.changeHisQuotes("day", "5minute", "trading", "1D")}>1D</button>
-            <button className={selectedButtonName==="1W"? "quotesButton selectedButton": "quotesButton"}
-                    onClick={() => this.changeHisQuotes("week", "10minute", "", "1W")}>1W</button>
-            <button className={selectedButtonName==="1M"? "quotesButton selectedButton": "quotesButton"}
-                    onClick={() => this.changeHisQuotes("year", "day", "", "1M")}>1M</button>
-            <button className={selectedButtonName==="3M"? "quotesButton selectedButton": "quotesButton"}
-                    onClick={() => this.changeHisQuotes("year", "day", "", "3M")}>3M</button>
-            <button className={selectedButtonName==="1Y"? "quotesButton selectedButton": "quotesButton"}
-                    onClick={() => this.changeHisQuotes("year", "day", "", "1Y")}>1Y</button>
-            <button className={selectedButtonName==="ALL"? "quotesButton selectedButton": "quotesButton"}
-                    onClick={() => this.changeHisQuotes("all", "", "", "ALL")}>ALL</button>
-          </div>
+          { this.renderQuoteChangeButtons() }
         </SectionWrapper>
 
         <SectionWrapper SectionTitle={""}>
           <div className="addFolderWrapper">
-            <h6> Positions </h6>
-            <button className="addFolderButton" onClick={()=>dispatch(addLocalPositionFolder(`Folder ${localPositions.length}`))}>
+            <h6>Positions</h6>
+            <button
+              className="addFolderButton"
+              onClick={ onAddFolder.bind(this, localPositions.length) }
+            >
               ADD FOLDER
             </button>
           </div>
-
           <ListContainer
             localLists={localPositions}
             instruments={instruments}
             checkLists={[]}
-            reorderLocalList={(positionIndex, position)=>dispatch(reorderLocalPosition(positionIndex, position))}
-            deleteLocalListFolder={(index)=>dispatch(deleteLocalPositionFolder(index))}
-            reorderLocalLists={(aI, bI)=>dispatch(reorderLocalPositions(aI, bI))}
-            renameLocallistFolder={(index, name)=>dispatch(renameLocalPositionFolder(index, name))}
+            reorderLocalList={ onReorderPosition }
+            deleteLocalListFolder={ onDeleteFolder }
+            reorderLocalLists={ onReorderLocalPosition }
+            renameLocallistFolder={ onRenameLocalPosition }
           />
         </SectionWrapper>
 
         <SectionWrapper SectionTitle={""}>
           <div className="addFolderWrapper">
-            <h6> Watchlists </h6>
-            <button className="addFolderButton" onClick={()=>dispatch(addLocalWatchlistFolder(`Folder ${localWatchlists.length}`))}>
+            <h6>Watchlists</h6>
+            <button
+              className="addFolderButton"
+              onClick={ onAddWatchListFolder.bind(this, localWatchlists.length) }
+            >
               ADD FOLDER
             </button>
           </div>
-
           <ListContainer
             localLists={localWatchlists}
             instruments={instruments}
             checkLists={positions}
-            reorderLocalList={(watchlistIndex, watchlist)=>dispatch(reorderLocalWatchlist(watchlistIndex, watchlist))}
-            deleteLocalListFolder={(index)=>dispatch(deleteLocalWatchlistFolder(index))}
-            reorderLocalLists={(aI, bI)=>dispatch(reorderLocalWatchlists(aI, bI))}
-            renameLocallistFolder={(index, name)=>dispatch(renameLocalWatchlistFolder(index, name))}
+            reorderLocalList={ onReorderWatchList }
+            deleteLocalListFolder={ onDeleteWatchListFolder }
+            reorderLocalLists={ onReorderLocalWatchList }
+            renameLocallistFolder={ onRenameWatchListFolder }
           />
         </SectionWrapper>
       </div>
     )
   }
 }
-/*
 
-
-*/
-const mapStateToProps = state => {
-  const { portfoliosReducer, localReducer, instrumentsReducer, positionsReducer } = state
-  const { historicalsPortfolios, portfolios } = portfoliosReducer || { historicalsPortfolios: {}, portfolios: {} }
-  const { localPositions, localWatchlists } = localReducer || { localPositions: [], localWatchlists: []}
-  const { positions } = positionsReducer || { positions: [] }
-  const { instruments } = instrumentsReducer || { instruments: {}}
-
-  return { historicalsPortfolios, portfolios, localPositions, localWatchlists, instruments, positions }
+const mapStateToProps = ({ portfoliosReducer, localReducer, instrumentsReducer, positionsReducer }) => {
+  const {
+    historicalsPortfolios = {},
+    portfolios = {},
+    selectedButton,
+    quotes
+  } = portfoliosReducer;
+  const {
+    localPositions = [],
+    localWatchlists = []
+  } = localReducer;
+  const { positions = [] } = positionsReducer;
+  const { instruments = {} } = instrumentsReducer;
+  return {
+    quotes,
+    selectedButton,
+    historicalsPortfolios,
+    portfolios,
+    localPositions,
+    localWatchlists,
+    instruments,
+    positions
+  };
 }
 
-export default connect(mapStateToProps)(PortfolioPage)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onFetchPortfolioHistory: ({ span, interval, bounds }) => {
+    dispatch(askHistoricalsPortfolios(span, interval, bounds));
+  },
+  onFetchPortfolio: () => {
+    dispatch(askPortfolios());
+  },
+  onQuoteChanged: (selectedButton, quote) => {
+    dispatch(updatePortfolioPageQuote(quote));
+    dispatch(setPortfolioPageSelectedButton(selectedButton));
+  },
+  // position handlers - consider moving into another file as well as rendering code
+  onAddFolder: (folderIndex) => {
+    dispatch(addLocalPositionFolder(`Folder ${folderIndex}`));
+  },
+  onDeleteFolder: (index, position ) => {
+    dispatch(deleteLocalPositionFolder(index));
+  },
+  onReorderPosition: (positionIndex, position ) => {
+    dispatch(reorderLocalPosition(positionIndex, position));
+  },
+  onReorderLocalPosition: (aI, bI) => {
+    dispatch(reorderLocalPositions(aI, bI));
+  },
+  onRenameLocalPosition: (index, name) => {
+    dispatch(renameLocalPositionFolder(index, name));
+  },
+  // watch list handlers - consider moving into another file as well as rendering code
+  onAddWatchListFolder: (folderIndex) => {
+    dispatch(addLocalWatchlistFolder(`Folder ${folderIndex}`));
+  },
+  onDeleteWatchListFolder: (index) => {
+    dispatch(deleteLocalWatchlistFolder(index));
+  },
+  onReorderWatchList: (watchlistIndex, watchlist) => {
+    dispatch(reorderLocalWatchlist(watchlistIndex, watchlist));
+  },
+  onReorderLocalWatchList: (aI, bI) => {
+    dispatch(reorderLocalWatchlists(aI, bI));
+  },
+  onRenameWatchListFolder: (index, name) => {
+    dispatch(renameLocalWatchlistFolder(index, name));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PortfolioPage)
