@@ -1,31 +1,38 @@
 ////////////LOGIN
 ////////////ACCOUNT
-export const RESET_ACCOUNT_ERROR = 'RESET_ACCOUNT_ERROR'
-export const ADD_ACCOUNT = 'ADD_ACCOUNT'
-export const DELETE_ACCOUNT = 'DELETE_ACCOUNT'
-export const ASKING_ACCOUNT = 'ASKING_ACCOUNT'
-export const ASKING_ACCOUNT_FAILED = 'ASKING_ACCOUNT_FAILED'
+export const ACCOUNT_RESET_ERROR = 'ACCOUNT_RESET_ERROR'
+export const ACCOUNT_ADD = 'ACCOUNT_ADD'
+export const ACCOUNT_DELETE = 'ACCOUNT_DELETE'
+export const ACCOUNT_ASKING = 'ACCOUNT_ASKING'
+export const ACCOUNT_ASKING_FAILED = 'ACCOUNT_ASKING_FAILED'
+////////////TOKEN
+export const TOKEN_RESET_ERROR = 'TOKEN_RESET_ERROR'
+export const TOKEN_ADD = 'TOKEN_ADD'
+export const TOKEN_DELETE = 'TOKEN_DELETE'
+export const TOKEN_ASKING = 'TOKEN_ASKING'
+export const TOKEN_ASKING_FAILED = 'TOKEN_ASKING_FAILED'
+export const TOKEN_NEED_MFA = 'TOKEN_NEED_MFA'
 
 export const resetAccountError = () => ({
-  type: RESET_ACCOUNT_ERROR
+  type: ACCOUNT_RESET_ERROR
 })
 
 export const askingAccountFailed = (error) => ({
-  type: ASKING_ACCOUNT_FAILED,
+  type: ACCOUNT_ASKING_FAILED,
   error
 })
 
 export const askingAccount = () => ({
-  type: ASKING_ACCOUNT
+  type: ACCOUNT_ASKING
 })
 
 export const addAccount = account => ({
-  type: ADD_ACCOUNT,
+  type: ACCOUNT_ADD,
   account
 })
 
 export const deleteAccount = () => ({
-  type: DELETE_ACCOUNT
+  type: ACCOUNT_DELETE
 })
 
 export const askAccount = () => (dispatch, getState) => {
@@ -33,18 +40,17 @@ export const askAccount = () => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/accounts/`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
-    if(jsonResult.hasOwnProperty("results")){
+    if(jsonResult.results){
       dispatch(addAccount(jsonResult.results[0]));
     }
     else {
+      //ERROR: {"detail":"Authentication credentials were not provided."}
       dispatch(askingAccountFailed(jsonResult[Object.keys(jsonResult)[0]][0]));
     }
   })
@@ -52,41 +58,32 @@ export const askAccount = () => (dispatch, getState) => {
     console.log(reason);
     dispatch(askingAccountFailed(reason));
   });
-  //{"detail":"Authentication credentials were not provided."}
 }
 
-////////////TOKEN
-export const RESET_TOKEN_ERROR = 'RESET_TOKEN_ERROR'
-export const ADD_TOKEN = 'ADD_TOKEN'
-export const DELETE_TOKEN = 'DELETE_TOKEN'
-export const ASKING_TOKEN = 'ASKING_TOKEN'
-export const ASKING_TOKEN_FAILED = 'ASKING_TOKEN_FAILED'
-export const NEED_MFA = 'NEED_MFA'
-
 export const resetTokenError = () => ({
-  type: RESET_TOKEN_ERROR
+  type: TOKEN_RESET_ERROR
 })
 
 export const askingTokenFailed = (error) => ({
-  type: ASKING_TOKEN_FAILED,
+  type: TOKEN_ASKING_FAILED,
   error
 })
 
 export const askingToken = () => ({
-  type: ASKING_TOKEN
+  type: TOKEN_ASKING
 })
 
 export const addToken = token => ({
-  type: ADD_TOKEN,
+  type: TOKEN_ADD,
   token
 })
 
 export const deleteToken = () => ({
-  type: DELETE_TOKEN
+  type: TOKEN_DELETE
 })
 
 export const needMFA = () => ({
-  type: NEED_MFA
+  type: TOKEN_NEED_MFA
 })
 
 export const askToken = (username, password, mfa) => (dispatch, getState) => {

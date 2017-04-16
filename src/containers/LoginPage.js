@@ -10,8 +10,7 @@ class LoginPage extends Component {
     isAskingToken: PropTypes.bool.isRequired,
     accountError: PropTypes.string.isRequired,
     isAskingAccount: PropTypes.bool.isRequired,
-    needMFA: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
+    needMFA: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -27,7 +26,7 @@ class LoginPage extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(resetTokenError())
+    this.props.onResetTokenError();
   }
 
   handleUsernameChange = event => {
@@ -44,16 +43,17 @@ class LoginPage extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    if((this.state.username === "")||(this.state.password === "")){
-      if(this.state.username === ""){ this.setState({unMessage: "This field may not be blank."}); }
-      if(this.state.password === ""){ this.setState({pwMessage: "This field may not be blank."}); }
+    if((this.state.username === "") || (this.state.password === "")){
+      if(this.state.username === "") { this.setState({unMessage: "This field may not be blank."}); }
+      if(this.state.password === "") { this.setState({pwMessage: "This field may not be blank."}); }
       return;
     }
     if(this.props.needMFA && this.state.mfa === ""){
       this.setState({mfaMessage: "This field may not be blank."});
+      return;
     }
-    console.log(this.state.username+", "+ this.state.password);
-    this.props.dispatch(askToken(this.state.username, this.state.password, this.state.mfa));
+
+    this.props.onFetchToken(this.state.username, this.state.password, this.state.mfa)
   }
 
   render() {
@@ -64,8 +64,8 @@ class LoginPage extends Component {
     return (
       <div className="loginWrapper">
         <div className="loginLogo"></div>
-        <h1 className="loginTitle">ROBINDAHOOD</h1>
-        <div className="loginError">{Errors}</div>
+        <h1 className="loginTitle"> ROBINDAHOOD </h1>
+        <div className="loginError"> {Errors} </div>
         <form onSubmit={this.handleSubmit}>
           <Input type="text" focus={true} label="USERNAME" value={this.state.username} message={this.state.unMessage} onChange={this.handleUsernameChange}/>
           <Input type="password" focus={false} label="PASSWORD" value={this.state.password} message={this.state.pwMessage} onChange={this.handlePasswordChange}/>
@@ -79,12 +79,33 @@ class LoginPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { tokenReducer, accountReducer } = state
-  const { isAskingToken, tokenError, needMFA } = tokenReducer || { isAskingToken: false, tokenError:"" }
-  const { isAskingAccount, accountError } = accountReducer || { isAskingAccount: false, accountError:"" }
+const mapStateToProps = ({ tokenReducer, accountReducer }) => {
+  const {
+    isAskingToken,
+    tokenError,
+    needMFA
+  } = tokenReducer;
+  const {
+    isAskingAccount,
+    accountError
+  } = accountReducer;
 
-  return { isAskingToken, tokenError, needMFA, isAskingAccount, accountError }
+  return {
+    isAskingToken,
+    tokenError,
+    needMFA,
+    isAskingAccount,
+    accountError
+  };
 }
 
-export default connect(mapStateToProps)(LoginPage)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onFetchToken: (username, password, mfa) => {
+    dispatch(askToken(username, password, mfa));
+  },
+  onResetTokenError: () => {
+    dispatch(resetTokenError());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

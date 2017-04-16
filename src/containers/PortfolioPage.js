@@ -80,13 +80,13 @@ class PortfolioPage extends Component {
       interval: '',
       bounds: ''
     }];
-    this.startPortfolioPoller = this.startPortfolioPoller.bind(this);
-    this.clearPortfolioPoller = this.clearPortfolioPoller.bind(this);
-    this.oneMinuteJobs = this.oneMinuteJobs.bind(this);
-    this.renderQuoteChangeButtons = this.renderQuoteChangeButtons.bind(this);
+    //this.startPortfolioPoller = this.startPortfolioPoller.bind(this);
+    //this.clearPortfolioPoller = this.clearPortfolioPoller.bind(this);
+    //this.oneMinuteJobs = this.oneMinuteJobs.bind(this);
+    //this.renderQuoteChangeButtons = this.renderQuoteChangeButtons.bind(this);
   }
 
-  oneMinuteJobs() {
+  oneMinuteJobs = () => {
     const { quotes, selectedButton } = this.props;
     // Only poll history if we are looking at the 1D tab
     if(selectedButton === '1D'){
@@ -95,15 +95,15 @@ class PortfolioPage extends Component {
     this.props.onFetchPortfolio();
   }
 
-  startPortfolioPoller(){
+  startPortfolioPoller = () => {
     this.oneMinuteInterval = setInterval(this.oneMinuteJobs, 60000);
   }
 
-  clearPortfolioPoller(){
+  clearPortfolioPoller = () => {
     clearInterval(this.oneMinuteInterval);
   }
 
-  renderQuoteChangeButtons() {
+  renderQuoteChangeButtons = () => {
     const { selectedButton, onQuoteChanged } = this.props;
     return (
       <div className="quotesButtonsWrapper">
@@ -130,7 +130,7 @@ class PortfolioPage extends Component {
     );
   }
 
-  shouldFetchHistoryAgain(oldQuotes, newQuotes){
+  shouldFetchHistoryAgain = (oldQuotes, newQuotes) => {
     return (
       oldQuotes.span !== newQuotes.span ||
       oldQuotes.interval !== newQuotes.interval ||

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import {
          askAccount,
          askFundamental,
-         askNews,
          askInstrument, deleteInstrument,
          askPosition, askPositions,
          askHistoricalsQuotes, askQuote,
@@ -11,7 +10,7 @@ import {
          placeOrder
        } from '../actions'
 import Statistics from '../components/Statistics'
-import News from '../components/News'
+import News from './News'
 import Quotes from '../components/Quotes'
 import DummyQuotes from '../components/DummyQuotes'
 import Position from '../components/Position'
@@ -31,7 +30,6 @@ class Instrument extends Component {
     type: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     fundamentals: PropTypes.object.isRequired,
-    newsAll: PropTypes.object.isRequired,
     historicalsQuotes: PropTypes.object.isRequired,
     quotes: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
@@ -72,7 +70,6 @@ class Instrument extends Component {
     const { span, interval, bounds } = this.state.quotes;
     this.askOwnHistoricalsOrders();
     dispatch(askFundamental(symbol));
-    dispatch(askNews(symbol));
     dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
     dispatch(askQuote(symbol));
     for(let i=0; i< positions.length; i++){
@@ -120,14 +117,14 @@ class Instrument extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    //reload no that time sensitive stuff (news) here
+    //reload no that time sensitive stuff here
     if(nextProps.isCurrent && !this.props.isCurrent){
       this.props.dispatch(askInstrument(this.props.instrument));
       this.askOwnHistoricalsOrders();
     }
 
     if(nextProps.placingOrder === false && this.props.placingOrder === true) {
-      this.askOwnHistoricalsOrders();  
+      this.askOwnHistoricalsOrders();
     }
 
     for(let i=0; i< nextProps.watchlists.length; i++){
@@ -254,7 +251,7 @@ class Instrument extends Component {
   }
 
   render() {
-    const { symbol, instrument, fundamentals, instruments, newsAll, historicalsQuotes, quotes, eachPosition, account, placingOrder, orderPlacedResult } = this.props
+    const { symbol, instrument, fundamentals, instruments, historicalsQuotes, quotes, eachPosition, account, placingOrder, orderPlacedResult } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
             isAskingOwnCurrentOrder, OwnCurrentOrder, OwnCurrentOrderFailedReason } = this.state;
@@ -308,7 +305,7 @@ class Instrument extends Component {
     }
 
     let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
-    let newsBlock = (newsAll[symbol])? <News news={newsAll[symbol]} /> : "Loading...";
+    let newsBlock = (symbol)? <News symbol={symbol} /> : "Loading...";
 
     let quotesBlock = (quotes[symbol] && historicalsQuotes[symbol+span+interval+bounds] )?
       (<Quotes historicals={ historicals }
@@ -392,7 +389,7 @@ class Instrument extends Component {
                     onClick={() => this.changeHisQuotes("5year", "week", "regular", "5Y")}>5Y</button>
           </div>
 
-          {(quotes[symbol] && instruments[instrument].tradeable && account )?(
+          {(quotes[symbol] && instruments[instrument].tradeable && account && account.type)?(
             <PlaceOrder symbol={symbol}
                         shares={(eachPosition[instrument])? eachPosition[instrument].quantity : 0 }
                         cashCanUse={(account.type === "margin")? account.margin_balances.unallocated_margin_cash : account.cash_balances.buying_power }
@@ -416,9 +413,9 @@ class Instrument extends Component {
           </SectionWrapper>
         :null}
 
-        <SectionWrapper SectionTitle={"Recent News"}>
-          {newsBlock}
-        </SectionWrapper>
+
+        {newsBlock}
+
 
         <SectionWrapper SectionTitle={"Statistics"}>
           {statisticsBlock}
@@ -435,18 +432,18 @@ class Instrument extends Component {
 }
 
 const mapStateToProps = state => {
-  const { instrumentsReducer, fundamentalsReducer, newsReducer, quotesReducer, positionsReducer, watchlistsReducer, tokenReducer, accountReducer, ordersReducer } = state
+  const { instrumentsReducer, fundamentalsReducer, quotesReducer, positionsReducer, watchlistsReducer, tokenReducer, accountReducer, ordersReducer } = state
   const { watchlists } = watchlistsReducer || { watchlists: []}
   const { instruments } = instrumentsReducer || { instruments: {}}
   const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
-  const { newsAll } = newsReducer || { newsAll: {}}
+
   const { historicalsQuotes, quotes } = quotesReducer || { historicalsQuotes: {}, quotes:{}}
   const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
   const { token } = tokenReducer || { token:"" }
   const { account } = accountReducer || { account: {} }
   const { placingOrder, orderPlacedResult } = ordersReducer || { placingOrder: false, orderPlacedResult:"" }
 
-  return { instruments, fundamentals, newsAll, historicalsQuotes, quotes, positions, eachPosition, watchlists, token, account, placingOrder, orderPlacedResult }
+  return { instruments, fundamentals, historicalsQuotes, quotes, positions, eachPosition, watchlists, token, account, placingOrder, orderPlacedResult }
 }
 
 export default connect(mapStateToProps)(Instrument)

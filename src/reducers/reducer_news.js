@@ -1,21 +1,22 @@
-import {
-  ADD_NEWS, DELETE_NEWS
-} from '../actions'
+import * as actions from '../actions';
 
 const newsReducer = (state = {
   newsAll: {}
 }, action) => {
   switch (action.type) {
-    case ADD_NEWS:
+    case actions.NEWS_ADD:
       let newNewsAll = Object.assign({}, state.newsAll);
       newNewsAll[action.symbol] = action.news;
       return {
+        ...state,
         newsAll: newNewsAll
       }
-    case DELETE_NEWS:
+    case actions.NEWS_DELETE:
+      let tempNewsAll = Object.assign({}, state.newsAll);
+      delete tempNewsAll[action.symbol];
       return {
         ...state,
-        //instruments: [],
+        newsAll: tempNewsAll
       }
     default:
       return state

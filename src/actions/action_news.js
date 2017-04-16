@@ -1,24 +1,22 @@
 ////////////NEWS
-export const ADD_NEWS = 'ADD_NEWS'
-export const DELETE_NEWS = 'DELETE_NEWS'
+export const NEWS_ADD = 'NEWS_ADD'
+export const NEWS_DELETE = 'NEWS_DELETE'
 
 export const addNews = (symbol, news) => ({
-  type: ADD_NEWS,
+  type: NEWS_ADD,
   symbol,
   news
 })
 
 export const deleteNews = (symbol) => ({
-  type: DELETE_NEWS,
+  type: NEWS_DELETE,
   symbol
 })
 
 export const askNews = (symbol) => (dispatch, getState) => {
-  //dispatch(askingFundamental());
   return fetch(`https://api.robinhood.com/midlands/news/${symbol}/`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })

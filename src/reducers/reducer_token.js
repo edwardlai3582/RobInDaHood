@@ -1,11 +1,4 @@
-import {
-  RESET_TOKEN_ERROR,
-  ADD_TOKEN,
-  DELETE_TOKEN,
-  ASKING_TOKEN,
-  ASKING_TOKEN_FAILED,
-  NEED_MFA
-} from '../actions'
+import * as actions from '../actions';
 
 const tokenReducer = (state = {
   isAskingToken: false,
@@ -14,40 +7,40 @@ const tokenReducer = (state = {
   needMFA: false
 }, action) => {
   switch (action.type) {
-    case RESET_TOKEN_ERROR:
+    case actions.TOKEN_RESET_ERROR:
       return {
         ...state,
         tokenError:"",
         isAskingToken: false,
         needMFA: false
       }
-    case ASKING_TOKEN:
+    case actions.TOKEN_ASKING:
       return {
         ...state,
         tokenError:"",
         isAskingToken: true
       }
-    case ASKING_TOKEN_FAILED:
+    case actions.TOKEN_ASKING_FAILED:
       return {
         ...state,
         tokenError: action.error,
         isAskingToken: false
       }
-    case NEED_MFA:
+    case actions.TOKEN_NEED_MFA:
       return {
         ...state,
         tokenError: "",
         isAskingToken: false,
         needMFA: true
       }
-    case ADD_TOKEN:
+    case actions.TOKEN_ADD:
       return {
         ...state,
         isAskingToken: false,
         token: `Token ${action.token}`,
         needMFA: false
       }
-    case DELETE_TOKEN:
+    case actions.TOKEN_DELETE:
       return {
         ...state,
         token: ""

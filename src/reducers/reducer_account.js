@@ -1,6 +1,4 @@
-import {
-  ADD_ACCOUNT, DELETE_ACCOUNT, ASKING_ACCOUNT, ASKING_ACCOUNT_FAILED, RESET_ACCOUNT_ERROR
-} from '../actions'
+import * as actions from '../actions';
 
 const accountReducer = (state = {
   isAskingAccount: false,
@@ -9,26 +7,26 @@ const accountReducer = (state = {
   accountNumber: ""
 }, action) => {
   switch (action.type) {
-    case RESET_ACCOUNT_ERROR:
+    case actions.ACCOUNT_RESET_ERROR:
       return {
         ...state,
         accountError:"",
         isAskingAccount: false
       }
-    case ASKING_ACCOUNT:
+    case actions.ACCOUNT_ASKING:
       return {
         ...state,
         accountError: "",
         isAskingAccount: true
       }
-    case ASKING_ACCOUNT_FAILED:
+    case actions.ACCOUNT_ASKING_FAILED:
       return {
         ...state,
         isAskingAccount: false,
         accountError: action.error,
         account: {}
       }
-    case ADD_ACCOUNT:
+    case actions.ACCOUNT_ADD:
       //console.log("ACCOUNT INFO");
       //console.log(action.account);
       return {
@@ -37,7 +35,7 @@ const accountReducer = (state = {
         account: action.account,
         accountNumber: action.account.account_number
       }
-    case DELETE_ACCOUNT:
+    case actions.ACCOUNT_DELETE:
       return {
         ...state,
         account: {},

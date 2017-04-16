@@ -1,9 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import SectionWrapper from '../components/SectionWrapper'
+import NewsCard from '../components/NewsCard'
 
 const electron = window.require('electron');
 const shell  = electron.shell;
 
+import { askNews } from '../actions'
 import { printDate } from '../utils'
 import '../styles/News.css'
 
@@ -18,9 +22,17 @@ const customStyles = {
 };
 
 class News extends Component {
+  static propTypes = {
+    symbol: PropTypes.string.isRequired
+  }
+
   constructor(props) {
     super(props);
     this.state = { modalIsOpen: false};
+  }
+
+  componentDidMount() {
+    this.props.onFetchNews();
   }
 
   openModal = () => {
@@ -38,37 +50,21 @@ class News extends Component {
 
   render() {
     let news = this.props.news;
-    let threeNews = [];
-    let allNews = [];
-    for(let i=0; i<3; i++){
-      if(news.results.length === i){ break; }
-      threeNews.push(
-        <div key={i} className="eachNews" >
-          <div className="newsLink" >
-            <a href={news.results[i].url} onClick={this.openUrlInBrowser} >
-              {news.results[i].title}
-            </a>
-          </div>
-          <div className="dateDiv">{ printDate(news.results[i].published_at)}</div>
-        </div>
-      );
-    }
-    for(let i=0; i<news.results.length; i++){
-      allNews.push(
-        <div key={i} className="eachNews" >
-          <div className="newsLink" >
-            <a href={news.results[i].url} onClick={this.openUrlInBrowser} >
-              {news.results[i].title}
-            </a>
-          </div>
-          <div className="dateDiv">{printDate(news.results[i].published_at)}</div>
-        </div>
-      );
-    }
+    if(!news || news.results.length === 0) return null;
+
+    let allNews = news.results.map((eachNews, index) => (
+      <NewsCard
+        key={index}
+        url={eachNews.url}
+        title={eachNews.title}
+        published_at={printDate(eachNews.published_at)}
+        openUrlInBrowser={this.openUrlInBrowser}
+      />
+    ));
 
     return (
-      <div className="newsWrapper">
-        {threeNews}
+      <SectionWrapper SectionTitle={"Recent News"}>
+        {allNews.slice(0, 3)}
         <div className="moreNewsWrapper">
           <button className="moreNews" onClick={this.openModal}>
             MORE
@@ -83,9 +79,20 @@ class News extends Component {
         >
           {allNews}
         </Modal>
-      </div>
+      </SectionWrapper>
     )
   }
 }
-//<button onClick={this.closeModal}>CLOSE</button>
-export default News
+
+const mapStateToProps = ({ newsReducer }, ownProps) => {
+  const { newsAll } = newsReducer;
+  return { news: newsAll[ownProps.symbol] };
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onFetchNews: () => {
+    dispatch(askNews(ownProps.symbol));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(News)
