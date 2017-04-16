@@ -19,22 +19,22 @@ class Statistics extends Component  {
   componentDidMount() {
     this.props.onFetchFundamental();
     // Start the 2 minutes poller to requery for data
-    this.startPortfolioPoller();
+    this.startStatisticsPoller();
   }
 
   componentWillUnmount() {
-    this.clearPortfolioPoller();
+    this.clearStatisticsPoller();
   }
 
   twoMinutesJobs = () => {
     this.props.onFetchFundamental();
   }
 
-  startPortfolioPoller = () => {
+  startStatisticsPoller = () => {
     this.twoMinuteInterval = setInterval(this.twoMinutesJobs, 120000);
   }
 
-  clearPortfolioPoller = () => {
+  clearStatisticsPoller = () => {
     clearInterval(this.twoMinuteInterval);
   }
 
