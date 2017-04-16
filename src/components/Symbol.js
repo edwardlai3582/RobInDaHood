@@ -20,7 +20,7 @@ class Symbol extends Component {
 
 		return connectDragSource(connectDropTarget(
 			<div style={{ ...style, opacity }} ref={node => (this.node = node)}>
-				{card.text}
+				{card.symbol}
 			</div>
 		));
 	}

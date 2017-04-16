@@ -14,13 +14,13 @@ import '../styles/List.css'
 class List extends Component {
 
 	pushCard = (card) => {
-		let tempList = this.state.props.slice(0);
+		let tempList = this.props.list.slice(0);
     tempList.push(card);
     this.props.reorderLocalList(tempList);
 	}
 
 	removeCard = (index) => {
-		let tempList = this.state.props.slice(0);
+		let tempList = this.props.list.slice(0);
     tempList = [...tempList.slice(0,index), ...tempList.slice(index+1)];
     this.props.reorderLocalList(tempList);
 	}
@@ -85,7 +85,7 @@ class List extends Component {
 					{list.map((card, i) => {
 						return (
 							<Symbol
-								key={card.id}
+								key={card.symbol}
 								index={i}
 								listId={this.props.id}
 								card={card}

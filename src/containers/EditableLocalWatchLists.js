@@ -17,8 +17,8 @@ import '../styles/News.css'
 class EditableLocalWatchLists extends Component {
 
   addFolder = () => {
-    const { onAddWatchListFolder, localPositions } = this.props;
-    onAddWatchListFolder(localPositions.length);
+    const { onAddWatchListFolder, localWatchlists } = this.props;
+    onAddWatchListFolder(localWatchlists.length);
   }
 
   render() {
