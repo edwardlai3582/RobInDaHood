@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import SectionWrapper from '../components/SectionWrapper'
 import NewsCard from '../components/NewsCard'
-
-const electron = window.require('electron');
-const shell  = electron.shell;
-
 import { askNews } from '../actions'
 import { printDate } from '../utils'
 import '../styles/News.css'
+
+const electron = window.require('electron');
+const shell  = electron.shell;
 
 const customStyles = {
   content : {
