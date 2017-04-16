@@ -80,10 +80,6 @@ class PortfolioPage extends Component {
       interval: '',
       bounds: ''
     }];
-    //this.startPortfolioPoller = this.startPortfolioPoller.bind(this);
-    //this.clearPortfolioPoller = this.clearPortfolioPoller.bind(this);
-    //this.oneMinuteJobs = this.oneMinuteJobs.bind(this);
-    //this.renderQuoteChangeButtons = this.renderQuoteChangeButtons.bind(this);
   }
 
   oneMinuteJobs = () => {

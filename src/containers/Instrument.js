@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
          askAccount,
-         askFundamental,
          askInstrument, deleteInstrument,
          askPosition, askPositions,
          askHistoricalsQuotes, askQuote,
@@ -69,7 +68,7 @@ class Instrument extends Component {
     const { symbol, instrument, positions, watchlists, dispatch } = this.props;
     const { span, interval, bounds } = this.state.quotes;
     this.askOwnHistoricalsOrders();
-    dispatch(askFundamental(symbol));
+
     dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
     dispatch(askQuote(symbol));
     for(let i=0; i< positions.length; i++){
@@ -113,7 +112,6 @@ class Instrument extends Component {
     if(selectedButtonName === "1D"){
       dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
     }
-    dispatch(askFundamental(symbol));
   }
 
   componentWillReceiveProps(nextProps){
@@ -330,6 +328,7 @@ class Instrument extends Component {
         />
       </SectionWrapper>
     )
+    
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
 
     let positionBlock = null;

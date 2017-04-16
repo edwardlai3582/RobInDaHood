@@ -11,8 +11,31 @@ class Statistics extends Component  {
     symbol: PropTypes.string.isRequired
   }
 
+  constructor(props) {
+    super(props);
+    this.twoMinuteInterval = undefined;
+  }
+
   componentDidMount() {
     this.props.onFetchFundamental();
+    // Start the 2 minutes poller to requery for data
+    this.startPortfolioPoller();
+  }
+
+  componentWillUnmount() {
+    this.clearPortfolioPoller();
+  }
+
+  twoMinutesJobs = () => {
+    this.props.onFetchFundamental();
+  }
+
+  startPortfolioPoller = () => {
+    this.twoMinuteInterval = setInterval(this.twoMinutesJobs, 120000);
+  }
+
+  clearPortfolioPoller = () => {
+    clearInterval(this.twoMinuteInterval);
   }
 
   render() {
