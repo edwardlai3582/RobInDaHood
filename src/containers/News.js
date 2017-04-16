@@ -35,12 +35,8 @@ class News extends Component {
     this.props.onFetchNews();
   }
 
-  openModal = () => {
-    this.setState({modalIsOpen: true});
-  }
-
-  closeModal = () => {
-    this.setState({modalIsOpen: false});
+  toggleModal = () => {
+    this.setState({modalIsOpen: !this.state.modalIsOpen});
   }
 
   openUrlInBrowser = (e) => {
@@ -66,14 +62,14 @@ class News extends Component {
       <SectionWrapper SectionTitle={"Recent News"}>
         {allNews.slice(0, 3)}
         <div className="moreNewsWrapper">
-          <button className="moreNews" onClick={this.openModal}>
+          <button className="moreNews" onClick={this.toggleModal}>
             MORE
           </button>
         </div>
 
         <Modal
           isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
+          onRequestClose={this.toggleModal}
           style={customStyles}
           contentLabel="News Modal"
         >
