@@ -44,7 +44,7 @@ class News extends Component {
   }
 
   render() {
-    let news = this.props.news;
+    const news = this.props.news;
     if(!news || news.results.length === 0) return null;
 
     let allNews = news.results.map((eachNews, index) => (

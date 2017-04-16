@@ -9,7 +9,7 @@ import {
          askWatchlists, addToWatchlists, removeFromWatchlists,
          placeOrder
        } from '../actions'
-import Statistics from '../components/Statistics'
+import Statistics from './Statistics'
 import News from './News'
 import Quotes from '../components/Quotes'
 import DummyQuotes from '../components/DummyQuotes'
@@ -304,7 +304,7 @@ class Instrument extends Component {
 
     }
 
-    let statisticsBlock = (fundamentals[symbol])? <Statistics fundamental={fundamentals[symbol]} /> : "Loading...";
+    let statisticsBlock = (symbol)? <Statistics symbol={symbol} /> : "Loading...";
     let newsBlock = (symbol)? <News symbol={symbol} /> : "Loading...";
 
     let quotesBlock = (quotes[symbol] && historicalsQuotes[symbol+span+interval+bounds] )?
@@ -415,11 +415,8 @@ class Instrument extends Component {
 
 
         {newsBlock}
+        {statisticsBlock}
 
-
-        <SectionWrapper SectionTitle={"Statistics"}>
-          {statisticsBlock}
-        </SectionWrapper>
 
         { ordersBlock }
 

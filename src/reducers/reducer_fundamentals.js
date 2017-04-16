@@ -1,21 +1,22 @@
-import {
-  ADD_FUNDAMENTAL, DELETE_FUNDAMENTAL
-} from '../actions'
+import * as actions from '../actions';
 
 const fundamentalsReducer = (state = {
   fundamentals: {}
 }, action) => {
   switch (action.type) {
-    case ADD_FUNDAMENTAL:
+    case actions.FUNDAMENTAL_ADD:
       let newfundamentals = Object.assign({}, state.fundamentals);
       newfundamentals[action.symbol] = action.fundamental;
       return {
+        ...state,
         fundamentals: newfundamentals
       }
-    case DELETE_FUNDAMENTAL:
+    case actions.FUNDAMENTAL_DELETE:
+      let tempfundamentals = Object.assign({}, state.fundamentals);
+      delete tempfundamentals[action.symbol];
       return {
         ...state,
-        //instruments: [],
+        fundamentals: tempfundamentals
       }
     default:
       return state

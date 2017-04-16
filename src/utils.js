@@ -84,3 +84,19 @@ export const flow = (funcs) => {
     return result
   }
 }
+
+export const carry = (numString) => {
+  const numNum = Number(numString);
+  let res = "";
+  if(numNum > 1000000000){
+    res = Math.round(numNum/1000000000 * 100) / 100 + "B"
+  }
+  else if(numNum > 1000000){
+    res = Math.round(numNum/1000000 * 1000) / 1000 + "M"
+  }
+  else {
+    res = Number(numNum);
+  }
+
+  return res;
+}

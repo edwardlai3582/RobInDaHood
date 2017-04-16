@@ -1,26 +1,26 @@
 ////////////FUNDAMENTALS
-export const ADD_FUNDAMENTAL = 'ADD_FUNDAMENTAL'
-export const DELETE_FUNDAMENTAL = 'DELETE_FUNDAMENTAL'
-export const ASKING_FUNDAMENTAL = 'ASKING_FUNDAMENTAL'
-export const ASKING_FUNDAMENTAL_FAILED = 'ASKING_FUNDAMENTAL_FAILED'
+export const FUNDAMENTAL_ADD = 'FUNDAMENTAL_ADD'
+export const FUNDAMENTAL_DELETE = 'FUNDAMENTAL_DELETE'
+export const FUNDAMENTAL_ASKING = 'FUNDAMENTAL_ASKING'
+export const FUNDAMENTAL_ASKING_FAILED = 'FUNDAMENTAL_ASKING_FAILED'
 
 export const askingFundamentalFailed = (error) => ({
-  type: ASKING_FUNDAMENTAL_FAILED,
+  type: FUNDAMENTAL_ASKING_FAILED,
   error
 })
 
 export const askingFundamental = () => ({
-  type: ASKING_FUNDAMENTAL
+  type: FUNDAMENTAL_ASKING
 })
 
 export const addFundamental = (symbol, fundamental) => ({
-  type: ADD_FUNDAMENTAL,
+  type: FUNDAMENTAL_ADD,
   symbol,
   fundamental
 })
 
 export const deleteFundamental = (symbol) => ({
-  type: DELETE_FUNDAMENTAL,
+  type: FUNDAMENTAL_DELETE,
   symbol
 })
 
@@ -29,14 +29,12 @@ export const askFundamental = (symbol) => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/fundamentals/${symbol}/`, {
     method: 'GET',
     headers: new Headers({
-      'content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': getState().tokenReducer.token
     })
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     dispatch(addFundamental(symbol, jsonResult));
   })
   .catch(function(reason) {
