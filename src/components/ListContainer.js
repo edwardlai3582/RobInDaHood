@@ -122,17 +122,20 @@ class ListContainer extends Component {
     return connectDropTarget(
       <div className="draggableListsWrapper">
         {lists.map((localList, index)=>{
-          return <List key={localList.id}
-                       id={localList.id}
-                       listName={localList.id}
-                       list={localList.list}
-                       reorderLocalList={(list)=>reorderLocalList(index, list)}
-                       moveList={this.moveList}
-                       findList={this.findList}
-                       reorderLocalLists={reorderLocalLists}
-                       deleteLocalListFolder={()=>deleteLocalListFolder(index)}
-                       renameLocallistFolder={(name)=>renameLocallistFolder(index, name)}
-                  />
+          return (
+            <List
+              key={localList.id}
+              id={localList.id}
+              listName={localList.id}
+              list={localList.list}
+              reorderLocalList={(list)=>reorderLocalList(index, list)}
+              moveList={this.moveList}
+              findList={this.findList}
+              reorderLocalLists={reorderLocalLists}
+              deleteLocalListFolder={()=>deleteLocalListFolder(index)}
+              renameLocallistFolder={(name)=>renameLocallistFolder(index, name)}
+            />
+          )
         })}
       </div>
     );

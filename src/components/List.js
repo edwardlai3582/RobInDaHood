@@ -12,41 +12,27 @@ import '../styles/List.css'
 
 
 class List extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			list: props.list,
-			listName: props.listName
-		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		this.setState({list: nextProps.list})
-	}
 
 	pushCard = (card) => {
-    let tempList = this.state.list.slice(0);
+		let tempList = this.state.props.slice(0);
     tempList.push(card);
-		this.setState({ list: tempList });
     this.props.reorderLocalList(tempList);
 	}
 
 	removeCard = (index) => {
-    let tempList = this.state.list.slice(0);
-    tempList = [...tempList.slice(0,index), ...tempList.slice(index+1)]
-    this.setState({ list: tempList });
+		let tempList = this.state.props.slice(0);
+    tempList = [...tempList.slice(0,index), ...tempList.slice(index+1)];
     this.props.reorderLocalList(tempList);
 	}
 
 	moveCard = (dragIndex, hoverIndex) => {
-		const { list } = this.state;
+		const { list } = this.props;
 		const dragCard = list[dragIndex];
 
     let tempList = list.slice(0);
     tempList[dragIndex] = tempList[hoverIndex];
     tempList[hoverIndex] = dragCard;
 
-    this.setState({ list: tempList });
     this.props.reorderLocalList(tempList);
 	}
 
@@ -54,7 +40,6 @@ class List extends Component {
 			// data = { description: "New validated text comes here" }
 			// Update your model from here
 			let name = listName.message;
-			this.setState({listName: name})
 			this.props.renameLocallistFolder(name);
 	}
 
@@ -63,7 +48,7 @@ class List extends Component {
 	}
 
 	render() {
-		const { list, listName } = this.state;
+		const { list, listName } = this.props;
 		const { canDrop, isOver, isDragging, connectDragSource, connectDropTarget, connectDragPreview, deleteLocalListFolder } = this.props;
 		const isActive = canDrop && isOver;
 
@@ -155,9 +140,9 @@ const cardListTarget = {
   },
 
   hover(props, monitor) {
-    const { id: draggedId, type } = monitor.getItem(); //originalIndex
+    const { id: draggedId, type } = monitor.getItem();
     const { id: overId } = props;
-		//|| props.id === "default"
+		/////|| props.id === "default"
 		if(type === "CARD" ) {
 			return;
 		}

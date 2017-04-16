@@ -255,7 +255,7 @@ class Instrument extends Component {
             isAskingOwnCurrentOrder, OwnCurrentOrder, OwnCurrentOrderFailedReason } = this.state;
 
 
-    //show null if not cuttent page
+    //show null if not current page
     if(!this.props.isCurrent){ return null; }
 
     let historicals = [];
@@ -328,7 +328,7 @@ class Instrument extends Component {
         />
       </SectionWrapper>
     )
-    
+
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
 
     let positionBlock = null;
