@@ -140,7 +140,6 @@ class PortfolioPage extends Component {
     // or some equivalent object equality checker
     const requeryForHistory = this.shouldFetchHistoryAgain(oldQuotes, newQuotes);
     if(requeryForHistory){
-      console.log("sss");
       onFetchPortfolioHistory(newQuotes);
     }
   }
