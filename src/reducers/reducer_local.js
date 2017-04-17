@@ -62,7 +62,7 @@ const localReducer = (state = {
           state.localWatchlists.forEach((list) => {
             if(found) return;
             for(let i=0; i<list.list.length; i++){
-              if(list.list[i].instrument === instrument.instrument){
+              if(list.list[i] === instrument){
                 found =true;
                 return;
               }
@@ -85,7 +85,7 @@ const localReducer = (state = {
           let temp = [];
           for(let j=0; j<tempLocalWatchlists[i].list.length; j++){
             for(let z=0; z<action.lists.length; z++){
-              if(action.lists[z].instrument === tempLocalWatchlists[i].list[j].instrument){
+              if(action.lists[z] === tempLocalWatchlists[i].list[j]){
                 temp.push(tempLocalWatchlists[i].list[j]);
                 break;
               }
@@ -109,7 +109,7 @@ const localReducer = (state = {
 
       for(let i=0; i<tempLocalWatchlists.length; i++ ){
         if(tempLocalWatchlists[i].name === "default"){
-          tempLocalWatchlists[i].list.push(action.list);
+          tempLocalWatchlists[i].list.push(action.instrument);
           break;
         }
       }
@@ -127,7 +127,7 @@ const localReducer = (state = {
       tempLocalWatchlists.forEach((list) => {
         if(found) return;
         for(let i=0; i<list.list.length; i++){
-          if(list.list[i].instrument === instrumentLink){
+          if(list.list[i] === instrumentLink){
             console.log("found! from local");
             found = true;
             foundIndex = i;
@@ -208,7 +208,7 @@ const localReducer = (state = {
         state.localPositions.forEach((list) => {
           if(found) return;
           for(let i=0; i<list.list.length; i++){
-            if(list.list[i].instrument === instrument.instrument){
+            if(list.list[i] === instrument){
               found =true;
               return;
             }
@@ -231,7 +231,7 @@ const localReducer = (state = {
         let temp = [];
         for(let j=0; j<tempLocalPositions[i].list.length; j++){
           for(let z=0; z<action.lists.length; z++){
-            if(action.lists[z].instrument === tempLocalPositions[i].list[j].instrument){
+            if(action.lists[z] === tempLocalPositions[i].list[j]){
               temp.push(tempLocalPositions[i].list[j]);
               break;
             }
@@ -255,7 +255,7 @@ const localReducer = (state = {
 
     for(let i=0; i<tempLocalPositions.length; i++ ){
       if(tempLocalPositions[i].name === "default"){
-        tempLocalPositions[i].list.push(action.list);
+        tempLocalPositions[i].list.push(action.instrument);
         break;
       }
     }
@@ -273,7 +273,7 @@ const localReducer = (state = {
     tempLocalPositions.forEach((list) => {
       if(found) return;
       for(let i=0; i<list.list.length; i++){
-        if(list.list[i].instrument === instrumentLink){
+        if(list.list[i] === instrumentLink){
           console.log("found! from local");
           found = true;
           foundIndex = i;

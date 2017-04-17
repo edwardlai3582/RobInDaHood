@@ -15,12 +15,12 @@ const style = {
 class Symbol extends Component {
 
 	render() {
-		const { card, isDragging, connectDragSource, connectDropTarget } = this.props;
+		const { isDragging, connectDragSource, connectDropTarget, symbol } = this.props;
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
 			<div style={{ ...style, opacity }} ref={node => (this.node = node)}>
-				{card.symbol}
+				{symbol}
 			</div>
 		));
 	}

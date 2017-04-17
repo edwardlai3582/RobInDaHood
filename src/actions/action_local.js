@@ -56,9 +56,9 @@ export const addLocalWatchlists = lists => ({
   lists
 })
 
-export const addLocalWatchlist = list => ({
+export const addLocalWatchlist = instrument => ({
   type: ADD_LOCAL_WATCHLIST,
-  list
+  instrument
 })
 
 export const removeLocalWatchlist = instrumentId => ({
@@ -104,9 +104,9 @@ export const addLocalPositions = lists => ({
   lists
 })
 
-export const addLocalPosition = list => ({
+export const addLocalPosition = instrument => ({
   type: ADD_LOCAL_POSITION,
-  list
+  instrument
 })
 
 export const removeLocalPosition = instrumentId => ({

@@ -54,7 +54,7 @@ class ListContainer extends Component {
 
     for(let i=0; i<localLists.length; i++ ){
       for(let j=0; j< localLists[i].list.length; j++){
-        if(typeof instruments[localLists[i].list[j].instrument] === "undefined"){
+        if(typeof instruments[localLists[i].list[j]] === "undefined"){
           instrumentsHasAllNeeded = false;
           return null;
         }
@@ -66,17 +66,16 @@ class ListContainer extends Component {
         let temp = {}
         temp.list = tempList.list.filter((instrument)=>{
           for(let i=0; i< checkLists.length; i++){
-            if((checkLists[i].instrument === instrument.instrument)){
-              return false;
+            for(let j=0; j< checkLists[i].list.length; j++){
+              if(checkLists[i].list[j] === instrument){
+                return false;
+              }
             }
           }
           return true;
         })
-        .map((instrument, i)=>{
-          return {
-            instrument: instrument.instrument,
-            symbol: instruments[instrument.instrument].symbol
-          };
+        .map((instrument)=>{
+          return instrument
         });
 
         temp.id = tempList.name;
@@ -112,7 +111,7 @@ class ListContainer extends Component {
   }
 
   render() {
-    const { reorderLocalLists, reorderLocalList, deleteLocalListFolder, connectDropTarget, renameLocallistFolder } = this.props;
+    const { reorderLocalLists, reorderLocalList, deleteLocalListFolder, connectDropTarget, renameLocallistFolder, instruments } = this.props;
     const { lists } = this.state;
 
 
@@ -131,6 +130,7 @@ class ListContainer extends Component {
               reorderLocalLists={reorderLocalLists}
               deleteLocalListFolder={()=>deleteLocalListFolder(index)}
               renameLocallistFolder={(name)=>renameLocallistFolder(index, name)}
+              instruments={instruments}
             />
           )
         })}

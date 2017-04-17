@@ -153,10 +153,10 @@ class DashboardPage extends Component {
 
     if(instrumentsHasAllNeeded && localWatchlists.length > 0){
       let watchlistsData = [];
-      localWatchlists.forEach((watchlist) => {
-        let watchlistData = watchlist.list.filter((instrument)=>{
+      localWatchlists.forEach((localWatchlist) => {
+        let localWatchlistData = localWatchlist.list.filter((instrument)=>{
           for(let i=0; i< positions.length; i++){
-            if((positions[i].instrument === instrument.instrument)){
+            if((positions[i].instrument === instrument)){
               return false;
             }
           }
@@ -164,13 +164,13 @@ class DashboardPage extends Component {
         })
         .map((instrument, i)=>{
           return {
-            instrument: instrument.instrument,
-            symbol: instruments[instrument.instrument].symbol,
+            instrument: instrument,
+            symbol: instruments[instrument].symbol,
             type: 'watchlist'
           };
         });
 
-        watchlistsData.push(watchlistData);
+        watchlistsData.push(localWatchlistData);
       });
 
       watchlistsMenu = (
@@ -188,16 +188,16 @@ class DashboardPage extends Component {
       )
 
       let positionsData = [];
-      localPositions.forEach((position) => {
-        let positionData = position.list.map((instrument, i)=>{
+      localPositions.forEach((localPosition) => {
+        let localPositionData = localPosition.list.map((instrument, i)=>{
           return {
-            instrument: instrument.instrument,
-            symbol: instruments[instrument.instrument].symbol,
+            instrument: instrument,
+            symbol: instruments[instrument].symbol,
             type: 'position'
           };
         });
 
-        positionsData.push(positionData);
+        positionsData.push(localPositionData);
       });
 
       positionsMenu = (<LeftPanelModule

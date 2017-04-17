@@ -1,11 +1,8 @@
 import React, { Component } from 'react'; //, PropTypes
 import InlineEdit from 'react-edit-inline';
-//import update from 'react/lib/update';
 import { DragSource, DropTarget } from 'react-dnd';
 import { capFirst } from '../utils'
 import Symbol from './Symbol';
-
-
 import {flow} from '../utils';
 
 import '../styles/List.css'
@@ -32,7 +29,6 @@ class List extends Component {
     let tempList = list.slice(0);
     tempList[dragIndex] = tempList[hoverIndex];
     tempList[hoverIndex] = dragCard;
-
     this.props.reorderLocalList(tempList);
 	}
 
@@ -48,7 +44,7 @@ class List extends Component {
 	}
 
 	render() {
-		const { list, listName } = this.props;
+		const { list, listName, instruments } = this.props;
 		const { canDrop, isOver, isDragging, connectDragSource, connectDropTarget, connectDragPreview, deleteLocalListFolder } = this.props;
 		const isActive = canDrop && isOver;
 
@@ -85,7 +81,8 @@ class List extends Component {
 					{list.map((card, i) => {
 						return (
 							<Symbol
-								key={card.symbol}
+								key={instruments[card].symbol}
+								symbol={instruments[card].symbol}
 								index={i}
 								listId={this.props.id}
 								card={card}

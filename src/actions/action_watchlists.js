@@ -1,6 +1,6 @@
 import { askInstrument } from './action_instruments'
 
-import { addLocalWatchlists, addMoreLocalWatchlists, addLocalWatchlist, removeLocalWatchlist } from './action_local'
+import { addLocalWatchlists, addLocalWatchlist, removeLocalWatchlist } from './action_local'
 ////////////WATCHLISTS
 export const ADD_WATCHLISTS = 'ADD_WATCHLISTS'
 export const ADD_MORE_WATCHLISTS = 'ADD_MORE_WATCHLISTS'
@@ -55,7 +55,10 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addWatchlists(jsonResult.results));
-        dispatch(addLocalWatchlists(jsonResult.results));
+        //dispatch(addLocalWatchlists(jsonResult.results));
+        dispatch(addLocalWatchlists(jsonResult.results.map((instrument)=>{
+          return instrument.instrument
+        })));
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
@@ -67,7 +70,10 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
         console.log("more watchlists!")
         dispatch(addMoreWatchlists(jsonResult.results));
         if( !jsonResult.next ){
-          dispatch(addMoreLocalWatchlists([...getState().watchlistsReducer.watchlists, ...jsonResult.results]));
+          //dispatch(addLocalWatchlists([...getState().watchlistsReducer.watchlists, ...jsonResult.results]));
+          dispatch(addLocalWatchlists([...getState().watchlistsReducer.watchlists, ...jsonResult.results].map((instrument)=>{
+            return instrument.instrument
+          })));
         }
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
@@ -109,7 +115,8 @@ export const addToWatchlists = (instrumentSymbol) => (dispatch, getState) => {
     console.log(jsonResult);
     if(jsonResult[0].created_at){
       dispatch(addWatchlist(jsonResult[0]));
-      dispatch(addLocalWatchlist(jsonResult[0]));
+      //dispatch(addLocalWatchlist(jsonResult[0]));
+      dispatch(addLocalWatchlist(jsonResult[0].instrument));
     }
   })
   .catch(function(reason) {

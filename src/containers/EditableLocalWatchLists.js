@@ -24,8 +24,8 @@ class EditableLocalWatchLists extends Component {
   render() {
     const {
       localWatchlists,
+      localPositions,
       instruments,
-      positions,
       // watchlists handlers
       onDeleteWatchListFolder,
       onReorderWatchList,
@@ -47,7 +47,7 @@ class EditableLocalWatchLists extends Component {
         <ListContainer
           localLists={localWatchlists}
           instruments={instruments}
-          checkLists={positions}
+          checkLists={localPositions}
           reorderLocalList={ onReorderWatchList }
           deleteLocalListFolder={ onDeleteWatchListFolder }
           reorderLocalLists={ onReorderLocalWatchList }
@@ -58,12 +58,11 @@ class EditableLocalWatchLists extends Component {
   }
 }
 
-const mapStateToProps = ({ localReducer, instrumentsReducer, positionsReducer }, ownProps) => {
-  const { localWatchlists = [] } = localReducer;
+const mapStateToProps = ({ localReducer, instrumentsReducer }, ownProps) => {
+  const { localWatchlists = [], localPositions = [] } = localReducer;
   const { instruments = {} } = instrumentsReducer;
-  const { positions = [] } = positionsReducer;
 
-  return { localWatchlists, instruments, positions };
+  return { localWatchlists, localPositions, instruments };
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
