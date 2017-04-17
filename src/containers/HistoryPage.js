@@ -115,6 +115,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onCancelOrder: (cancelLink, orderId) => {
     dispatch(cancelOrder(cancelLink, orderId));
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryPage)

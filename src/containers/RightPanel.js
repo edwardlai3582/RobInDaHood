@@ -46,28 +46,27 @@ class RightPanel extends Component {
     tabs: PropTypes.object.isRequired,
     keys: PropTypes.array.isRequired,
     selectedKey: PropTypes.string.isRequired,
-    width: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
+    width: PropTypes.string.isRequired
   }
 
   handleTabSelect = (e, key, currentTabs) => {
-    this.props.dispatch(selectTab(key));
+    this.props.selectTab(key);
   }
 
   handleTabClose = (e, key, currentTabs) =>  {
     let newKeys = currentTabs.map( tab => tab.key );
-    this.props.dispatch(deleteTab(key, newKeys));
+    this.props.deleteTab(key, newKeys);
   }
 
   handleTabPositionChange = (e, key, currentTabs) => {
     let newKeys = currentTabs.map( tab => tab.key );
-    this.props.dispatch(reorderTab(newKeys));
+    this.props.reorderTab(newKeys);
   }
 
   render() {
     const { tabs, keys, selectedKey } = this.props;
     let newTabs = keys.map((key)=>{
-      let isCurrent = (selectedKey === tabs[key].key)
+      let isCurrent = (selectedKey === tabs[key].key);
 
       if(tabs[key].type === "watchlist" || tabs[key].type === "position"){
         return (<Tab key={tabs[key].key} title={"$"+tabs[key].title}><Instrument isCurrent={isCurrent} symbol={tabs[key].title} instrument={tabs[key].instrument} type={tabs[key].type} /></Tab>);
@@ -97,14 +96,24 @@ class RightPanel extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { tabsReducer } = state
-  const { tabs, keys, selectedKey } = tabsReducer || { tabs: {}, keys:[], selectedKey:"noTAbKey" }
-
+const mapStateToProps = ({ tabsReducer }) => {
+  const { tabs, keys, selectedKey } = tabsReducer;
   return { tabs, keys, selectedKey }
 }
 
-export default connect(mapStateToProps)(RightPanel)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  selectTab: (key) => {
+    dispatch(selectTab(key));
+  },
+  deleteTab: (key, newKeys) => {
+    dispatch(deleteTab(key, newKeys));
+  },
+  reorderTab: (newKeys) => {
+    dispatch(reorderTab(newKeys));
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RightPanel)
 
 /*
 shortCutKeys={

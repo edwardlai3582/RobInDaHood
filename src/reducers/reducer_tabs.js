@@ -1,6 +1,4 @@
-import {
-  ADD_TAB, DELETE_TAB, REORDER_TAB, SELECT_TAB
-} from '../actions'
+import * as actions from '../actions';
 
 const NOTABKEY = "noTAbKey"
 
@@ -10,7 +8,7 @@ const tabsReducer = (state = {
   tabs: {}
 }, action) => {
   switch (action.type) {
-    case ADD_TAB:
+    case actions.TAB_ADD:
       let tempTabObject = {};
       tempTabObject[action.currentKey] = action.newTab;
       return {
@@ -19,7 +17,7 @@ const tabsReducer = (state = {
         keys: state.keys.concat(action.currentKey),
         tabs: Object.assign({}, state.tabs, tempTabObject)
       }
-    case DELETE_TAB:
+    case actions.TAB_DELETE:
       let newTabs = Object.assign({}, state.tabs);
       delete newTabs[action.deletedKey]
       let realKey = (action.currentKeys.length===0)? NOTABKEY : state.selectedKey;
@@ -29,13 +27,13 @@ const tabsReducer = (state = {
         keys: action.currentKeys,
         tabs: newTabs
       }
-    case SELECT_TAB:
+    case actions.TAB_SELECT:
       let newSelectedKey = action.currentKey || NOTABKEY;
       return {
         ...state,
         selectedKey: newSelectedKey
       }
-    case REORDER_TAB:
+    case actions.TAB_REORDER:
       return {
         ...state,
         keys: action.currentKeys

@@ -88,6 +88,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFetchNews: () => {
     dispatch(askNews(ownProps.symbol));
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(News)

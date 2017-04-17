@@ -82,6 +82,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onRenameWatchListFolder: (index, name) => {
     dispatch(renameLocalWatchlistFolder(index, name));
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableLocalWatchLists)

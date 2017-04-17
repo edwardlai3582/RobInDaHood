@@ -106,6 +106,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onResetTokenError: () => {
     dispatch(resetTokenError());
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

@@ -80,6 +80,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onRenameLocalPosition: (index, name) => {
     dispatch(renameLocalPositionFolder(index, name));
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableLocalPositions)

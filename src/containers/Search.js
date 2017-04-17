@@ -138,8 +138,8 @@ class Search extends Component {
               renderSuggestion={this.renderSuggestion}
               renderSuggestionsContainer={renderSuggestionsContainer}
               renderInputComponent={renderInputComponent}
-              inputProps={inputProps} />
-
+              inputProps={inputProps}
+            />
           </div>
         );
       }

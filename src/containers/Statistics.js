@@ -70,6 +70,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFetchFundamental: () => {
     dispatch(askFundamental(ownProps.symbol));
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Statistics)

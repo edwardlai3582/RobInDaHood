@@ -33,11 +33,9 @@ const portfoliosReducer = (state = {
     case actions.DELETE_HIS_PORTFOLIOS:
       return {
         ...state,
-        //instruments: [],
       }
 
     case actions.ADD_PORTFOLIOS:
-    //console.log(action.portfolios)
       return {
         ...state,
         portfolios: action.portfolios

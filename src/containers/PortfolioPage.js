@@ -249,6 +249,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(updatePortfolioPageQuote(quote));
     dispatch(setPortfolioPageSelectedButton(selectedButton));
   }
-});
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PortfolioPage)
