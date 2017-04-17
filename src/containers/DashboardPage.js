@@ -151,7 +151,7 @@ class DashboardPage extends Component {
       }
     }
 
-    if(instrumentsHasAllNeeded && localWatchlists.length > 0){
+    if(instrumentsHasAllNeeded){
       let watchlistsData = [];
       localWatchlists.forEach((localWatchlist) => {
         let localWatchlistData = localWatchlist.list.filter((instrument)=>{
