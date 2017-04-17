@@ -54,7 +54,7 @@ class ListContainer extends Component {
 
     for(let i=0; i<localLists.length; i++ ){
       for(let j=0; j< localLists[i].list.length; j++){
-        if(typeof instruments[localLists[i].list[j]] === "undefined"){
+        if( !instruments.hasOwnProperty(localLists[i].list[j]) ){
           instrumentsHasAllNeeded = false;
           return null;
         }
@@ -66,10 +66,8 @@ class ListContainer extends Component {
         let temp = {}
         temp.list = tempList.list.filter((instrument)=>{
           for(let i=0; i< checkLists.length; i++){
-            for(let j=0; j< checkLists[i].list.length; j++){
-              if(checkLists[i].list[j] === instrument){
-                return false;
-              }
+            if( checkLists[i].list.indexOf(instrument) !== -1 ) {
+              return false;
             }
           }
           return true;

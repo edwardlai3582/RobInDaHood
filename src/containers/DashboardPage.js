@@ -143,9 +143,8 @@ class DashboardPage extends Component {
     let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
 
-
     for(let i=0; i< watchlists.length; i++){
-      if(typeof instruments[watchlists[i].instrument] === "undefined"){
+      if( !instruments.hasOwnProperty(watchlists[i].instrument) ){
         instrumentsHasAllNeeded = false;
         break;
       }

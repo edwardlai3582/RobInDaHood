@@ -139,7 +139,7 @@ const cardListTarget = {
   hover(props, monitor) {
     const { id: draggedId, type } = monitor.getItem();
     const { id: overId } = props;
-		/////|| props.id === "default"
+		/////// props.id === "default"
 		if(type === "CARD" ) {
 			return;
 		}

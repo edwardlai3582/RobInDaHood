@@ -145,7 +145,6 @@ class PortfolioPage extends Component {
     }
   }
 
-
   componentDidMount(){
     this.props.onQuoteChanged("1D", {
       span: 'day',
