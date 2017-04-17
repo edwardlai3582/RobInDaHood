@@ -34,11 +34,23 @@ export const addLocalWatchlistFolder = (name) => ({
   type: ADD_WATCHLIST_FOLDER,
   name
 })
-
+///*
 export const deleteLocalWatchlistFolder = (index) => ({
   type: DELETE_WATCHLIST_FOLDER,
   index
 })
+//*/
+/*
+ export const deleteLocalWatchlistFolder = (index) => (dispatch, getState) =>{
+   let tempLocalWatchlists = getState().localReducer.localWatchlists.slice(0);
+   for(let i=0; i<tempLocalWatchlists.length; i++ ){
+     if(tempLocalWatchlists[i].name === "default"){
+       tempLocalWatchlists[i].list = [...state.localWatchlists[i].list, ...state.localWatchlists[action.index].list ];
+       break;
+     }
+   }
+ }
+*/
 
 export const reorderLocalWatchlist = (listIndex, list) => ({
   type: REORDER_LOCAL_WATCHLIST,

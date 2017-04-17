@@ -12,9 +12,10 @@ npm run dev
 ```
 
 ## Build
-1. Run `npm run dist`.
+1. Run `npm run build`.
 2. Rename `build` directory to `built_by_create_react_app`.
 3. Create a directory `build` in the root and save an icon.ico (Windows app icon) into it.
+4. Run `npm run dist`.
 
 ## Todos
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div

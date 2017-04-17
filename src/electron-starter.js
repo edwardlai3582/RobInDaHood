@@ -10,6 +10,22 @@ const Tray = electron.Tray;
 const path = require('path');
 const url = require('url');
 
+const template = [
+  {
+    role: 'help',
+    submenu: [
+      {
+        role: 'toggledevtools'
+      },
+      {
+        role: 'reload'
+      }
+    ]
+  }
+]
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
