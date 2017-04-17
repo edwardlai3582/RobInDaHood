@@ -220,17 +220,14 @@ class DashboardPage extends Component {
           <div className="leftPanelDiv">
             <Search className="leftPanelSearch" callback={this.handleaddTab} />
             <div className="leftPanelRest">
-
               <LeftPanelItem
                 symbol={"PORTFOLIO"}
                 id={"portfolio"}
                 onClick={()=>this.handleaddNonStockTab("portfolio")}
                 className={selectedKey === "portfolio"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
               />
-
               {positionsMenu}
               {watchlistsMenu}
-
               <LeftPanelItem
                 symbol={"HISTORY"}
                 id={"history"}
