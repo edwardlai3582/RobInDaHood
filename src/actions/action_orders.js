@@ -1,57 +1,56 @@
 import { askWatchlists } from './action_watchlists'
 import { askPositions }  from './action_positions'
 ////////////ORDERS
-export const ADD_HIS_ORDERS = 'ADD_HIS_ORDERS'
-export const REFILL_HIS_ORDERS = 'REFILL_HIS_ORDERS'
-export const DELETE_HIS_ORDERS = 'DELETE_HIS_ORDERS'
-export const ASKING_CURRENT_ORDER = 'ASKING_CURRENT_ORDER'
-export const CANCELLING_CURRENT_ORDER = 'CANCELLING_CURRENT_ORDER'
-export const CANCEL_CURRENT_ORDER_FAILED = 'CANCEL_CURRENT_ORDER_FAILED'
-export const CANCEL_CURRENT_ORDER_SUCCEEDED = 'CANCEL_CURRENT_ORDER_SUCCEEDED'
-export const ASK_CURRENT_ORDER_FAILED = 'ASK_CURRENT_ORDER_FAILED'
-export const ADD_CURRENT_ORDER = 'ADD_CURRENT_ORDER'
-export const DELETE_HIS__ORDERS_NEXT_LINK = 'DELETE_HIS__ORDERS_NEXT_LINK'
-export const PLACING_ORDER = 'PLACING_ORDER'
-export const ORDER_PLACED = 'ORDER_PLACED'
-export const ORDER_DIDNT_PLACE = 'ORDER_DIDNT_PLACE'
-
-export const RESET_PLACE_ORDER_RELATED = 'RESET_PLACE_ORDER_RELATED'
+export const ORDERS_ADD_HIS_ORDERS = 'ORDERS_ADD_HIS_ORDERS'
+export const ORDERS_REFILL_HIS_ORDERS = 'ORDERS_REFILL_HIS_ORDERS'
+export const ORDERS_DELETE_HIS_ORDERS = 'ORDERS_DELETE_HIS_ORDERS'
+export const ORDERS_ASKING_CURRENT_ORDER = 'ORDERS_ASKING_CURRENT_ORDER'
+export const ORDERS_CANCELLING_CURRENT_ORDER = 'ORDERS_CANCELLING_CURRENT_ORDER'
+export const ORDERS_CANCEL_CURRENT_ORDER_FAILED = 'ORDERS_CANCEL_CURRENT_ORDER_FAILED'
+export const ORDERS_CANCEL_CURRENT_ORDER_SUCCEEDED = 'ORDERS_CANCEL_CURRENT_ORDER_SUCCEEDED'
+export const ORDERS_ASK_CURRENT_ORDER_FAILED = 'ORDERS_ASK_CURRENT_ORDER_FAILED'
+export const ORDERS_ADD_CURRENT_ORDER = 'ORDERS_ADD_CURRENT_ORDER'
+export const ORDERS_DELETE_HIS__ORDERS_NEXT_LINK = 'ORDERS_DELETE_HIS__ORDERS_NEXT_LINK'
+export const ORDERS_PLACING_ORDER = 'ORDERS_PLACING_ORDER'
+export const ORDERS_ORDER_PLACED = 'ORDERS_ORDER_PLACED'
+export const ORDERS_ORDER_DIDNT_PLACE = 'ORDERS_ORDER_DIDNT_PLACE'
+export const ORDERS_RESET_PLACE_ORDER_RELATED = 'ORDERS_RESET_PLACE_ORDER_RELATED'
 
 export const resetPlaceOrderRelated = () => ({
-  type: RESET_PLACE_ORDER_RELATED
+  type: ORDERS_RESET_PLACE_ORDER_RELATED
 })
 
 export const placingOrder = () => ({
-  type: PLACING_ORDER
+  type: ORDERS_PLACING_ORDER
 })
 
 export const orderPlaced = () => ({
-  type: ORDER_PLACED
+  type: ORDERS_ORDER_PLACED
 })
 
 export const orderDidntPlace = (reason) => ({
-  type: ORDER_DIDNT_PLACE,
+  type: ORDERS_ORDER_DIDNT_PLACE,
   reason
 })
 
 export const refillHistoricalsOrders = (orders, next) => ({
-  type: REFILL_HIS_ORDERS,
+  type: ORDERS_REFILL_HIS_ORDERS,
   orders,
   next
 })
 
 export const addHistoricalsOrders = (orders, next) => ({
-  type: ADD_HIS_ORDERS,
+  type: ORDERS_ADD_HIS_ORDERS,
   orders,
   next
 })
 
 export const deleteHistoricalsOrders = () => ({
-  type: DELETE_HIS_ORDERS
+  type: ORDERS_DELETE_HIS_ORDERS
 })
 
 export const deleteHistoricalsOrdersNextLink = () => ({
-  type: DELETE_HIS__ORDERS_NEXT_LINK
+  type: ORDERS_DELETE_HIS__ORDERS_NEXT_LINK
 })
 
 export const askHistoricalsOrders = (...theArgs) => (dispatch, getState) => {
@@ -87,16 +86,16 @@ export const askHistoricalsOrders = (...theArgs) => (dispatch, getState) => {
 }
 
 export const addCurrentOrder = (order) => ({
-  type: ADD_CURRENT_ORDER,
+  type: ORDERS_ADD_CURRENT_ORDER,
   order
 })
 
 export const askingCurrentOrder = () => ({
-  type: ASKING_CURRENT_ORDER
+  type: ORDERS_ASKING_CURRENT_ORDER
 })
 
 export const askingCurrentOrderFailed = (reason) => ({
-  type: ASK_CURRENT_ORDER_FAILED,
+  type: ORDERS_ASK_CURRENT_ORDER_FAILED,
   reason
 })
 
@@ -128,16 +127,16 @@ export const askCurrentOrder = (orderId) => (dispatch, getState) => {
 }
 
 export const cancelCurrentOrderSucceeded = () => ({
-  type: CANCEL_CURRENT_ORDER_SUCCEEDED
+  type: ORDERS_CANCEL_CURRENT_ORDER_SUCCEEDED
 })
 
 export const cancelCurrentOrderFailed = (reason) => ({
-  type: CANCEL_CURRENT_ORDER_FAILED,
+  type: ORDERS_CANCEL_CURRENT_ORDER_FAILED,
   reason
 })
 
 export const cancellingCurrentOrder = () => ({
-  type: CANCELLING_CURRENT_ORDER
+  type: ORDERS_CANCELLING_CURRENT_ORDER
 })
 
 export const cancelOrder = (cancelLink, orderId) => (dispatch, getState) => {

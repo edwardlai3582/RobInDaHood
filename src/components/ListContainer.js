@@ -75,8 +75,7 @@ class ListContainer extends Component {
         .map((instrument, i)=>{
           return {
             instrument: instrument.instrument,
-            symbol: instruments[instrument.instrument].symbol,
-            type: 'watchlist'
+            symbol: instruments[instrument.instrument].symbol
           };
         });
 

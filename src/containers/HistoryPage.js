@@ -22,26 +22,25 @@ class HistoryPage extends Component {
   }
 
   componentDidMount(){
-    this.props.dispatch(askHistoricalsOrders());
+    this.props.onFetchHistoricalsOrders();
   }
 
   componentWillReceiveProps(nextProps){
-    //reload no that time sensitive stuff (news) here
     if(nextProps.isCurrent && !this.props.isCurrent){
-      this.props.dispatch(askHistoricalsOrders());
+      this.props.onFetchHistoricalsOrders();
     }
   }
 
   addMoreHistoricalsOrder = () => {
-    this.props.dispatch(askHistoricalsOrders(this.props.historicalsOrdersNextLink))
+    this.props.onFetchHistoricalsOrders(this.props.historicalsOrdersNextLink);
   }
 
   askCurrentOrder = (orderId) => {
-    this.props.dispatch(askCurrentOrder(orderId));
+    this.props.onFetchCurrentOrder(orderId);
   }
 
   cancelOrder = (cancelLink, orderId) => {
-      this.props.dispatch(cancelOrder(cancelLink, orderId));
+      this.props.onCancelOrder(cancelLink, orderId);
   }
 
   render() {
@@ -78,19 +77,44 @@ class HistoryPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { ordersReducer, instrumentsReducer } = state
-  const { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedReason, cancelCurrentOrderState  } = ordersReducer || {
-    historicalsOrders: [],
-    historicalsOrdersNextLink: "",
-    isAskingCurrentOrder: false,
-    currentOrder: {},
-    currentOrderFailedReason: '',
-    cancelCurrentOrderState: 'noteven'
-   }
-  const { instruments } = instrumentsReducer || { instruments: {}}
+const mapStateToProps = ({ ordersReducer, instrumentsReducer  }) => {
+  const {
+    historicalsOrders,
+    historicalsOrdersNextLink,
+    isAskingCurrentOrder,
+    currentOrder,
+    currentOrderFailedReason,
+    cancelCurrentOrderState
+  } = ordersReducer;
 
-  return { historicalsOrders, historicalsOrdersNextLink, isAskingCurrentOrder, currentOrder, currentOrderFailedReason, cancelCurrentOrderState, instruments }
+  const { instruments } = instrumentsReducer;
+
+  return {
+    historicalsOrders,
+    historicalsOrdersNextLink,
+    isAskingCurrentOrder,
+    currentOrder,
+    currentOrderFailedReason,
+    cancelCurrentOrderState,
+    instruments
+  };
 }
 
-export default connect(mapStateToProps)(HistoryPage)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onFetchHistoricalsOrders: (link) => {
+    if(!link) {
+      dispatch(askHistoricalsOrders());
+    }
+    else{
+      dispatch(askHistoricalsOrders(link));
+    }
+  },
+  onFetchCurrentOrder: (orderId) => {
+    dispatch(askCurrentOrder(orderId))
+  },
+  onCancelOrder: (cancelLink, orderId) => {
+    dispatch(cancelOrder(cancelLink, orderId));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryPage)
