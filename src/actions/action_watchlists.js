@@ -51,11 +51,9 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addWatchlists(jsonResult.results));
-        //dispatch(addLocalWatchlists(jsonResult.results));
         dispatch(addLocalWatchlists(jsonResult.results.map((instrument)=>{
           return instrument.instrument
         })));
@@ -70,7 +68,6 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
         console.log("more watchlists!")
         dispatch(addMoreWatchlists(jsonResult.results));
         if( !jsonResult.next ){
-          //dispatch(addLocalWatchlists([...getState().watchlistsReducer.watchlists, ...jsonResult.results]));
           dispatch(addLocalWatchlists([...getState().watchlistsReducer.watchlists, ...jsonResult.results].map((instrument)=>{
             return instrument.instrument
           })));

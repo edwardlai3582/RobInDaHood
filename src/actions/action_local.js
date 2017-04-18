@@ -1,6 +1,4 @@
 ////////////LOCAL
-export const ADD_LOCAL_WATCHLISTS = 'ADD_LOCAL_WATCHLISTS'
-export const ADD_LOCAL_WATCHLIST = 'ADD_LOCAL_WATCHLIST'
 export const REMOVE_LOCAL_WATCHLIST = 'REMOVE_LOCAL_WATCHLIST'
 export const REORDER_LOCAL_WATCHLIST = 'REORDER_LOCAL_WATCHLIST'
 export const REORDER_LOCAL_WATCHLISTS = 'REORDER_LOCAL_WATCHLISTS'
@@ -8,6 +6,7 @@ export const ADD_WATCHLIST_FOLDER = 'ADD_WATCHLIST_FOLDER'
 export const DELETE_WATCHLIST_FOLDER = 'DELETE_WATCHLIST_FOLDER'
 export const RENAME_WATCHLIST_FOLDER = 'RENAME_WATCHLIST_FOLDER'
 export const TOGGLE_LOCAL_WATCHLIST = 'TOGGLE_LOCAL_WATCHLIST'
+export const CONCAT_LIST_TO_LOCAL_WATCHLIST = 'CONCAT_LIST_TO_LOCAL_WATCHLIST'
 
 export const ADD_LOCAL_POSITIONS = 'ADD_LOCAL_POSITIONS'
 export const ADD_LOCAL_POSITION = 'ADD_LOCAL_POSITION'
@@ -30,27 +29,11 @@ export const renameLocalWatchlistFolder = (index, name) => ({
   name
 })
 
-export const addLocalWatchlistFolder = (name) => ({
+export const addLocalWatchlistFolder = (name, list) => ({
   type: ADD_WATCHLIST_FOLDER,
-  name
+  name,
+  list
 })
-///*
-export const deleteLocalWatchlistFolder = (index) => ({
-  type: DELETE_WATCHLIST_FOLDER,
-  index
-})
-//*/
-/*
- export const deleteLocalWatchlistFolder = (index) => (dispatch, getState) =>{
-   let tempLocalWatchlists = getState().localReducer.localWatchlists.slice(0);
-   for(let i=0; i<tempLocalWatchlists.length; i++ ){
-     if(tempLocalWatchlists[i].name === "default"){
-       tempLocalWatchlists[i].list = [...state.localWatchlists[i].list, ...state.localWatchlists[action.index].list ];
-       break;
-     }
-   }
- }
-*/
 
 export const reorderLocalWatchlist = (listIndex, list) => ({
   type: REORDER_LOCAL_WATCHLIST,
@@ -58,25 +41,117 @@ export const reorderLocalWatchlist = (listIndex, list) => ({
   list
 })
 
+export const addLocalWatchlists = (instruments) => (dispatch, getState) => {
+  let tempLocalWatchlists = getState().localReducer.localWatchlists.slice(0);
+  let notInLocal = [];
+
+  if(tempLocalWatchlists.length === 0) {
+    dispatch(addLocalWatchlistFolder("default", instruments));
+  }
+  else {
+    instruments.forEach((instrument) => {
+      let found = false;
+      tempLocalWatchlists.forEach((list) => {
+        if(found) return;
+        if(list.list.indexOf(instrument) !== -1) {
+          found =true;
+        }
+      });
+      if(!found){
+        notInLocal.push(instrument);
+      }
+    });
+
+    for(let i=0; i<tempLocalWatchlists.length; i++ ){
+      if(tempLocalWatchlists[i].name === "default"){
+        tempLocalWatchlists[i].list = tempLocalWatchlists[i].list.concat(notInLocal);
+        break;
+      }
+    }
+    //remove not_on_database from local_default
+    for(let i=0; i<tempLocalWatchlists.length; i++ ){
+      let tempInstruments = [];
+      for(let j=0; j<tempLocalWatchlists[i].list.length; j++){
+        if(instruments.indexOf(tempLocalWatchlists[i].list[j]) !== -1) {
+          tempInstruments.push(tempLocalWatchlists[i].list[j]);
+        }
+      }
+      dispatch(reorderLocalWatchlist(i, tempInstruments));
+    }
+  }
+
+}
+
+export const concatListToWatchList = ( index, list ) => ({
+  type: CONCAT_LIST_TO_LOCAL_WATCHLIST,
+  index,
+  list
+})
+
+export const removeLocalWatchlistFolder = (index) => ({
+  type: DELETE_WATCHLIST_FOLDER,
+  index
+})
+
+export const deleteLocalWatchlistFolder = (index) => (dispatch, getState) => {
+  let tempLocalWatchlists = getState().localReducer.localWatchlists.slice(0);
+  let deaultIndex = 0;
+  for(let i=0; i<tempLocalWatchlists.length; i++ ){
+    if(tempLocalWatchlists[i].name === "default"){
+      deaultIndex = i;
+      break;
+    }
+  }
+  dispatch(concatListToWatchList(deaultIndex, getState().localReducer.localWatchlists[index].list));
+  dispatch(removeLocalWatchlistFolder(index));
+}
+
 export const reorderLocalWatchlists = (aI, bI) => ({
   type: REORDER_LOCAL_WATCHLISTS,
   aI, bI
 })
 
-export const addLocalWatchlists = lists => ({
-  type: ADD_LOCAL_WATCHLISTS,
-  lists
-})
+export const addLocalWatchlist = (instrument) => (dispatch, getState) => {
+  let tempLocalWatchlists = getState().localReducer.localWatchlists.slice(0);
+  if(tempLocalWatchlists.length === 0) {
+    dispatch(addLocalWatchlistFolder("default", [instrument]));
+  }
+  else{
+    for(let i=0; i<tempLocalWatchlists.length; i++ ){
+      if(tempLocalWatchlists[i].name === "default"){
+        dispatch(concatListToWatchList(i, [instrument]));
+        return;
+      }
+    }
+  }
+}
 
-export const addLocalWatchlist = instrument => ({
-  type: ADD_LOCAL_WATCHLIST,
-  instrument
-})
-
-export const removeLocalWatchlist = instrumentId => ({
+export const removeInstrumentInLocalWatchlist = (listIndex, instrumentIndex) => ({
   type: REMOVE_LOCAL_WATCHLIST,
-  instrumentId
+  listIndex,
+  instrumentIndex
 })
+
+export const removeLocalWatchlist = (instrumentId) => (dispatch, getState) => {
+  let tempLocalWatchlists = getState().localReducer.localWatchlists.slice(0);
+  let instrument = `https://api.robinhood.com/instruments/${instrumentId}/`;
+  let found = false;
+  let listIndex = -1;
+  let instrumentIndex = -1;
+
+  tempLocalWatchlists.forEach((list, index) => {
+    if(found) return;
+    instrumentIndex = list.list.indexOf(instrument);
+    if(instrumentIndex !== -1) {
+      found = true;
+      listIndex = index;
+    }
+  });
+
+  if(found) {
+    dispatch(removeInstrumentInLocalWatchlist(listIndex, instrumentIndex));
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 export const toggleLocalPosition = (index) => ({
@@ -90,9 +165,10 @@ export const renameLocalPositionFolder = (index, name) => ({
   name
 })
 
-export const addLocalPositionFolder = (name) => ({
+export const addLocalPositionFolder = (name, list) => ({
   type: ADD_POSITION_FOLDER,
-  name
+  name,
+  list
 })
 
 export const deleteLocalPositionFolder = (index) => ({

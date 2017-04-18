@@ -1,7 +1,8 @@
 import {
-  ADD_LOCAL_WATCHLISTS, REORDER_LOCAL_WATCHLISTS,
-  ADD_LOCAL_WATCHLIST, REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLIST, TOGGLE_LOCAL_WATCHLIST,
+  REORDER_LOCAL_WATCHLISTS,
+  REMOVE_LOCAL_WATCHLIST, REORDER_LOCAL_WATCHLIST, TOGGLE_LOCAL_WATCHLIST,
   ADD_WATCHLIST_FOLDER, DELETE_WATCHLIST_FOLDER, RENAME_WATCHLIST_FOLDER,
+  CONCAT_LIST_TO_LOCAL_WATCHLIST,
 
   ADD_LOCAL_POSITIONS, REORDER_LOCAL_POSITIONS,
   ADD_LOCAL_POSITION, REMOVE_LOCAL_POSITION, REORDER_LOCAL_POSITION, TOGGLE_LOCAL_POSITION,
@@ -15,7 +16,7 @@ const localReducer = (state = {
   switch (action.type) {
     case TOGGLE_LOCAL_WATCHLIST:
       let tempLocalWatchlists = state.localWatchlists.slice(0);
-      tempLocalWatchlists[action.index].open = !state.localWatchlists[action.index].open
+      tempLocalWatchlists[action.index].open = !state.localWatchlists[action.index].open;
       return {
         ...state,
         localWatchlists: tempLocalWatchlists
@@ -30,113 +31,29 @@ const localReducer = (state = {
     case ADD_WATCHLIST_FOLDER:
       return {
         ...state,
-        localWatchlists: [...state.localWatchlists, {name: action.name, open: false, list:[]}]
+        localWatchlists: [...state.localWatchlists, { name: action.name, open: false, list: action.list }]
+      }
+    case CONCAT_LIST_TO_LOCAL_WATCHLIST :
+      tempLocalWatchlists = state.localWatchlists.slice(0);
+      tempLocalWatchlists[action.index].list = tempLocalWatchlists[action.index].list.concat(action.list);
+      return {
+        ...state,
+        localWatchlists: tempLocalWatchlists
       }
     case DELETE_WATCHLIST_FOLDER:
-      tempLocalWatchlists = state.localWatchlists.slice(0);
-      for(let i=0; i<tempLocalWatchlists.length; i++ ){
-        if(tempLocalWatchlists[i].name === "default"){
-          tempLocalWatchlists[i].list = [...state.localWatchlists[i].list, ...state.localWatchlists[action.index].list ];
-          break;
-        }
-      }
-      tempLocalWatchlists.splice(action.index, 1);
       return {
         ...state,
-        localWatchlists: tempLocalWatchlists
-      }
-    case ADD_LOCAL_WATCHLISTS:
-      tempLocalWatchlists = state.localWatchlists.slice(0);
-      let temp = [];
-      if(tempLocalWatchlists.length === 0){
-        let defaultWatchlist = {};
-        defaultWatchlist.name = "default";
-        defaultWatchlist.open = false;
-        defaultWatchlist.list = action.lists;
-        tempLocalWatchlists.push(defaultWatchlist);
-      }
-      else {
-        //add not_on_local to local_default
-        action.lists.forEach((instrument)=>{
-          let found = false;
-          state.localWatchlists.forEach((list) => {
-            if(found) return;
-            for(let i=0; i<list.list.length; i++){
-              if(list.list[i] === instrument){
-                found =true;
-                return;
-              }
-            }
-          });
-          if(!found){
-            temp.push(instrument);
-          }
-        });
-
-        for(let i=0; i<tempLocalWatchlists.length; i++ ){
-          if(tempLocalWatchlists[i].name === "default"){
-            tempLocalWatchlists[i].list = tempLocalWatchlists[i].list.concat(temp);
-            break;
-          }
-        }
-
-        //remove not_on_database from local_default
-        for(let i=0; i<tempLocalWatchlists.length; i++ ){
-          let temp = [];
-          for(let j=0; j<tempLocalWatchlists[i].list.length; j++){
-            for(let z=0; z<action.lists.length; z++){
-              if(action.lists[z] === tempLocalWatchlists[i].list[j]){
-                temp.push(tempLocalWatchlists[i].list[j]);
-                break;
-              }
-            }
-          }
-          tempLocalWatchlists[i].list = temp;
-        }
-      }
-      return {
-        ...state,
-        localWatchlists: tempLocalWatchlists
-      }
-    case ADD_LOCAL_WATCHLIST:
-      tempLocalWatchlists = state.localWatchlists.slice(0);
-      if(tempLocalWatchlists.length === 0){
-        let defaultWatchlist = {};
-        defaultWatchlist.name = "default";
-        defaultWatchlist.list = [];
-        tempLocalWatchlists.push(defaultWatchlist);
-      }
-
-      for(let i=0; i<tempLocalWatchlists.length; i++ ){
-        if(tempLocalWatchlists[i].name === "default"){
-          tempLocalWatchlists[i].list.push(action.instrument);
-          break;
-        }
-      }
-
-      return {
-        ...state,
-        localWatchlists: tempLocalWatchlists
+        localWatchlists: [
+          ...state.localWatchlists.slice(0, action.index),
+          ...state.localWatchlists.slice(action.index + 1)
+        ]
       }
     case REMOVE_LOCAL_WATCHLIST:
       tempLocalWatchlists = state.localWatchlists.slice(0);
-      let instrumentLink = `https://api.robinhood.com/instruments/${action.instrumentId}/`;
-      let found = false;
-      let foundIndex = -1;
-
-      tempLocalWatchlists.forEach((list) => {
-        if(found) return;
-        for(let i=0; i<list.list.length; i++){
-          if(list.list[i] === instrumentLink){
-            console.log("found! from local");
-            found = true;
-            foundIndex = i;
-            break;
-          }
-        }
-        list.list = [...list.list.slice(0, foundIndex), ...list.list.slice(foundIndex+1)];
-      });
-
+      tempLocalWatchlists[action.listIndex].list = [
+        ...tempLocalWatchlists[action.listIndex].list.slice(0, action.instrumentIndex),
+        ...tempLocalWatchlists[action.listIndex].list.slice(action.instrumentIndex+1)
+      ];
       return {
         ...state,
         localWatchlists: tempLocalWatchlists,
@@ -176,7 +93,7 @@ const localReducer = (state = {
   case ADD_POSITION_FOLDER:
     return {
       ...state,
-      localPositions: [...state.localPositions, {name: action.name, open: false, list:[]}]
+      localPositions: [...state.localPositions, {name: action.name, open: false, list: action.list }]
     }
   case DELETE_POSITION_FOLDER:
     tempLocalPositions = state.localPositions.slice(0);
@@ -193,7 +110,7 @@ const localReducer = (state = {
     }
   case ADD_LOCAL_POSITIONS:
     tempLocalPositions = state.localPositions.slice(0);
-    temp = [];
+    let temp = [];
     if(tempLocalPositions.length === 0){
       let defaultPosition = {};
       defaultPosition.name = "default";
@@ -266,9 +183,9 @@ const localReducer = (state = {
     }
   case REMOVE_LOCAL_POSITION:
     tempLocalPositions = state.localPositions.slice(0);
-    instrumentLink = `https://api.robinhood.com/instruments/${action.instrumentId}/`;
-    found = false;
-    foundIndex = -1;
+    let instrumentLink = `https://api.robinhood.com/instruments/${action.instrumentId}/`;
+    let found = false;
+    let foundIndex = -1;
 
     tempLocalPositions.forEach((list) => {
       if(found) return;

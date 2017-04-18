@@ -67,7 +67,7 @@ const mapStateToProps = ({ localReducer, instrumentsReducer }, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddWatchListFolder: (folderIndex) => {
-    dispatch(addLocalWatchlistFolder(`Folder ${folderIndex}`));
+    dispatch(addLocalWatchlistFolder(`Folder ${folderIndex}`, []));
   },
   onDeleteWatchListFolder: (index) => {
     dispatch(deleteLocalWatchlistFolder(index));

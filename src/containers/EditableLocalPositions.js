@@ -66,7 +66,7 @@ const mapStateToProps = ({ localReducer, instrumentsReducer }, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddFolder: (folderIndex) => {
-    dispatch(addLocalPositionFolder(`Folder ${folderIndex}`));
+    dispatch(addLocalPositionFolder(`Folder ${folderIndex}`, []));
   },
   onDeleteFolder: (index, position ) => {
     dispatch(deleteLocalPositionFolder(index));

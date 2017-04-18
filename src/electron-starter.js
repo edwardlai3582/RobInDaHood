@@ -40,7 +40,7 @@ function createWindow() {
       webPreferences : {
         webSecurity  : false
       },
-      icon:'../icon.ico'
+      icon: path.join(__dirname, '/../icon.ico')
     });
 
     // and load the index.html of the app.
@@ -52,7 +52,7 @@ function createWindow() {
     mainWindow.loadURL(startUrl);
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -78,7 +78,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', ()=>{
   createWindow();
-  tray = new Tray('./icon.ico')
+  tray = new Tray(path.join(__dirname, '/../icon.ico'))
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Show App',
