@@ -1,29 +1,27 @@
-import {
-  ADD_INSTRUMENT, DELETE_INSTRUMENT, ASKING_INSTRUMENT, ASKING_INSTRUMENT_FAILED
-} from '../actions'
+import * as actions from '../actions';
 
 const instrumentsReducer = (state = {
   instruments: {}
 }, action) => {
   switch (action.type) {
-    case ASKING_INSTRUMENT:
+    case actions.ASKING_INSTRUMENT:
       return {
         ...state
       }
-    case ASKING_INSTRUMENT_FAILED:
+    case actions.ASKING_INSTRUMENT_FAILED:
       console.log(action.error)
       return {
         ...state
       }
-    case ADD_INSTRUMENT:
-    console.log("ADD_INSTRUMENT");
+    case actions.ADD_INSTRUMENT:
+      console.log("ADD_INSTRUMENT");
       let newInstruments = Object.assign({}, state.instruments);
       newInstruments[action.instrument.url] = action.instrument;
       return {
         ...state,
         instruments: newInstruments
       }
-    case DELETE_INSTRUMENT:
+    case actions.DELETE_INSTRUMENT:
       let newDeletedInstruments = Object.assign({}, state.instruments);
       delete newDeletedInstruments[action.instrumentId];
       return {

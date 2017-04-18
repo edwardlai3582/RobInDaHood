@@ -1,9 +1,67 @@
-import {
-  ADD_POSITIONS, ADD_MORE_POSITIONS,
-  DELETE_POSITIONS, ASKING_POSITIONS, ASKING_POSITIONS_FAILED,
-  ADD_POSITIONS_WITH_ZERO, ADD_MORE_POSITIONS_WITH_ZERO,
-  ADD_POSITION
-} from '../actions'
+import * as actions from '../actions';
+
+const positionsReducer = (state = {
+  isAskingPositions: false,
+  error: "",
+  positions: [],
+  positionsWithZero: [],
+  eachPosition: {}
+}, action) => {
+  switch (action.type) {
+    case actions.ASKING_POSITIONS:
+      return {
+        ...state,
+        error: "",
+        isAskingPositions: true
+      }
+    case actions.ASKING_POSITIONS_FAILED:
+      return {
+        ...state,
+        isAskingPositions: false,
+        error: action.error,
+        positions: []
+      }
+    case actions.ADD_POSITIONS:
+      return {
+        ...state,
+        isAskingPositions: false,
+        positions: action.positions,
+      }
+    case actions.ADD_MORE_POSITIONS:
+      return {
+        ...state,
+        isAskingPositions: false,
+        positions: state.positions.concat(action.positions)
+      }
+    case actions.DELETE_POSITIONS:
+      return {
+        ...state,
+        positions: [],
+      }
+    case actions.ADD_POSITION:
+      let tempPosition = {};
+      tempPosition[action.position.instrument] = action.position;
+      return {
+        ...state,
+        eachPosition: Object.assign({}, state.eachPosition, tempPosition)
+      }
+    case actions.ADD_POSITIONS_WITH_ZERO:
+      return {
+        ...state,
+        positionsWithZero: action.positions,
+      }
+    case actions.ADD_MORE_POSITIONS_WITH_ZERO:
+      return {
+        ...state,
+        positionsWithZero: state.positionsWithZero.concat(action.positions)
+      }
+    default:
+      return state
+  }
+}
+
+export default positionsReducer
+
 
 /*
 "positions":[
@@ -38,65 +96,3 @@ import {
       },
 }
 */
-
-const positionsReducer = (state = {
-  isAskingPositions: false,
-  error: "",
-  positions: [],
-  positionsWithZero: [],
-  eachPosition: {}
-}, action) => {
-  switch (action.type) {
-    case ASKING_POSITIONS:
-      return {
-        ...state,
-        error: "",
-        isAskingPositions: true
-      }
-    case ASKING_POSITIONS_FAILED:
-      return {
-        ...state,
-        isAskingPositions: false,
-        error: action.error,
-        positions: []
-      }
-    case ADD_POSITIONS:
-      return {
-        ...state,
-        isAskingPositions: false,
-        positions: action.positions,
-      }
-    case ADD_MORE_POSITIONS:
-      return {
-        ...state,
-        isAskingPositions: false,
-        positions: state.positions.concat(action.positions)
-      }
-    case DELETE_POSITIONS:
-      return {
-        ...state,
-        positions: [],
-      }
-    case ADD_POSITION:
-      let tempPosition = {};
-      tempPosition[action.position.instrument] = action.position;
-      return {
-        ...state,
-        eachPosition: Object.assign({}, state.eachPosition, tempPosition)
-      }
-    case ADD_POSITIONS_WITH_ZERO:
-      return {
-        ...state,
-        positionsWithZero: action.positions,
-      }
-    case ADD_MORE_POSITIONS_WITH_ZERO:
-      return {
-        ...state,
-        positionsWithZero: state.positionsWithZero.concat(action.positions)
-      }
-    default:
-      return state
-  }
-}
-
-export default positionsReducer

@@ -27,8 +27,6 @@ const accountReducer = (state = {
         account: {}
       }
     case actions.ACCOUNT_ADD:
-      //console.log("ACCOUNT INFO");
-      //console.log(action.account);
       return {
         ...state,
         isAskingAccount: false,

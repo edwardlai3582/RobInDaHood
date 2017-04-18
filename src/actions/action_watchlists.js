@@ -1,5 +1,4 @@
 import { askInstrument } from './action_instruments'
-
 import { addLocalWatchlists, addLocalWatchlist, removeLocalWatchlist } from './action_local'
 ////////////WATCHLISTS
 export const ADD_WATCHLISTS = 'ADD_WATCHLISTS'
@@ -121,10 +120,26 @@ export const addToWatchlists = (instrumentSymbol) => (dispatch, getState) => {
   });
 }
 
-export const removeWatchlist = instrumentId => ({
+export const removeInstrumentInWatchlist = instrumentIndex => ({
   type: REMOVE_WATCHLIST,
-  instrumentId
+  instrumentIndex
 })
+
+export const removeWatchlist = (instrumentId) => (dispatch, getState) => {
+  let tempWatchlists = getState().watchlistsReducer.watchlists.slice(0);
+  let instrument = `https://api.robinhood.com/instruments/${instrumentId}/`;
+  let instrumentIndex = -1;
+
+  for(let i=0; i<tempWatchlists.length; i++){
+    if(tempWatchlists[i].instrument === instrument){
+      instrumentIndex = i;
+      break;
+    }
+  }
+  if(instrumentIndex !== -1) {
+    dispatch(removeInstrumentInWatchlist(instrumentIndex));
+  }
+}
 
 export const removeFromWatchlists = (instrumentId) => (dispatch, getState) =>{
   return fetch(`https://api.robinhood.com/watchlists/Default/${instrumentId}`, {
