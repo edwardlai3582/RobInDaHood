@@ -42,8 +42,7 @@ class DashboardPage extends Component {
     positions: PropTypes.array.isRequired,
     positionsWithZero: PropTypes.array.isRequired,
     instruments: PropTypes.object.isRequired,
-    localWatchlists: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired
+    localWatchlists: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -55,14 +54,22 @@ class DashboardPage extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, keys } = this.props
-    dispatch(askWatchlists());
-    dispatch(askPositions());
-    dispatch(askPositionsWithZero());
-    dispatch(askAccount());
-    dispatch(resetPlaceOrderRelated());
+    const {
+      onAskAccount,
+      onAskWatchlists,
+      onAskPositions,
+      onAskPositionsWithZero,
+      onAskMultipleQuotes,
+      onResetPlaceOrderRelated,
+      keys
+    } = this.props
 
-    dispatch(askMultipleQuotes());
+    onAskWatchlists();
+    onAskPositions();
+    onAskPositionsWithZero();
+    onAskAccount();
+    onResetPlaceOrderRelated();
+    onAskMultipleQuotes();
     //if no tabs, show portfolio page
     if(keys.length === 0){
       this.handleaddNonStockTab("portfolio")
@@ -78,7 +85,7 @@ class DashboardPage extends Component {
   }
 
   fifteenSecondsJobs = () => {
-    this.props.dispatch(askMultipleQuotes());
+    this.props.onAskMultipleQuotes();
   }
 
   openModal = () => {
@@ -96,14 +103,14 @@ class DashboardPage extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  logout = () => { this.props.dispatch(deleteToken()) }
+  logout = () => { this.props.onDeleteToken() }
 
   handleaddTab = (data) => {
     console.log(data);
     const key = data.symbol;
 
     if(this.props.keys.indexOf(key) !== -1) {
-      this.props.dispatch(selectTab(key));
+      this.props.onSelectTab(key);
       return;
     }
 
@@ -115,14 +122,14 @@ class DashboardPage extends Component {
       type: data.type
     }
 
-    this.props.dispatch(addTab(key, newTab));
+    this.props.onAddTab(key, newTab);
   }
 
   handleaddNonStockTab = (name) => {
     const key = name;
 
     if(this.props.keys.indexOf(key) !== -1) {
-      this.props.dispatch(selectTab(key));
+      this.props.onSelectTab(key);
       return;
     }
 
@@ -134,11 +141,24 @@ class DashboardPage extends Component {
       type: name
     }
 
-    this.props.dispatch(addTab(key, newTab));
+    this.props.onAddTab(key, newTab);
   }
 
   render() {
-    const { watchlists, positions, instruments, selectedKey, localWatchlists, localPositions, dispatch, quotes, watchlistsModuleOpen, positionsModuleOpen } = this.props
+    const {
+      watchlists,
+      positions,
+      instruments,
+      selectedKey,
+      localWatchlists, localPositions,
+      quotes,
+      watchlistsModuleOpen,
+      positionsModuleOpen,
+      onToggleWatchlistsModule,
+      onTogglePositionsModule,
+      onToggleLocalWatchlist,
+      onToggleLocalPosition
+    } = this.props
     let watchlistsMenu = "loading watchlists...";
     let positionsMenu = "loading positions...";
     let instrumentsHasAllNeeded = true;
@@ -179,8 +199,8 @@ class DashboardPage extends Component {
           listsData={watchlistsData}
           selectedKey={selectedKey}
           callback={this.handleaddTab}
-          toggleLocallist={(index)=>dispatch(toggleLocalWatchlist(index))}
-          toggleModule={()=>dispatch(toggleWatchlistsModule())}
+          toggleLocallist={ (index) => onToggleLocalWatchlist(index) }
+          toggleModule={ () => onToggleWatchlistsModule() }
           moduleOpen={watchlistsModuleOpen}
           quotes={quotes}
         />
@@ -205,8 +225,8 @@ class DashboardPage extends Component {
         listsData={positionsData}
         selectedKey={selectedKey}
         callback={this.handleaddTab}
-        toggleLocallist={(index)=>dispatch(toggleLocalPosition(index))}
-        toggleModule={()=>dispatch(togglePositionsModule())}
+        toggleLocallist={ (index) => onToggleLocalPosition(index) }
+        toggleModule={ () => onTogglePositionsModule() }
         moduleOpen={positionsModuleOpen}
         quotes={quotes}
       />);
@@ -259,19 +279,91 @@ class DashboardPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { tokenReducer, tabsReducer, accountReducer, watchlistsReducer, positionsReducer, instrumentsReducer, localReducer, uiReducer, quotesReducer } = state
-  const { token } = tokenReducer || { token: "" }
-  const { keys, selectedKey } = tabsReducer || { keys: [], selectedKey: "noTAbKey" }
-  const { accountNumber } = accountReducer || { accountNumber: "" }
-  const { watchlists } = watchlistsReducer || { watchlists: []}
-  const { localWatchlists, localPositions } = localReducer || { localWatchlists: [], localPositions: []}
-  const { positions, positionsWithZero } = positionsReducer || { positions: [], positionsWithZero:[]}
-  const { instruments } = instrumentsReducer || { instruments: {}}
-  const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer || { watchlistsModuleOpen: false, positionsModuleOpen:false }
-  const { quotes } = quotesReducer || { quotes: {} }
+const mapStateToProps = ({
+  tokenReducer,
+  tabsReducer,
+  accountReducer,
+  watchlistsReducer,
+  positionsReducer,
+  instrumentsReducer,
+  localReducer,
+  uiReducer,
+  quotesReducer
+}, ownProps) => {
+  const { token } = tokenReducer;
+  const { keys, selectedKey } = tabsReducer;
+  const { accountNumber } = accountReducer;
+  const { watchlists } = watchlistsReducer;
+  const { localWatchlists, localPositions } = localReducer;
+  const { positions, positionsWithZero } = positionsReducer;
+  const { instruments } = instrumentsReducer;
+  const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer;
+  const { quotes } = quotesReducer;
 
-  return { token, keys, selectedKey, accountNumber, watchlists, positions, positionsWithZero, instruments, localWatchlists, localPositions, watchlistsModuleOpen, positionsModuleOpen, quotes }
+  return {
+    token,
+    keys, selectedKey,
+    accountNumber,
+    watchlists,
+    positions, positionsWithZero,
+    instruments,
+    localWatchlists, localPositions,
+    watchlistsModuleOpen, positionsModuleOpen,
+    quotes
+  }
 }
+/*
 
-export default connect(mapStateToProps)(DashboardPage)
+,
+,
+, ,
+,
+, ,
+,
+,
+,
+,
+*/
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onDeleteToken: () => {
+    dispatch(deleteToken());
+  },
+  onAskAccount: () => {
+    dispatch(askAccount());
+  },
+  onAskWatchlists: () => {
+    dispatch(askWatchlists());
+  },
+  onAskPositions: () => {
+    dispatch(askPositions());
+  },
+  onAskPositionsWithZero: () => {
+    dispatch(askPositionsWithZero());
+  },
+  onAskMultipleQuotes: () => {
+    dispatch(askMultipleQuotes());
+  },
+  onAddTab: (key, newTab) => {
+    dispatch(addTab(key, newTab));
+  },
+  onSelectTab: (key) => {
+    dispatch(selectTab(key));
+  },
+  onResetPlaceOrderRelated: () => {
+    dispatch(resetPlaceOrderRelated());
+  },
+  onToggleLocalWatchlist: (index) => {
+    dispatch(toggleLocalWatchlist(index));
+  },
+  onToggleLocalPosition: (index) => {
+    dispatch(toggleLocalPosition(index));
+  },
+  onToggleWatchlistsModule: () => {
+    dispatch(toggleWatchlistsModule());
+  },
+  onTogglePositionsModule: () => {
+    dispatch(togglePositionsModule());
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
