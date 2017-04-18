@@ -14,7 +14,7 @@ import { deleteToken,
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
-import Search from './Search'
+import Search from '../components/Search'
 import LeftPanelModule from '../components/LeftPanelModule'
 import RightPanel from './RightPanel'
 import '../styles/DashboardPage.css'

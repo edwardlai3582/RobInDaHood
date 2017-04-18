@@ -22,7 +22,7 @@ import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
 import { isLater } from '../utils'
 import '../styles/Instrument.css'
 
-class Instrument extends Component {
+class InstrumentPage extends Component {
   static propTypes = {
     instrument: PropTypes.string.isRequired,
     symbol: PropTypes.string.isRequired,
@@ -33,7 +33,6 @@ class Instrument extends Component {
     quotes: PropTypes.object.isRequired,
     positions: PropTypes.array.isRequired,
     eachPosition: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
     watchlists: PropTypes.array.isRequired,
     token: PropTypes.string.isRequired,
     account: PropTypes.object.isRequired,
@@ -65,16 +64,26 @@ class Instrument extends Component {
   }
 
   componentDidMount(){
-    const { symbol, instrument, positions, watchlists, dispatch } = this.props;
+    const {
+      symbol,
+      instrument,
+      positions,
+      watchlists,
+      onAskPosition,
+      onAskHistoricalsQuotes,
+      onAskQuote
+    } = this.props;
     const { span, interval, bounds } = this.state.quotes;
+
     this.askOwnHistoricalsOrders();
 
-    dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
-    dispatch(askQuote(symbol));
+    onAskHistoricalsQuotes(symbol, span, interval, bounds);
+    onAskQuote(symbol);
+
     for(let i=0; i< positions.length; i++){
       if(positions[i].instrument === instrument){
-        this.setState({isInPositions:true});
-        dispatch(askPosition(positions[i].url));
+        this.setState({ isInPositions: true});
+        onAskPosition(positions[i].url);
         break;
       }
     }
@@ -102,22 +111,22 @@ class Instrument extends Component {
     }
     if(!thisIsInWatchlists){
       console.log("this instrument is not in watchlists, so killed");
-      this.props.dispatch(deleteInstrument(this.props.instrument));
+      this.props.onDeleteInstrument(this.props.instrument);
     }
   }
 
   twoMinutesJobs = () => {
-    const { symbol, dispatch } = this.props;
+    const { symbol, onAskHistoricalsQuotes } = this.props;
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
     if(selectedButtonName === "1D"){
-      dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
+      onAskHistoricalsQuotes(symbol, span, interval, bounds);
     }
   }
 
   componentWillReceiveProps(nextProps){
     //reload no that time sensitive stuff here
     if(nextProps.isCurrent && !this.props.isCurrent){
-      this.props.dispatch(askInstrument(this.props.instrument));
+      this.props.onAskInstrument(this.props.instrument);
       this.askOwnHistoricalsOrders();
     }
 
@@ -147,8 +156,6 @@ class Instrument extends Component {
     .then(response => response.json())
     .then(jsonResult => {
       if(theArgs.length === 0){
-        //console.log("orders from instrument");
-        //console.log(jsonResult)
         this.setState({
           ownHistoricalsOrders: jsonResult.results,
           ownHistoricalsOrdersNextLink: (jsonResult.next)? jsonResult.next : ""
@@ -211,14 +218,13 @@ class Instrument extends Component {
     .then(jsonResult => {
       console.log(jsonResult);
       if(Object.keys(jsonResult).length === 0){
-        //dispatch(cancelCurrentOrderSucceeded());
         this.setState({cancelOwnCurrentOrderState:"succeeded"});
         this.askOwnCurrentOrder(orderId);
         this.askOwnHistoricalsOrders();
 
         //reload watchlist & positions after order cancelled
-        this.props.dispatch(askWatchlists());
-        this.props.dispatch(askPositions());
+        this.props.onAskWatchlists();
+        this.props.onAskPositions();
       }
       else{
         console.log(jsonResult);
@@ -235,24 +241,40 @@ class Instrument extends Component {
 
   changeHisQuotes = (span, interval, bounds, selectedButtonName)=>{
     this.setState({ quotes: { span: span, interval: interval, bounds: bounds, selectedButtonName: selectedButtonName } });
-    this.props.dispatch(askHistoricalsQuotes(this.props.symbol, span, interval, bounds));
+    this.props.onAskHistoricalsQuotes(this.props.symbol, span, interval, bounds);
   }
 
   addToWatchlists = () => {
-    //console.log(this.props.instruments[this.props.instrument].symbol);
-    this.props.dispatch(addToWatchlists(this.props.instruments[this.props.instrument].symbol))
+    this.props.onAddToWatchlists( this.props.instruments[this.props.instrument].symbol );
   }
 
   removeFromWatchlists = () => {
-    //console.log(this.props.instruments[this.props.instrument].id);
-    this.props.dispatch(removeFromWatchlists(this.props.instruments[this.props.instrument].id))
+    this.props.onRemoveFromWatchlists( this.props.instruments[this.props.instrument].id );
   }
 
   render() {
-    const { symbol, instrument, fundamentals, instruments, historicalsQuotes, quotes, eachPosition, account, placingOrder, orderPlacedResult } = this.props
+    const {
+      symbol,
+      instrument,
+      fundamentals,
+      instruments,
+      historicalsQuotes,
+      quotes,
+      eachPosition,
+      account,
+      placingOrder,
+      orderPlacedResult,
+      onAskAccount,
+      onPlaceOrder
+    } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
-    const { ownHistoricalsOrders, ownHistoricalsOrdersNextLink,
-            isAskingOwnCurrentOrder, OwnCurrentOrder, OwnCurrentOrderFailedReason } = this.state;
+    const {
+      ownHistoricalsOrders,
+      ownHistoricalsOrdersNextLink,
+      isAskingOwnCurrentOrder,
+      OwnCurrentOrder,
+      OwnCurrentOrderFailedReason
+    } = this.state;
 
 
     //show null if not current page
@@ -395,10 +417,10 @@ class Instrument extends Component {
                         accountUrl={account.url}
                         instrumentUrl={instrument}
                         currentPrice={ quotes[symbol].last_extended_hours_trade_price || quotes[symbol].last_trade_price }
-                        placeOrder={(order)=>this.props.dispatch(placeOrder(order))}
+                        placeOrder={ (order) => onPlaceOrder(order) }
                         placingOrder={placingOrder}
                         orderPlacedResult={orderPlacedResult}
-                        askAccount={()=> this.props.dispatch(askAccount())}
+                        askAccount={()=> onAskAccount() }
             />
           ):(
             <div className="notTradeable">not tradeable</div>
@@ -427,19 +449,74 @@ class Instrument extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { instrumentsReducer, fundamentalsReducer, quotesReducer, positionsReducer, watchlistsReducer, tokenReducer, accountReducer, ordersReducer } = state
-  const { watchlists } = watchlistsReducer || { watchlists: []}
-  const { instruments } = instrumentsReducer || { instruments: {}}
-  const { fundamentals } = fundamentalsReducer || { fundamentals: {}}
+const mapStateToProps = ({
+  instrumentsReducer,
+  fundamentalsReducer,
+  quotesReducer,
+  positionsReducer,
+  watchlistsReducer,
+  tokenReducer,
+  accountReducer,
+  ordersReducer
+}) => {
+  const { watchlists } = watchlistsReducer;
+  const { instruments } = instrumentsReducer;
+  const { fundamentals } = fundamentalsReducer;
+  const { historicalsQuotes, quotes } = quotesReducer;
+  const { positions, eachPosition } = positionsReducer;
+  const { token } = tokenReducer;
+  const { account } = accountReducer;
+  const { placingOrder, orderPlacedResult } = ordersReducer;
 
-  const { historicalsQuotes, quotes } = quotesReducer || { historicalsQuotes: {}, quotes:{}}
-  const { positions, eachPosition } = positionsReducer || { positions:[], eachPosition: {}}
-  const { token } = tokenReducer || { token:"" }
-  const { account } = accountReducer || { account: {} }
-  const { placingOrder, orderPlacedResult } = ordersReducer || { placingOrder: false, orderPlacedResult:"" }
-
-  return { instruments, fundamentals, historicalsQuotes, quotes, positions, eachPosition, watchlists, token, account, placingOrder, orderPlacedResult }
+  return {
+    watchlists,
+    instruments,
+    fundamentals,
+    historicalsQuotes,
+    quotes,
+    positions,
+    eachPosition,
+    token,
+    account,
+    placingOrder,
+    orderPlacedResult
+  }
 }
 
-export default connect(mapStateToProps)(Instrument)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onAskAccount: () => {
+    dispatch(askAccount());
+  },
+  onAskInstrument: (instrument) => {
+    dispatch(askInstrument(instrument));
+  },
+  onDeleteInstrument: (instrument) => {
+    dispatch(deleteInstrument(instrument));
+  },
+  onAskPosition: (url) => {
+    dispatch(askPosition(url));
+  },
+  onAskPositions: () => {
+    dispatch(askPositions());
+  },
+  onAskHistoricalsQuotes: (symbol, span, interval, bounds) => {
+    dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
+  },
+  onAskQuote: (symbol) => {
+    dispatch(askQuote(symbol));
+  },
+  onAskWatchlists: () => {
+    dispatch(askWatchlists());
+  },
+  onAddToWatchlists: (symbol) => {
+    dispatch(addToWatchlists(symbol));
+  },
+  onRemoveFromWatchlists: (instrumentId) => {
+    dispatch(removeFromWatchlists(instrumentId));
+  },
+  onPlaceOrder: (order) => {
+    dispatch(placeOrder(order));
+  },
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(InstrumentPage)

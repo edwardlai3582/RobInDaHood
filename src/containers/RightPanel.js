@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Tab, Tabs} from 'react-draggable-tab'
 import { deleteTab, reorderTab, selectTab } from '../actions'
-import Instrument from './Instrument'
+import InstrumentPage from './InstrumentPage'
 import PortfolioPage from './PortfolioPage'
 import HistoryPage from './HistoryPage'
 import '../styles/Tabs.css'
@@ -69,16 +69,37 @@ class RightPanel extends Component {
       let isCurrent = (selectedKey === tabs[key].key);
 
       if(tabs[key].type === "watchlist" || tabs[key].type === "position"){
-        return (<Tab key={tabs[key].key} title={"$"+tabs[key].title}><Instrument isCurrent={isCurrent} symbol={tabs[key].title} instrument={tabs[key].instrument} type={tabs[key].type} /></Tab>);
+        return (
+          <Tab key={tabs[key].key} title={"$"+tabs[key].title}>
+            <InstrumentPage
+              isCurrent={isCurrent}
+              symbol={tabs[key].title}
+              instrument={tabs[key].instrument}
+              type={tabs[key].type}
+            />
+          </Tab>
+        );
       }
       else if (tabs[key].type === "portfolio") {
-        return (<Tab key={tabs[key].key} title={tabs[key].title}><PortfolioPage isCurrent={isCurrent} /></Tab>);
+        return (
+          <Tab key={tabs[key].key} title={tabs[key].title}>
+            <PortfolioPage isCurrent={isCurrent} />
+          </Tab>
+        );
       }
       else if (tabs[key].type === "history") {
-        return (<Tab key={tabs[key].key} title={tabs[key].title}><HistoryPage isCurrent={isCurrent} /></Tab>);
+        return (
+          <Tab key={tabs[key].key} title={tabs[key].title}>
+            <HistoryPage isCurrent={isCurrent} />
+          </Tab>
+        );
       }
       else{
-        return (<Tab key={tabs[key].key} title={tabs[key].title}><div>NOTHING HERE</div></Tab>);
+        return (
+          <Tab key={tabs[key].key} title={tabs[key].title}>
+            <div>NOTHING HERE</div>
+          </Tab>
+        );
       }
     });
 
