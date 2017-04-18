@@ -31,7 +31,7 @@ Menu.setApplicationMenu(menu)
 let mainWindow;
 let tray = null;
 
-function createWindow() {
+const createWindow = () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
       width: 1024,
@@ -73,11 +73,7 @@ function createWindow() {
 
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', ()=>{
-  createWindow();
+const createTray = () => {
   tray = new Tray(path.join(__dirname, '/../icon.ico'))
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -98,6 +94,14 @@ app.on('ready', ()=>{
   tray.on('click', () => {
     tray.popUpContextMenu();
   })
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', ()=>{
+  createWindow();
+  createTray();
 });
 
 // Quit when all windows are closed.

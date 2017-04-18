@@ -1,8 +1,8 @@
 {
-  "name": "robindahood",
+  "name": "ROBINDAHOOD",
   "version": "0.0.1",
   "license": "MIT",
-  "description": "A robinhood desktop app",
+  "description": "A Robinhood desktop app",
   "author": "Ed Lai <edwardlai3582@gmail.com>",
   "private": true,
   "devDependencies": {
@@ -47,7 +47,7 @@
     "postinstall": "install-app-deps"
   },
   "build": {
-    "appId": "com.example.app",
+    "appId": "robin.da.hood",
     "win": {
       "target": "NSIS",
       "icon": "./icon.ico"

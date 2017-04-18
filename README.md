@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Project setup: https://medium.freecodecamp.com/building-an-electron-application-with-create-react-app-97945861647c#.pf5yr1mgt
 
-## How to run the code
+## How to Run
 ```shell
 npm install
 npm run dev
@@ -13,7 +13,7 @@ npm run dev
 
 ## Build
 1. Run `npm run build`.
-2. Rename `build` directory to `built_by_create_react_app`.
+2. Rename directory `build` to `built_by_create_react_app`.
 3. Create a directory `build` in the root and save an icon.ico (Windows app icon) into it.
 4. Run `npm run dist`.
 
