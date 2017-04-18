@@ -8,8 +8,6 @@ export const RENAME_WATCHLIST_FOLDER = 'RENAME_WATCHLIST_FOLDER'
 export const TOGGLE_LOCAL_WATCHLIST = 'TOGGLE_LOCAL_WATCHLIST'
 export const CONCAT_LIST_TO_LOCAL_WATCHLIST = 'CONCAT_LIST_TO_LOCAL_WATCHLIST'
 
-export const ADD_LOCAL_POSITIONS = 'ADD_LOCAL_POSITIONS'
-export const ADD_LOCAL_POSITION = 'ADD_LOCAL_POSITION'
 export const REMOVE_LOCAL_POSITION = 'REMOVE_LOCAL_POSITION'
 export const REORDER_LOCAL_POSITION = 'REORDER_LOCAL_POSITION'
 export const REORDER_LOCAL_POSITIONS = 'REORDER_LOCAL_POSITIONS'
@@ -17,6 +15,7 @@ export const ADD_POSITION_FOLDER = 'ADD_POSITION_FOLDER'
 export const DELETE_POSITION_FOLDER = 'DELETE_POSITION_FOLDER'
 export const RENAME_POSITION_FOLDER = 'RENAME_POSITION_FOLDER'
 export const TOGGLE_LOCAL_POSITION = 'TOGGLE_LOCAL_POSITION'
+export const CONCAT_LIST_TO_LOCAL_POSITION = 'CONCAT_LIST_TO_LOCAL_POSITION'
 
 export const toggleLocalWatchlist = (index) => ({
   type: TOGGLE_LOCAL_WATCHLIST,
@@ -79,7 +78,6 @@ export const addLocalWatchlists = (instruments) => (dispatch, getState) => {
       dispatch(reorderLocalWatchlist(i, tempInstruments));
     }
   }
-
 }
 
 export const concatListToWatchList = ( index, list ) => ({
@@ -171,33 +169,119 @@ export const addLocalPositionFolder = (name, list) => ({
   list
 })
 
-export const deleteLocalPositionFolder = (index) => ({
-  type: DELETE_POSITION_FOLDER,
-  index
-})
-
 export const reorderLocalPosition = (listIndex, list) => ({
   type: REORDER_LOCAL_POSITION,
   listIndex,
   list
 })
 
+export const concatListToPosition = ( index, list ) => ({
+  type: CONCAT_LIST_TO_LOCAL_POSITION,
+  index,
+  list
+})
+
+export const removeLocalPositionFolder = (index) => ({
+  type: DELETE_POSITION_FOLDER,
+  index
+})
+
+export const deleteLocalPositionFolder = (index) => (dispatch, getState) => {
+  let tempLocalPositions = getState().localReducer.localPositions.slice(0);
+  let deaultIndex = 0;
+  for(let i=0; i<tempLocalPositions.length; i++ ){
+    if(tempLocalPositions[i].name === "default"){
+      deaultIndex = i;
+      break;
+    }
+  }
+  dispatch(concatListToPosition(deaultIndex, getState().localReducer.localPositions[index].list));
+  dispatch(removeLocalPositionFolder(index));
+}
+
 export const reorderLocalPositions = (aI, bI) => ({
   type: REORDER_LOCAL_POSITIONS,
   aI, bI
 })
 
-export const addLocalPositions = lists => ({
-  type: ADD_LOCAL_POSITIONS,
-  lists
-})
+export const addLocalPositions = (instruments) => (dispatch, getState) => {
+  let tempLocalPositions = getState().localReducer.localPositions.slice(0);
+  let notInLocal = [];
 
-export const addLocalPosition = instrument => ({
-  type: ADD_LOCAL_POSITION,
-  instrument
-})
+  if(tempLocalPositions.length === 0) {
+    dispatch(addLocalPositionFolder("default", instruments));
+  }
+  else {
+    instruments.forEach((instrument) => {
+      let found = false;
+      tempLocalPositions.forEach((list) => {
+        if(found) return;
+        if(list.list.indexOf(instrument) !== -1) {
+          found =true;
+        }
+      });
+      if(!found){
+        notInLocal.push(instrument);
+      }
+    });
 
-export const removeLocalPosition = instrumentId => ({
+    for(let i=0; i<tempLocalPositions.length; i++ ){
+      if(tempLocalPositions[i].name === "default"){
+        tempLocalPositions[i].list = tempLocalPositions[i].list.concat(notInLocal);
+        break;
+      }
+    }
+    //remove not_on_database from local_default
+    for(let i=0; i<tempLocalPositions.length; i++ ){
+      let tempInstruments = [];
+      for(let j=0; j<tempLocalPositions[i].list.length; j++){
+        if(instruments.indexOf(tempLocalPositions[i].list[j]) !== -1) {
+          tempInstruments.push(tempLocalPositions[i].list[j]);
+        }
+      }
+      dispatch(reorderLocalPosition(i, tempInstruments));
+    }
+  }
+}
+
+export const addLocalPosition = (instrument) => (dispatch, getState) => {
+  let tempLocalPositions = getState().localReducer.localPositions.slice(0);
+  if(tempLocalPositions.length === 0) {
+    dispatch(addLocalPositionFolder("default", [instrument]));
+  }
+  else{
+    for(let i=0; i<tempLocalPositions.length; i++ ){
+      if(tempLocalPositions[i].name === "default"){
+        dispatch(concatListToPosition(i, [instrument]));
+        return;
+      }
+    }
+  }
+}
+
+export const removeInstrumentInLocalPosition = (listIndex, instrumentIndex) => ({
   type: REMOVE_LOCAL_POSITION,
-  instrumentId
+  listIndex,
+  instrumentIndex
 })
+
+export const removeLocalPosition = (instrumentId) => (dispatch, getState) => {
+  let tempLocalPositions = getState().localReducer.localPositions.slice(0);
+  let instrument = `https://api.robinhood.com/instruments/${instrumentId}/`;
+  let found = false;
+  let listIndex = -1;
+  let instrumentIndex = -1;
+
+  tempLocalPositions.forEach((list, index) => {
+    if(found) return;
+    instrumentIndex = list.list.indexOf(instrument);
+    if(instrumentIndex !== -1) {
+      found = true;
+      listIndex = index;
+    }
+  });
+
+  if(found) {
+    dispatch(removeInstrumentInLocalPosition(listIndex, instrumentIndex));
+  }
+}
