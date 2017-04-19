@@ -14,8 +14,10 @@ npm run dev
 ```
 
 ## Build
-1. Run `npm run build`.
-2. Run `npm run dist`.
+```shell
+npm run build
+npm run dist
+```
 
 ## Todos
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
