@@ -53,6 +53,9 @@
     "nsis": {
       "deleteAppDataOnUninstall": true
     },
+    "directories": {
+      "buildResources" : "buildResources"
+    },
     "win": {
       "target": "NSIS",
       "icon": "./icon.ico"
