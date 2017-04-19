@@ -45,7 +45,10 @@ class PriceAlert extends Component  {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     //const name = target.name;
-    this.setState({isInMonitor: value})
+    this.setState({isInMonitor: value});
+    if(!value) {
+      this.setState({percentage: 3});
+    }
     this.props.onToggleMonitorTicker(value);
   }
 
