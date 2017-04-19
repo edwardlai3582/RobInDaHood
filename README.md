@@ -30,7 +30,7 @@ npm run dev
 - [ ] Dividends related
 - [ ] Markets related
 - [ ] queue for pending oreders, if completed => new window notification <= just use /midlands/notifications/stack/ ?
-- [x] /midlands/notifications/stack/ => new window notification
+- [x] /midlands/notifications/stack/ => node-notifier
 - [x] enable addin folders
 - [ ] portfolio page PieChart
 - [ ] refactor the code
