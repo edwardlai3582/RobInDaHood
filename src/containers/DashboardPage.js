@@ -10,7 +10,8 @@ import { deleteToken,
          resetPlaceOrderRelated,
          toggleLocalWatchlist,
          toggleLocalPosition,
-         toggleWatchlistsModule, togglePositionsModule
+         toggleWatchlistsModule, togglePositionsModule,
+         askCards
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
@@ -18,6 +19,12 @@ import Search from '../components/Search'
 import LeftPanelModule from '../components/LeftPanelModule'
 import RightPanel from './RightPanel'
 import '../styles/DashboardPage.css'
+
+const electron = window.require('electron');
+const ipcRenderer = electron.ipcRenderer;
+ipcRenderer.on('asynchronous-reply', (event, arg) => {
+    console.log(arg);
+});
 
 const customStyles = {
   content : {
@@ -61,6 +68,7 @@ class DashboardPage extends Component {
       onAskPositionsWithZero,
       onAskMultipleQuotes,
       onResetPlaceOrderRelated,
+      onAskCards,
       keys
     } = this.props
 
@@ -70,6 +78,7 @@ class DashboardPage extends Component {
     onAskAccount();
     onResetPlaceOrderRelated();
     onAskMultipleQuotes();
+    onAskCards();
     //if no tabs, show portfolio page
     if(keys.length === 0){
       this.handleaddNonStockTab("portfolio")
@@ -82,6 +91,14 @@ class DashboardPage extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.fifteenSecondsInterval);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.cardsLastUpdated !== this.props.cardsLastUpdated) {
+      nextProps.cards.forEach((card) => {
+        ipcRenderer.send('cards', card);
+      })
+    }
   }
 
   fifteenSecondsJobs = () => {
@@ -288,7 +305,8 @@ const mapStateToProps = ({
   instrumentsReducer,
   localReducer,
   uiReducer,
-  quotesReducer
+  quotesReducer,
+  cardsReducer
 }, ownProps) => {
   const { token } = tokenReducer;
   const { keys, selectedKey } = tabsReducer;
@@ -299,6 +317,7 @@ const mapStateToProps = ({
   const { instruments } = instrumentsReducer;
   const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer;
   const { quotes } = quotesReducer;
+  const { cards, cardsLastUpdated } = cardsReducer;
 
   return {
     token,
@@ -309,21 +328,11 @@ const mapStateToProps = ({
     instruments,
     localWatchlists, localPositions,
     watchlistsModuleOpen, positionsModuleOpen,
-    quotes
+    quotes,
+    cards, cardsLastUpdated
   }
 }
-/*
 
-,
-,
-, ,
-,
-, ,
-,
-,
-,
-,
-*/
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onDeleteToken: () => {
     dispatch(deleteToken());
@@ -363,6 +372,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onTogglePositionsModule: () => {
     dispatch(togglePositionsModule());
+  },
+  onAskCards: () => {
+    dispatch(askCards());
   }
 })
 
