@@ -7,8 +7,6 @@ import SectionWrapper from '../components/SectionWrapper'
 import Orders from '../components/Orders'
 import '../styles/HistoryPage.css'
 
-
-
 class HistoryPage extends Component {
   static propTypes = {
     historicalsOrders: PropTypes.array.isRequired,

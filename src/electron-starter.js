@@ -1,14 +1,20 @@
 const electron = require('electron');
+const path = require('path');
+const url = require('url');
 // Module to control application life.
 const app = electron.app;
+const appId = "com.electron.robindahood";
+
+let errMessage = "err neh"
+let resMessage = "res neh"
+
+app.setAppUserModelId(appId);
+const Menu = electron.Menu;
+const Tray = electron.Tray;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
-const Menu = electron.Menu;
-const Tray = electron.Tray;
-
-const path = require('path');
-const url = require('url');
+const notifier = require('node-notifier');
 
 const template = [
   {
@@ -25,6 +31,27 @@ const template = [
 ]
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
+
+//  Example of IPC Renderer, http://electron.atom.io/docs/api/ipc-main/
+
+const {ipcMain} = require('electron');
+ipcMain.on('asynchronous-message', (event, arg) => {
+  notifier.notify({
+    title: 'pong',
+    message: 'pong',
+    sound: true, // Only Notification Center or Windows Toasters
+    wait: true,
+    appName: appId
+    //install: appId
+  }, function (err, response, metadata) {
+    // Response is response from notification
+    console.log('Error:', err);
+    errMessage = err;
+    resMessage = response;
+    event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata, app.getName()]);
+  });
+});
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -100,8 +127,19 @@ const createTray = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', ()=>{
+  console.log("APP START");
   createWindow();
   createTray();
+
+  // String
+notifier.notify('Message');
+
+// Object
+notifier.notify({
+  'title': 'My notification',
+  'message': 'Hello, there!'
+});
+
 });
 
 // Quit when all windows are closed.

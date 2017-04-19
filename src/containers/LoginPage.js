@@ -4,6 +4,12 @@ import { askToken, resetTokenError } from '../actions'
 import Input from '../components/Input'
 import '../styles/LoginPage.css'
 
+const electron = window.require('electron');
+const ipcRenderer = electron.ipcRenderer;
+ipcRenderer.on('asynchronous-reply', (event, arg) => {
+    console.log(arg);// prints "pong"
+});
+
 class LoginPage extends Component {
   static propTypes = {
     tokenError: PropTypes.string.isRequired,
@@ -54,6 +60,12 @@ class LoginPage extends Component {
     }
 
     this.props.onFetchToken(this.state.username, this.state.password, this.state.mfa)
+  }
+
+  test = () => {
+    //ipcRenderer example, from http://electron.atom.io/docs/api/ipc-main/
+    //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
+    ipcRenderer.send('asynchronous-message', 'ping');
   }
 
   render() {

@@ -16,6 +16,7 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "material-ui": "^0.17.1",
+    "node-notifier": "^5.1.2",
     "normalizr": "^3.2.2",
     "react": "^15.4.2",
     "react-autosuggest": "^9.0.0",
@@ -47,7 +48,11 @@
     "postinstall": "install-app-deps"
   },
   "build": {
-    "appId": "robin.da.hood",
+    "appId": "com.electron.robindahood",
+    "asarUnpack": "./node_modules/node-notifier/vendor/**",
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "win": {
       "target": "NSIS",
       "icon": "./icon.ico"
