@@ -19,6 +19,7 @@ import SectionWrapper from '../components/SectionWrapper'
 import Orders from '../components/Orders'
 import PlaceOrder from '../components/PlaceOrder'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
+import PriceAlert from './PriceAlert'
 import { isLater } from '../utils'
 import '../styles/Instrument.css'
 
@@ -327,6 +328,7 @@ class InstrumentPage extends Component {
     let statisticsBlock = (symbol)? <Statistics symbol={symbol} /> : "Loading...";
     let newsBlock = (symbol)? <News symbol={symbol} /> : "Loading...";
 
+
     let quotesBlock = (quotes[symbol] && historicalsQuotes[symbol+span+interval+bounds] )?
       (<Quotes historicals={ historicals }
                selectedButtonName={selectedButtonName}
@@ -350,6 +352,17 @@ class InstrumentPage extends Component {
         />
       </SectionWrapper>
     )
+
+    let priceAlertBlock = (quotes[symbol])? (
+      <PriceAlert
+        symbol={symbol}
+        instrument_id={instruments[instrument].id}
+        last_price={ (quotes[symbol].last_extended_hours_trade_price)?
+          Number(quotes[symbol].last_extended_hours_trade_price) :
+          Number(quotes[symbol].last_trade_price)
+        }
+      />
+    ) : null;
 
     let descriptionBlock = (fundamentals[symbol])? fundamentals[symbol].description : "Loading...";
 
@@ -391,6 +404,8 @@ class InstrumentPage extends Component {
               <AddButton cb={this.addToWatchlists}/>
           }
         </header>
+
+        {priceAlertBlock}
 
         <SectionWrapper SectionTitle={""}>
           {priceRelatedBlock}

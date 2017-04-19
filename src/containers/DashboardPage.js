@@ -11,7 +11,8 @@ import { deleteToken,
          toggleLocalWatchlist,
          toggleLocalPosition,
          toggleWatchlistsModule, togglePositionsModule,
-         askCards
+         askCards,
+         askMonitorTickers
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
@@ -69,6 +70,7 @@ class DashboardPage extends Component {
       onAskMultipleQuotes,
       onResetPlaceOrderRelated,
       onAskCards,
+      onAskMonitorTickers,
       keys
     } = this.props
 
@@ -79,6 +81,7 @@ class DashboardPage extends Component {
     onResetPlaceOrderRelated();
     onAskMultipleQuotes();
     onAskCards();
+    onAskMonitorTickers();
     //if no tabs, show portfolio page
     if(keys.length === 0){
       this.handleaddNonStockTab("portfolio")
@@ -103,6 +106,7 @@ class DashboardPage extends Component {
 
   fifteenSecondsJobs = () => {
     this.props.onAskMultipleQuotes();
+    this.props.onAskMonitorTickers();
   }
 
   openModal = () => {
@@ -184,6 +188,14 @@ class DashboardPage extends Component {
       if( !instruments.hasOwnProperty(watchlists[i].instrument) ){
         instrumentsHasAllNeeded = false;
         break;
+      }
+    }
+    if(instrumentsHasAllNeeded){
+      for(let i=0; i< positions.length; i++){
+        if( !instruments.hasOwnProperty(positions[i].instrument) ){
+          instrumentsHasAllNeeded = false;
+          break;
+        }
       }
     }
 
@@ -375,6 +387,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onAskCards: () => {
     dispatch(askCards());
+  },
+  onAskMonitorTickers: () => {
+    dispatch(askMonitorTickers());
   }
 })
 

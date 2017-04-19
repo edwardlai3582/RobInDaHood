@@ -51,6 +51,21 @@ ipcMain.on('cards', (event, arg) => {
     event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
   });
 });
+ipcMain.on('price-alert', (event, arg) => {
+  notifier.notify({
+    title: arg.title,
+    message: arg.message,
+    sound: true, // Only Notification Center or Windows Toasters
+    wait: true,
+    appName: appId
+  }, function (err, response, metadata) {
+    // Response is response from notification
+    console.log('Error:', err);
+    errMessage = err;
+    resMessage = response;
+    event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
+  });
+});
 
 
 // Keep a global reference of the window object, if you don't, the window will
