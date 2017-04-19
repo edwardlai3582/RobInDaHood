@@ -5,6 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Project setup: https://medium.freecodecamp.com/building-an-electron-application-with-create-react-app-97945861647c#.pf5yr1mgt
 
+API reference: https://github.com/sanko/Robinhood
+
 ## How to Run
 ```shell
 npm install
@@ -28,6 +30,7 @@ npm run dev
 - [ ] Dividends related
 - [ ] Markets related
 - [ ] queue for pending oreders, if completed => new window notification <= just use /midlands/notifications/stack/ ?
+- [x] /midlands/notifications/stack/ => new window notification
 - [x] enable addin folders
 - [ ] portfolio page PieChart
 - [ ] refactor the code
