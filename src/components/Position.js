@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import '../styles/Position.css'
+import { printDateOnly } from '../utils'
 
 const Position = ({ position, quotes }) => {
   const { quantity, average_buy_price } = position;
@@ -12,16 +13,25 @@ const Position = ({ position, quotes }) => {
   else {
     totalReturn = "US$"+totalReturn.toFixed(2)
   }
+
   const totalReturnPercentage = ((lastPrice - Number(average_buy_price))/Number(average_buy_price)*100).toFixed(2);
-  let todaysReturn = (lastPrice - Number(quotes.previous_close))*quantity;
+  let todaysReturn = 0;
+  let todaysReturnPercentage = 0;
+  if(printDateOnly(position.created_at) === printDateOnly(new Date().toISOString())) {
+    todaysReturn = (lastPrice - Number(average_buy_price))*quantity;
+    todaysReturnPercentage = ((lastPrice - Number(average_buy_price))/Number(average_buy_price)*100).toFixed(2);
+  }
+  else {
+    todaysReturn = (lastPrice - Number(quotes.previous_close))*quantity;
+    todaysReturnPercentage = ((lastPrice - Number(quotes.previous_close))/Number(quotes.previous_close)*100).toFixed(2);
+  }
+
   if(todaysReturn < 0) {
     todaysReturn = "-US$"+(-1)*todaysReturn.toFixed(2)
   }
   else {
     todaysReturn = "US$"+todaysReturn.toFixed(2)
   }
-  const todaysReturnPercentage = ((lastPrice - Number(quotes.previous_close))/Number(quotes.previous_close)*100).toFixed(2);
-
 
   return (
     <div className="positionWRapper">
