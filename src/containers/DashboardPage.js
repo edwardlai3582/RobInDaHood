@@ -7,6 +7,7 @@ import { deleteToken,
          askPositions, askPositionsWithZero,
          askMultipleQuotes,
          addTab, selectTab,
+         addInstrument,
          resetPlaceOrderRelated,
          toggleLocalWatchlist,
          toggleLocalPosition,
@@ -165,6 +166,27 @@ class DashboardPage extends Component {
     this.props.onAddTab(key, newTab);
   }
 
+  handleaddTabFromSearch = (data) => {
+    this.props.onAddInstrument(data);
+    console.log(data);
+    const key = data.symbol;
+
+    if(this.props.keys.indexOf(key) !== -1) {
+      this.props.onSelectTab(key);
+      return;
+    }
+
+    //let type = (data.type==="watchlist" || data.type==="positions")? "instrument" : "others"
+    let newTab = {
+      key: key,
+      title: data.symbol,
+      instrument: data.instrument,
+      type: data.type
+    }
+
+    this.props.onAddTab(key, newTab);
+  }
+
   render() {
     const {
       watchlists,
@@ -266,7 +288,7 @@ class DashboardPage extends Component {
       <div>
         <Dashboard>
           <div className="leftPanelDiv">
-            <Search className="leftPanelSearch" callback={this.handleaddTab} />
+            <Search className="leftPanelSearch" callback={this.handleaddTabFromSearch} />
             <div className="leftPanelRest">
               <LeftPanelItem
                 symbol={"PORTFOLIO"}
@@ -281,6 +303,12 @@ class DashboardPage extends Component {
                 id={"history"}
                 onClick={()=>this.handleaddNonStockTab("history")}
                 className={selectedKey === "history"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
+              />
+              <LeftPanelItem
+                symbol={"PRICE ALERT"}
+                id={"priceAlert"}
+                onClick={()=>this.handleaddNonStockTab("priceAlert")}
+                className={selectedKey === "priceAlert"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
               />
             </div>
             <button onClick={this.openModal} className="leftPanellogoutButton">
@@ -369,6 +397,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onSelectTab: (key) => {
     dispatch(selectTab(key));
+  },
+  onAddInstrument: (instrument) => {
+    dispatch(addInstrument(instrument));
   },
   onResetPlaceOrderRelated: () => {
     dispatch(resetPlaceOrderRelated());

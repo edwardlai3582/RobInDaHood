@@ -1,0 +1,44 @@
+.priceAlertUl {
+  margin: 20px 5%;
+}
+
+.priceAlertTicker {
+  display: flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  align-items:center;
+  border: 1px solid white;
+  margin-bottom: 5px;
+}
+
+.priceAlertTicker > div {
+  font-size: 1.1rem;
+  width: 33%;
+  margin: 5px 0;
+}
+
+.priceAlertSymbol {
+    text-align: center;
+}
+
+.priceAlertTickerSetting {
+  vertical-align: baseline;
+}
+
+.priceAlertTickerSetting > * {
+  margin: 1px;
+}
+
+.priceAlertButtonWrapper {
+  text-align: right;
+}
+
+.priceAlertTickerButton {
+  background-color: #FA5882;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  padding: 5px 5px;
+  margin-right: 10px;
+}

@@ -5,6 +5,7 @@ import { deleteTab, reorderTab, selectTab } from '../actions'
 import InstrumentPage from './InstrumentPage'
 import PortfolioPage from './PortfolioPage'
 import HistoryPage from './HistoryPage'
+import PriceAlertPage from './PriceAlertPage'
 import '../styles/Tabs.css'
 
 const tabsClassNames = {
@@ -82,15 +83,22 @@ class RightPanel extends Component {
       }
       else if (tabs[key].type === "portfolio") {
         return (
-          <Tab key={tabs[key].key} title={tabs[key].title}>
+          <Tab key={tabs[key].key} title={"Portfolio"}>
             <PortfolioPage isCurrent={isCurrent} />
           </Tab>
         );
       }
       else if (tabs[key].type === "history") {
         return (
-          <Tab key={tabs[key].key} title={tabs[key].title}>
+          <Tab key={tabs[key].key} title={"History"}>
             <HistoryPage isCurrent={isCurrent} />
+          </Tab>
+        );
+      }
+      else if(tabs[key].type === "priceAlert") {
+        return (
+          <Tab key={tabs[key].key} title={"Price Alert"}>
+            <PriceAlertPage isCurrent={isCurrent} />
           </Tab>
         );
       }

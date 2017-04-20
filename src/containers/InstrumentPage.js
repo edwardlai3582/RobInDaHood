@@ -19,7 +19,7 @@ import SectionWrapper from '../components/SectionWrapper'
 import Orders from '../components/Orders'
 import PlaceOrder from '../components/PlaceOrder'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
-import PriceAlert from './PriceAlert'
+import PriceAlertToggle from './PriceAlertToggle'
 import { isLater } from '../utils'
 import '../styles/Instrument.css'
 
@@ -353,8 +353,8 @@ class InstrumentPage extends Component {
       </SectionWrapper>
     )
 
-    let priceAlertBlock = (quotes[symbol])? (
-      <PriceAlert
+    let PriceAlertToggleBlock = (quotes[symbol])? (
+      <PriceAlertToggle
         symbol={symbol}
         instrument_id={instruments[instrument].id}
         last_price={ (quotes[symbol].last_extended_hours_trade_price)?
@@ -393,9 +393,12 @@ class InstrumentPage extends Component {
       <div className="instrumentWrapper">
         <div className="instrumentFake"></div>
         <header>
-          <div>
-            <h1 className="instrumentH1">{symbol}</h1>
-            <h2 className="instrumentH2">{instruments[instrument].name}</h2>
+          <div className="instrumentHWrapper">
+            <div className="instrumentH">
+              <h1 className="instrumentH1">{symbol}</h1>
+              <h2 className="instrumentH2">{instruments[instrument].name}</h2>
+            </div>
+            {PriceAlertToggleBlock}
           </div>
           {(this.state.isInPositions)?
             null:
@@ -404,8 +407,6 @@ class InstrumentPage extends Component {
               <AddButton cb={this.addToWatchlists}/>
           }
         </header>
-
-        {priceAlertBlock}
 
         <SectionWrapper SectionTitle={""}>
           {priceRelatedBlock}

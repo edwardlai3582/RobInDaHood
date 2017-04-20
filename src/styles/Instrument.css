@@ -23,6 +23,16 @@
   align-items:center;
 }
 
+.instrumentHWrapper {
+  display: flex;
+  align-items:center;
+  justify-content:flex-start;
+}
+
+.instrumentH {
+  flex: 1 1;
+}
+
 .instrumentH1 {
   font-size: 2rem;
 }

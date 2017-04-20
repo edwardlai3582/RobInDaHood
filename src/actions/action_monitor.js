@@ -31,7 +31,7 @@ export const addMonitorTicker = (instrument_id, symbol, percentage, last_price) 
 
 export const askMonitorTickers = () => (dispatch, getState) => {
   let symbolArray = Object.keys(getState().monitorReducer.tickers).map((instrument_id)=>{
-    console.log("ask price: "+instrument_id);
+    //console.log("ask price: "+instrument_id);
     return getState().monitorReducer.tickers[instrument_id].symbol;
   });
   if(symbolArray.length === 0) {
@@ -49,18 +49,18 @@ export const askMonitorTickers = () => (dispatch, getState) => {
   .then(jsonResult => {
     if(jsonResult.results) {
       jsonResult.results.forEach((result) => {
-        let price = Number(result.price);
+        let price = Number(result.price).toFixed(2);
         let difference = price - getState().monitorReducer.tickers[result.instrument_id].last_price;
         let differenceInpercentage = Math.abs(difference/getState().monitorReducer.tickers[result.instrument_id].last_price) * 100;
-        console.log(`new price: ${price}`);
-        console.log(`old price: ${getState().monitorReducer.tickers[result.instrument_id].last_price}`);
-        console.log(`new percentage: ${differenceInpercentage}`);
-        console.log(`old percentage: ${getState().monitorReducer.tickers[result.instrument_id].percentage}`);
+        //console.log(`new price: ${price}`);
+        //console.log(`old price: ${getState().monitorReducer.tickers[result.instrument_id].last_price}`);
+        //console.log(`new percentage: ${differenceInpercentage}`);
+        //console.log(`old percentage: ${getState().monitorReducer.tickers[result.instrument_id].percentage}`);
         if(differenceInpercentage >= getState().monitorReducer.tickers[result.instrument_id].percentage) {
           dispatch(changeMonitorTickerLastPrice(result.instrument_id, price));
           ipcRenderer.send('price-alert', {
             title: "PRICE ALERT!!!",
-            message: `$${getState().monitorReducer.tickers[result.instrument_id].symbol} is ${(difference > 0)? "up" : "down"} to ${differenceInpercentage.toFixed(2)}%. Current price is $${price.toFixed(2)}`
+            message: `$${getState().monitorReducer.tickers[result.instrument_id].symbol} is ${(difference > 0)? "up" : "down"} to ${differenceInpercentage.toFixed(2)}%. Current price is $${price}`
           });
         }
       })

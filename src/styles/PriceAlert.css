@@ -1,10 +1,16 @@
 .priceAlertWrapper {
-  display: flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  align-items:center;
-  font-size: 1.1rem;
   height: 25px;
+  text-align: center;
+  margin: 0px 5px;
+  position: relative;
+}
+
+.priceAlertWrapper > * {
+  margin: 2px;
+  font-size: 0.8rem;
+  color: teal;
+  font-weight: bold;
+  position: relative;
 }
 
 
@@ -46,11 +52,11 @@
 }
 
 input:checked + .slider {
-  background-color: var(--main-color);;
+  background-color: teal;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--main-color);;
+  box-shadow: 0 0 1px teal;
 }
 
 input:checked + .slider:before {

@@ -1,8 +1,6 @@
 import React, { Component,PropTypes } from 'react'
-import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest';
 import '../styles/Search.css'
-import { addInstrument } from '../actions'
 /* ----------- */
 /*    Utils    */
 /* ----------- */
@@ -34,7 +32,7 @@ const renderInputComponent = inputProps => (
 
 class Search extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired
+    callback: PropTypes.func.isRequired
   }
 
   constructor() {
@@ -53,7 +51,6 @@ class Search extends Component {
     suggestion.instrument = suggestion.url
     suggestion.type = "watchlist"
     //console.log(suggestion)
-    this.props.dispatch(addInstrument(suggestion))
     this.props.callback(suggestion);
   }
 
@@ -145,4 +142,4 @@ class Search extends Component {
       }
 }
 
-export default connect(null)(Search)
+export default Search
