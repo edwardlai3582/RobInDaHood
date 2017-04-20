@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import PriceAlertTicker from './PriceAlertTicker'
+import {
+  deleteMonitorTicker,
+  changeMonitorTickerPercentage,
+  changeMonitorTickerLastPrice
+} from '../actions'
+import PriceAlertTicker from '../components/PriceAlertTicker'
 import '../styles/PriceAlertPage.css'
 
 class PriceAlertPage extends Component {
@@ -13,6 +18,9 @@ class PriceAlertPage extends Component {
     const {
       isCurrent,
       tickers,
+      onChangeMonitorTickerPercentage,
+      onChangeMonitorTickerLastPrice,
+      onDeleteMonitorTicker
     } = this.props;
     //show null if not current page
     if(!isCurrent){ return null; }
@@ -25,7 +33,12 @@ class PriceAlertPage extends Component {
       return 0;
     }).map((key) => (
       <li key={key} >
-        <PriceAlertTicker instrument_id={tickers[key].instrument_id} />
+        <PriceAlertTicker
+          ticker={tickers[key]}
+          onChangeMonitorTickerPercentage={onChangeMonitorTickerPercentage}
+          onChangeMonitorTickerLastPrice={onChangeMonitorTickerLastPrice}
+          onDeleteMonitorTicker={onDeleteMonitorTicker}
+        />
       </li>
     ));
 
@@ -50,4 +63,16 @@ const mapStateToProps = ({ monitorReducer }) => {
   return { tickers };
 }
 
-export default connect(mapStateToProps, null)(PriceAlertPage)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onChangeMonitorTickerPercentage: (instrument_id, percentage) => {
+    dispatch(changeMonitorTickerPercentage(instrument_id, percentage));
+  },
+  onChangeMonitorTickerLastPrice: (instrument_id, last_price) => {
+    dispatch(changeMonitorTickerLastPrice(instrument_id, last_price));
+  },
+  onDeleteMonitorTicker: (instrument_id) => {
+      dispatch(deleteMonitorTicker(instrument_id));
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PriceAlertPage)
