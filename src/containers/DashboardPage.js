@@ -24,9 +24,7 @@ import '../styles/DashboardPage.css'
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;
-ipcRenderer.on('asynchronous-reply', (event, arg) => {
-    console.log(arg);
-});
+
 
 const customStyles = {
   content : {
@@ -91,6 +89,22 @@ class DashboardPage extends Component {
     // store intervalId in the state so it can be accessed later:
     let intervalFifteen = setInterval(this.fifteenSecondsJobs, 15000);
     this.setState({fifteenSecondsInterval: intervalFifteen});
+
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+      console.log(arg);
+    });
+    ipcRenderer.on('notification-clicked', (event, arg) => {
+      console.log(arg);
+      if(arg.instrumentId && arg.instrumentId.length > 0 ) {
+        let temp = {};
+        temp.instrument = `https://api.robinhood.com/instruments/${arg.instrumentId}/`;
+        temp.type = "watchlist";
+        temp.symbol = this.props.instruments[temp.instrument].symbol;
+        if(this.props.instruments[temp.instrument] && this.props.instruments[temp.instrument].symbol) {
+          this.handleaddTabFromSearch(temp);  
+        }
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -230,6 +244,9 @@ class DashboardPage extends Component {
               return false;
             }
           }
+          if(!instruments[instrument] || !instruments[instrument].symbol) {
+            return false;
+          }
           return true;
         })
         .map((instrument, i)=>{
@@ -259,7 +276,12 @@ class DashboardPage extends Component {
 
       let positionsData = [];
       localPositions.forEach((localPosition) => {
-        let localPositionData = localPosition.list.map((instrument, i)=>{
+        let localPositionData = localPosition.list.filter((instrument) => {
+          if(!instruments[instrument] || !instruments[instrument].symbol) {
+            return false;
+          }
+          return true;
+        }).map((instrument, i)=>{
           return {
             instrument: instrument,
             symbol: instruments[instrument].symbol,

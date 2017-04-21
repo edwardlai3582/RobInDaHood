@@ -1,6 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
+const {shell} = require('electron');
 // Module to control application life.
 const app = electron.app;
 const appId = "com.electron.robindahood";
@@ -15,6 +16,25 @@ const Tray = electron.Tray;
 const BrowserWindow = electron.BrowserWindow;
 
 const notifier = require('node-notifier');
+notifier.on('click', function (notifierObject, options) {
+  //"robinhood://web?url=https%3A%2F%2Fwww.benzinga.com%2Fanalyst-ratings%2Fanalyst-color%2F17%2F04%2F9323486%2F4-reasons-even-ebay-fans-are-cautious-on-the-stock"
+  //"robinhood://instrument/?id=8f9073f0-3ce2-47bd-a853-3d034c383441"
+  //"robinhood://orders/?id=4dfb3d7f-5086-40de-b56b-4f43c228b1bd"
+  if(options.action) {
+    if(options.action.indexOf("robinhood://web?url=") !== -1) {
+      let link = options.action.replace("robinhood://web?url=", "");
+      shell.openExternal(decodeURIComponent(link));
+    }
+    if(options.action.indexOf("robinhood://instrument/?id=") !== -1) {
+      let instrumentId = options.action.replace("robinhood://instrument/?id=", "");
+      BrowserWindow.getAllWindows()[0].webContents.send('notification-clicked' , {instrumentId});
+      BrowserWindow.getAllWindows()[0].show();
+    }
+  }
+  else {
+    BrowserWindow.getAllWindows()[0].webContents.send('notification-clicked' , [notifierObject, options]);
+  }
+});
 
 const template = [
   {
@@ -39,6 +59,7 @@ ipcMain.on('cards', (event, arg) => {
   notifier.notify({
     title: arg.title,
     message: arg.message,
+    action: arg.action,
     sound: true, // Only Notification Center or Windows Toasters
     wait: true,
     appName: appId
