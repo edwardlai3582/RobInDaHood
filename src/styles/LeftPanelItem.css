@@ -2,17 +2,16 @@
   display: flex;
   justify-content:flex-start;
   align-items: baseline;
-  width: 100%;
 }
 
 .symbolDiv {
-  min-width: 30%;
+  min-width: 25%;
 }
 
 .infoDiv {
   font-size: 0.8rem;
-  width: 61%;
-  margin-right: 9%;
+  width: 70%;
+  margin-left: 8%;
   display: flex;
   justify-content:flex-start;
 }
