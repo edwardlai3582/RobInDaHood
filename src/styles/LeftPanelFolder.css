@@ -13,7 +13,7 @@
   font-size: 1.2rem;
   cursor: pointer;
   padding: 5px 0 5px 10px;
-  background-color: #313E3B;
+  background-color: black;
   color: white;
 }
 
@@ -35,9 +35,9 @@
 }
 
 .moduleDiv {
-  padding-left: calc( 25px + 1rem);
+  padding-left: calc( 5px + 1rem);
   cursor: pointer;
-  background-color: #575B58;
+  background-color: #393C39;
   padding-top: 2px;
   padding-bottom: 2px;
   border-bottom: 1px solid black;
@@ -51,12 +51,15 @@
 
 .redDown {
   color: #F35A2B;
+  width: 50%;
 }
 
 .whiteNomove {
   color: white;
+  width: 50%;
 }
 
 .greenUp {
   color: #00FF73;
+  width: 50%;
 }

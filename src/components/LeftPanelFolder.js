@@ -32,6 +32,13 @@ class LeftPanelFolder extends Component {
     let { quotes } =this.props;
 
     let data = this.props.moduleData.map((instrument, index) => {
+      if(!quotes[instrument.symbol]) return null;
+
+      let last_price = (quotes[instrument.symbol].last_extended_hours_trade_price)? quotes[instrument.symbol].last_extended_hours_trade_price : quotes[instrument.symbol].last_trade_price;
+      let colorClassName = (Number(last_price) > Number(quotes[instrument.symbol].previous_close))?
+        "greenUp" : (Number(last_price) === Number(quotes[instrument.symbol].previous_close))?
+        "whiteNomove":"redDown";
+
       return(
         <LeftPanelItem
           key={instrument.symbol}
@@ -40,32 +47,13 @@ class LeftPanelFolder extends Component {
           onClick={()=>this.handleClick(index)}
           className={this.props.selectedKey === instrument.symbol? "moduleDiv selectedModuleDiv" : "moduleDiv"}
         >
-
-        {(quotes[instrument.symbol])?
-          (quotes[instrument.symbol].last_extended_hours_trade_price)?(
-            <div className={
-                (Number(quotes[instrument.symbol].last_extended_hours_trade_price) > Number(quotes[instrument.symbol].previous_close))?
-                  "greenUp"
-                  :
-                  (Number(quotes[instrument.symbol].last_extended_hours_trade_price) === Number(quotes[instrument.symbol].previous_close))?
-                  "whiteNomove":"redDown"
-            }>
-              {displayPercentage(quotes[instrument.symbol].last_extended_hours_trade_price, quotes[instrument.symbol].previous_close)}
-            </div>
-          ):(
-            <div className={
-                (Number(quotes[instrument.symbol].last_trade_price) > Number(quotes[instrument.symbol].previous_close))?
-                  "greenUp"
-                  :
-                  (Number(quotes[instrument.symbol].last_trade_price) === Number(quotes[instrument.symbol].previous_close))?
-                  "whiteNomove":"redDown"
-            }>
-              {displayPercentage(quotes[instrument.symbol].last_trade_price, quotes[instrument.symbol].previous_close)}
-            </div>
-
-        ): null}
-
-      </LeftPanelItem>
+          <div className={colorClassName}>
+            { `$${Number(last_price).toFixed(2)}` }
+          </div>
+          <div className={colorClassName}>
+            { displayPercentage(last_price, quotes[instrument.symbol].previous_close) }
+          </div>
+        </LeftPanelItem>
       );
     });
 

@@ -101,7 +101,7 @@ class DashboardPage extends Component {
         temp.type = "watchlist";
         temp.symbol = this.props.instruments[temp.instrument].symbol;
         if(this.props.instruments[temp.instrument] && this.props.instruments[temp.instrument].symbol) {
-          this.handleaddTabFromSearch(temp);  
+          this.handleaddTabFromSearch(temp);
         }
       }
     });

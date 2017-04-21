@@ -60,6 +60,7 @@ export const askMonitorTickers = () => (dispatch, getState) => {
           dispatch(changeMonitorTickerLastPrice(result.instrument_id, price));
           ipcRenderer.send('price-alert', {
             title: "PRICE ALERT!!!",
+            action: `robinhood://instrument/?id=${result.instrument_id}`,
             message: `$${getState().monitorReducer.tickers[result.instrument_id].symbol} is ${(difference > 0)? "up" : "down"} to ${differenceInpercentage.toFixed(2)}%. Current price is $${price}`
           });
         }

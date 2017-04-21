@@ -1,14 +1,18 @@
 .leftPanelItemWrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content:flex-start;
   align-items: baseline;
+  width: 100%;
 }
 
 .symbolDiv {
-
+  min-width: 30%;
 }
 
 .infoDiv {
-  margin-right: 5px;
   font-size: 0.8rem;
+  width: 61%;
+  margin-right: 9%;
+  display: flex;
+  justify-content:flex-start;
 }

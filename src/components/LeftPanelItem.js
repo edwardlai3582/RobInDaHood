@@ -4,7 +4,7 @@ import '../styles/LeftPanelItem.css'
 const LeftPanelItem = ({ symbol, id, onClick, className, children }) => (
   <div id={id} onClick={onClick} className={`leftPanelItemWrapper ${className}`} >
     <div className="symbolDiv">{symbol}</div>
-    <div className="infoDiv">{children}</div>
+    {(React.Children.toArray(children).length === 0)? null : <div className="infoDiv">{children}</div> }
   </div>
 )
 
