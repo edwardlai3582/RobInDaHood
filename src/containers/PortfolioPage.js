@@ -10,6 +10,7 @@ import QuotesForPortfolios from '../components/QuotesForPortfolios'
 import DummyQuotes from '../components/DummyQuotes'
 import SectionWrapper from '../components/SectionWrapper'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
+import PortfolioValue from './PortfolioValue'
 import '../styles/PortfolioPage.css'
 
 import EditableLocalPositions from './EditableLocalPositions'
@@ -198,6 +199,13 @@ class PortfolioPage extends Component {
           previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
 
+    let portfolioValueBlock = (portfolios)? (
+      <PortfolioValue
+        market_value={(portfolios.extended_hours_market_value)? portfolios.extended_hours_market_value : portfolios.market_value }
+        equity={(portfolios.extended_hours_equity)? portfolios.extended_hours_equity : portfolios.equity }
+      />
+    ) : null;
+
     return (
       <div className="instrumentWrapper">
         <div className="instrumentFake"></div>
@@ -212,6 +220,8 @@ class PortfolioPage extends Component {
           { quotesBlock }
           { this.renderQuoteChangeButtons() }
         </SectionWrapper>
+
+        { portfolioValueBlock }
 
         <EditableLocalPositions />
         <EditableLocalWatchLists />

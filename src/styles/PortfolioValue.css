@@ -1,0 +1,19 @@
+.PortfolioValueWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:space-around;
+}
+
+.pieChartWrapper {
+}
+
+.valueWrapper {
+  display: flex;
+  flex-direction:column;
+  justify-content:center;
+  font-size: 1.4rem;
+}
+
+.valueWrapper > div {
+  padding: 10px 0;
+}

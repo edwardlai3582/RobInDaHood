@@ -23,7 +23,6 @@ npm run dist
 - [ ] keypress next, highlight http://stackoverflow.com/questions/7876283/using-focus-to-style-outer-div
 - [ ] https://github.com/ameyms/react-animated-number
 - [x] right click close tab (contextmenu) CANT DO NOW
-- [ ] https://github.com/mariotacke/redux-electron-ipc
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity ******
 - [ ] extended_hours order
 - [x] cash account check for placein order **************
