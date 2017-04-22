@@ -25,13 +25,9 @@ npm run dist
 - [x] right click close tab (contextmenu) CANT DO NOW
 - [ ] portfolio chart: adjusted_close_equity vs adjusted_open_equity ******
 - [ ] extended_hours order
-- [x] cash account check for placein order **************
 - [ ] Dividends related
 - [ ] Markets related
-- [ ] queue for pending oreders, if completed => new window notification <= just use /midlands/notifications/stack/ ?
-- [x] /midlands/notifications/stack/ => node-notifier
-- [x] enable addin folders
-- [ ] portfolio page PieChart
+- [ ] queue for pending oreders, if completed => new window notification
 - [ ] refactor the code
 - [ ] folder name duplicate check ***
 - [ ] https://github.com/electron-userland/electron-builder/wiki/Auto-Update

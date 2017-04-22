@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react'
 import '../styles/Position.css'
 import { printDateOnly } from '../utils'
 
-const Position = ({ position, quotes }) => {
+const Position = ({ position, quote }) => {
   const { quantity, average_buy_price } = position;
-  const lastPrice = (quotes.last_extended_hours_trade_price)? quotes.last_extended_hours_trade_price : quotes.last_trade_price;
+  const lastPrice = (quote.last_extended_hours_trade_price)? quote.last_extended_hours_trade_price : quote.last_trade_price;
   const equityValue = (lastPrice*quantity).toFixed(2);
   let totalReturn = (lastPrice - Number(average_buy_price))*quantity;
   if(totalReturn < 0) {
@@ -22,8 +22,8 @@ const Position = ({ position, quotes }) => {
     todaysReturnPercentage = ((lastPrice - Number(average_buy_price))/Number(average_buy_price)*100).toFixed(2);
   }
   else {
-    todaysReturn = (lastPrice - Number(quotes.previous_close))*quantity;
-    todaysReturnPercentage = ((lastPrice - Number(quotes.previous_close))/Number(quotes.previous_close)*100).toFixed(2);
+    todaysReturn = (lastPrice - Number(quote.previous_close))*quantity;
+    todaysReturnPercentage = ((lastPrice - Number(quote.previous_close))/Number(quote.previous_close)*100).toFixed(2);
   }
 
   if(todaysReturn < 0) {
