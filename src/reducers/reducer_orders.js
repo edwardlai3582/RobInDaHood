@@ -10,9 +10,20 @@ const ordersReducer = (state = {
   cancelCurrentOrderState: "noteven",
   cancelFailedReason: "",
   placingOrder: false,
-  orderPlacedResult: ""
+  orderPlacedResult: "",
+  pendingOrders: []
 }, action) => {
   switch (action.type) {
+    case actions.ORDERS_REMOVE_FROM_PENDING_ORDERS:
+      return {
+        ...state,
+        pendingOrders: state.pendingOrders.filter((orderID) => orderID !== action.orderID)
+      }
+    case actions.ORDERS_PUSH_TO_PENDING_ORDERS:
+      return {
+        ...state,
+        pendingOrders: [...state.pendingOrders, action.orderID]
+      }
     case actions.ORDERS_RESET_PLACE_ORDER_RELATED:
       return {
         ...state,

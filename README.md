@@ -35,3 +35,4 @@ npm run dist
 - [ ] portfolio page PieChart
 - [ ] refactor the code
 - [ ] folder name duplicate check ***
+- [ ] https://github.com/electron-userland/electron-builder/wiki/Auto-Update

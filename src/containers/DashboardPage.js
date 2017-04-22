@@ -13,7 +13,9 @@ import { deleteToken,
          toggleLocalPosition,
          toggleWatchlistsModule, togglePositionsModule,
          askCards,
-         askMonitorTickers
+         askMonitorTickers,
+         checkPendingOrders,
+         askHistoricalsOrders
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
@@ -70,6 +72,7 @@ class DashboardPage extends Component {
       onResetPlaceOrderRelated,
       onAskCards,
       onAskMonitorTickers,
+      onFetchHistoricalsOrders,
       keys
     } = this.props
 
@@ -81,6 +84,7 @@ class DashboardPage extends Component {
     onAskMultipleQuotes();
     onAskCards();
     onAskMonitorTickers();
+    onFetchHistoricalsOrders();
     //if no tabs, show portfolio page
     if(keys.length === 0){
       this.handleaddNonStockTab("portfolio")
@@ -122,6 +126,7 @@ class DashboardPage extends Component {
   fifteenSecondsJobs = () => {
     this.props.onAskMultipleQuotes();
     this.props.onAskMonitorTickers();
+    this.props.onCheckPendingOrders();
   }
 
   openModal = () => {
@@ -443,7 +448,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onAskMonitorTickers: () => {
     dispatch(askMonitorTickers());
-  }
+  },
+  onCheckPendingOrders: () => {
+    dispatch(checkPendingOrders());
+  },
+  onFetchHistoricalsOrders: () => {
+    dispatch(askHistoricalsOrders());
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
