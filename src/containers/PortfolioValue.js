@@ -29,22 +29,16 @@ class PortfolioValue extends Component {
   render() {
     const { positions, quotes, instruments } = this.props;
     const { chartActiveIndex } = this.state;
-    let hasAllNeededData = true;
+
     //check all needed data exist
     for(let i=0; i< positions.length; i++) {
       if(!instruments[positions[i].instrument]) {
-        hasAllNeededData = false;
-        break;
+        return null;
       }
       let symbol = instruments[positions[i].instrument].symbol;
       if(!quotes[symbol]) {
-        hasAllNeededData = false;
-        break;
+        return null;
       }
-    }
-
-    if(!hasAllNeededData) {
-      return null;
     }
 
     let chartData=[];
@@ -120,10 +114,4 @@ const mapStateToProps = ({ positionsReducer, quotesReducer, instrumentsReducer }
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  onFetchNews: () => {
-    //dispatch(askNews(ownProps.symbol));
-  }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PortfolioValue)
+export default connect(mapStateToProps, null)(PortfolioValue)
