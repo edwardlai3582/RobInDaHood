@@ -6,7 +6,8 @@ import {
          askPosition, askPositions,
          askHistoricalsQuotes, askQuote,
          askWatchlists, addToWatchlists, removeFromWatchlists,
-         placeOrder
+         placeOrder,
+         askOwnHistoricalsOrders, askCurrentOrder, cancelOrder
        } from '../actions'
 import Statistics from './Statistics'
 import News from './News'
@@ -35,7 +36,6 @@ class InstrumentPage extends Component {
     positions: PropTypes.array.isRequired,
     //eachPosition: PropTypes.object.isRequired,
     watchlists: PropTypes.array.isRequired,
-    token: PropTypes.string.isRequired,
     account: PropTypes.object.isRequired,
     isCurrent: PropTypes.bool.isRequired,
     placingOrder: PropTypes.bool.isRequired,
@@ -52,15 +52,7 @@ class InstrumentPage extends Component {
         interval: "5minute",
         bounds: "trading",
         selectedButtonName: "1D"
-      },
-      ownHistoricalsOrders: [],
-      ownHistoricalsOrdersNextLink: "",
-      isAskingOwnCurrentOrder: false,
-      OwnCurrentOrder: {},
-      OwnCurrentOrderFailedReason: "",
-      //CancelCurrentOrderState: noteven, ing, failed, succeeded
-      cancelOwnCurrentOrderState: "noteven",
-      cancelOwnFailedReason: ""
+      }
     };
   }
 
@@ -72,12 +64,12 @@ class InstrumentPage extends Component {
       watchlists,
       onAskPosition,
       onAskHistoricalsQuotes,
-      onAskQuote
+      onAskQuote,
+      onAskOwnHistoricalsOrders
     } = this.props;
     const { span, interval, bounds } = this.state.quotes;
 
-    this.askOwnHistoricalsOrders();
-
+    onAskOwnHistoricalsOrders();
     onAskHistoricalsQuotes(symbol, span, interval, bounds);
     onAskQuote(symbol);
 
@@ -128,11 +120,12 @@ class InstrumentPage extends Component {
     //reload no that time sensitive stuff here
     if(nextProps.isCurrent && !this.props.isCurrent){
       this.props.onAskInstrument(this.props.instrument);
-      this.askOwnHistoricalsOrders();
+      //this.askOwnHistoricalsOrders();
+      this.props.onAskOwnHistoricalsOrders();
     }
 
     if(nextProps.placingOrder === false && this.props.placingOrder === true) {
-      this.askOwnHistoricalsOrders();
+      this.props.onAskOwnHistoricalsOrders();
     }
 
     for(let i=0; i< nextProps.watchlists.length; i++){
@@ -144,100 +137,8 @@ class InstrumentPage extends Component {
     this.setState({isInWatchLists:false});
   }
 
-  askOwnHistoricalsOrders = (...theArgs) => {
-    let link = (theArgs.length === 0)? `https://api.robinhood.com/orders/?instrument=${this.props.instrument}` : theArgs[0];
-
-    return fetch(link, {
-      method: 'GET',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Authorization': this.props.token
-      })
-    })
-    .then(response => response.json())
-    .then(jsonResult => {
-      if(theArgs.length === 0){
-        this.setState({
-          ownHistoricalsOrders: jsonResult.results,
-          ownHistoricalsOrdersNextLink: (jsonResult.next)? jsonResult.next : ""
-        });
-      }
-      else {
-        //console.log("more order histories from instrument!")
-        this.setState({
-          ownHistoricalsOrders: this.state.ownHistoricalsOrders.concat(jsonResult.results),
-          ownHistoricalsOrdersNextLink: (jsonResult.next)? jsonResult.next : ""
-        });
-      }
-    })
-    .catch(function(reason) {
-      console.log(reason);
-    });
-  }
-
-  askOwnCurrentOrder = (orderId) =>  {
-    this.setState({ isAskingOwnCurrentOrder: true, OwnCurrentOrderFailedReason: ""});
-    return fetch(`https://api.robinhood.com/orders/${orderId}/`, {
-      method: 'GET',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Authorization': this.props.token
-      })
-    })
-    .then(response => response.json())
-    .then(jsonResult => {
-      if(jsonResult.deatil){
-        //console.log(jsonResult.deatil);
-        this.setState({isAskingOwnCurrentOrder: false, OwnCurrentOrderFailedReason: jsonResult.deatil, OwncurrentOrder:{}});
-      }
-      else{
-        //console.log(jsonResult)
-        this.setState({isAskingOwnCurrentOrder: false, OwnCurrentOrder: jsonResult});
-      }
-    })
-    .catch(function(reason) {
-      console.log(reason);
-      this.setState({isAskingOwnCurrentOrder: false, OwnCurrentOrderFailedReason: reason, OwnCurrentOrder:{}});
-    });
-  }
-
   addMoreHistoricalsOrder = () => {
-    this.askOwnHistoricalsOrders(this.state.ownHistoricalsOrdersNextLink)
-  }
-
-  cancelOwnOrder = (cancelLink, orderId) => {
-    this.setState({cancelOwnCurrentOrderState:"ing", cancelOwnFailedReason: ""});
-
-    return fetch(cancelLink, {
-      method: 'POST',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Authorization': this.props.token
-      })
-    })
-    .then(response => response.json())
-    .then(jsonResult => {
-      console.log(jsonResult);
-      if(Object.keys(jsonResult).length === 0){
-        this.setState({cancelOwnCurrentOrderState:"succeeded"});
-        this.askOwnCurrentOrder(orderId);
-        this.askOwnHistoricalsOrders();
-
-        //reload watchlist & positions after order cancelled
-        this.props.onAskWatchlists();
-        this.props.onAskPositions();
-      }
-      else{
-        console.log(jsonResult);
-        this.setState({cancelOwnCurrentOrderState:"failed", cancelOwnFailedReason: JSON.stringify(jsonResult)});
-        this.askOwnCurrentOrder(orderId);
-      }
-    })
-    .catch(function(reason) {
-      console.log(reason);
-      this.setState({cancelOwnCurrentOrderState:"failed", cancelOwnFailedReason: reason});
-      this.askOwnCurrentOrder(orderId);
-    });
+    this.props.onAskOwnHistoricalsOrders( this.props.ownHistoricalsOrder.nextLink );
   }
 
   changeHisQuotes = (span, interval, bounds, selectedButtonName)=>{
@@ -267,16 +168,16 @@ class InstrumentPage extends Component {
       placingOrder,
       orderPlacedResult,
       onAskAccount,
-      onPlaceOrder
+      onPlaceOrder,
+      ownHistoricalsOrder,
+      isAskingCurrentOrder,
+      onAskCurrentOrder,
+      currentOrder,
+      currentOrderFailedReason,
+      onCancelOrder,
+      cancelCurrentOrderState
     } = this.props
     const { span, interval, bounds, selectedButtonName } = this.state.quotes;
-    const {
-      ownHistoricalsOrders,
-      ownHistoricalsOrdersNextLink,
-      isAskingOwnCurrentOrder,
-      OwnCurrentOrder,
-      OwnCurrentOrderFailedReason
-    } = this.state;
 
 
     //show null if not current page
@@ -336,23 +237,23 @@ class InstrumentPage extends Component {
                previous_close={ownQuote.previous_close}
       />): <DummyQuotes />;
 
-    let ordersBlock = (ownHistoricalsOrders.length === 0)? null : (
+    let ordersBlock = (ownHistoricalsOrder )? (
       <SectionWrapper SectionTitle={"Orders"}>
         <Orders
-          historicalsOrders={ownHistoricalsOrders}
-          historicalsOrdersNextLink={ownHistoricalsOrdersNextLink}
-          isAskingCurrentOrder={isAskingOwnCurrentOrder}
-          currentOrder={OwnCurrentOrder}
-          currentOrderFailedReason={OwnCurrentOrderFailedReason}
+          historicalsOrders={ownHistoricalsOrder.orders}
+          historicalsOrdersNextLink={(ownHistoricalsOrder.nextLink)? ownHistoricalsOrder.nextLink : ""}
+          isAskingCurrentOrder={isAskingCurrentOrder}
+          currentOrder={currentOrder}
+          currentOrderFailedReason={currentOrderFailedReason}
           instruments={instruments}
           addMoreHistoricalsOrder={this.addMoreHistoricalsOrder}
-          askCurrentOrder={this.askOwnCurrentOrder}
+          askCurrentOrder={onAskCurrentOrder}
           forInstrument={true}
-          cancelOrder={ this.cancelOwnOrder }
-          cancelCurrentOrderState={this.state.cancelOwnCurrentOrderState}
+          cancelOrder={ onCancelOrder }
+          cancelCurrentOrderState={cancelCurrentOrderState}
         />
       </SectionWrapper>
-    )
+    ) : null;
 
     let PriceAlertToggleBlock = (ownQuote)? (
       <PriceAlertToggle
@@ -370,7 +271,6 @@ class InstrumentPage extends Component {
     let positionBlock = null;
     //need to change
     if(ownEachPosition){
-      //console.log(eachPosition[instrument])
       positionBlock = (ownEachPosition && ownQuote)? <Position quote={ownQuote} position={ownEachPosition} /> : "Loading...";
     }
 
@@ -443,21 +343,14 @@ class InstrumentPage extends Component {
             <div className="notTradeable">not tradeable</div>
           )}
         </SectionWrapper>
-
-
         {(ownEachPosition)?
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}
           </SectionWrapper>
         :null}
-
-
         {newsBlock}
         {statisticsBlock}
-
-
         { ordersBlock }
-
         <SectionWrapper SectionTitle={"About"}>
           {descriptionBlock}
         </SectionWrapper>
@@ -472,7 +365,6 @@ const mapStateToProps = ({
   quotesReducer,
   positionsReducer,
   watchlistsReducer,
-  tokenReducer,
   accountReducer,
   ordersReducer
 }, ownProps) => {
@@ -481,9 +373,16 @@ const mapStateToProps = ({
   const { fundamentals } = fundamentalsReducer;
   const { historicalsQuotes, quotes } = quotesReducer;
   const { positions, eachPosition } = positionsReducer;
-  const { token } = tokenReducer;
   const { account } = accountReducer;
-  const { placingOrder, orderPlacedResult } = ordersReducer;
+  const {
+    placingOrder,
+    orderPlacedResult,
+    ownHistoricalsOrders,
+    isAskingCurrentOrder,
+    currentOrderFailedReason,
+    currentOrder,
+    cancelCurrentOrderState
+  } = ordersReducer;
 
   return {
     watchlists,
@@ -494,10 +393,14 @@ const mapStateToProps = ({
     ownQuote: quotes[ownProps.symbol],
     positions,
     ownEachPosition: eachPosition[ownProps.instrument],
-    token,
     account,
     placingOrder,
-    orderPlacedResult
+    orderPlacedResult,
+    ownHistoricalsOrder: ownHistoricalsOrders[ownProps.symbol],
+    isAskingCurrentOrder,
+    currentOrderFailedReason,
+    currentOrder,
+    cancelCurrentOrderState
   }
 }
 
@@ -535,6 +438,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onPlaceOrder: (order) => {
     dispatch(placeOrder(order));
   },
+  onAskOwnHistoricalsOrders: (nextLink) => {
+    dispatch(askOwnHistoricalsOrders(ownProps.symbol, ownProps.instrument, nextLink));
+  },
+  onAskCurrentOrder: (orderID) => {
+    dispatch(askCurrentOrder(orderID));
+  },
+  onCancelOrder: (cancelLink, orderId, symbol, instrument) => {
+    dispatch(cancelOrder(cancelLink, orderId, symbol, instrument));
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InstrumentPage)

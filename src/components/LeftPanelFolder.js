@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-//import { connect } from 'react-redux'
-//import { toggleWatchlistsModule,togglePositionsModule} from '../actions'
 
 import '../styles/LeftPanelFolder.css'
 import arrow from '../styles/arrow.png';
@@ -9,9 +7,6 @@ import { displayPercentage } from '../utils'
 
 class LeftPanelFolder extends Component {
   static propTypes = {
-    //watchlistsModuleOpen: PropTypes.bool.isRequired,
-    //quotes: PropTypes.object.isRequired,
-    //dispatch: PropTypes.func.isRequired
     moduleName: PropTypes.string.isRequired,
     moduleData: PropTypes.array.isRequired,
     selectedKey: PropTypes.string.isRequired,
@@ -57,15 +52,6 @@ class LeftPanelFolder extends Component {
       );
     });
 
-    /*
-    let open = false;
-    if(this.props.moduleName === "WATCHLIST"){
-      open = this.props.watchlistsModuleOpen;
-    }
-    if(this.props.moduleName === "POSITIONS"){
-      open = this.props.positionsModuleOpen;
-    }
-    */
     let open = this.props.open;
 
     return (
@@ -81,15 +67,5 @@ class LeftPanelFolder extends Component {
     )
   }
 }
-/*
-const mapStateToProps = state => {
-  const { uiReducer, quotesReducer } = state
-  const { watchlistsModuleOpen, positionsModuleOpen } = uiReducer || { watchlistsModuleOpen: false, positionsModuleOpen:false }
-  const { quotes } = quotesReducer || { quotes: {} }
 
-  return { watchlistsModuleOpen, positionsModuleOpen, quotes }
-}
-
-export default connect(mapStateToProps)(LeftPanelFolder)
-*/
 export default LeftPanelFolder

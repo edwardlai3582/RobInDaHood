@@ -17,6 +17,8 @@ export const ORDERS_ORDER_DIDNT_PLACE = 'ORDERS_ORDER_DIDNT_PLACE'
 export const ORDERS_RESET_PLACE_ORDER_RELATED = 'ORDERS_RESET_PLACE_ORDER_RELATED'
 export const ORDERS_PUSH_TO_PENDING_ORDERS = 'ORDERS_PUSH_TO_PENDING_ORDERS'
 export const ORDERS_REMOVE_FROM_PENDING_ORDERS = 'ORDERS_REMOVE_FROM_PENDING_ORDERS'
+export const ORDERS_REFILL_OWN_HIS_ORDERS = 'ORDERS_REFILL_OWN_HIS_ORDERS'
+export const ORDERS_ADD_OWN_HIS_ORDERS ='ORDERS_ADD_OWN_HIS_ORDERS'
 
 export const pushToPendingOrders = (orderID) => ({
   type: ORDERS_PUSH_TO_PENDING_ORDERS,
@@ -65,8 +67,8 @@ export const deleteHistoricalsOrdersNextLink = () => ({
   type: ORDERS_DELETE_HIS__ORDERS_NEXT_LINK
 })
 
-export const askHistoricalsOrders = (...theArgs) => (dispatch, getState) => {
-  let link = (theArgs.length === 0)? "https://api.robinhood.com/orders" : theArgs[0];
+export const askHistoricalsOrders = (nextLink) => (dispatch, getState) => {
+  let link = (nextLink)? nextLink : "https://api.robinhood.com/orders";
   dispatch(deleteHistoricalsOrdersNextLink());
   return fetch(link, {
     method: 'GET',
@@ -77,7 +79,7 @@ export const askHistoricalsOrders = (...theArgs) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    if(theArgs.length === 0){
+    if(!nextLink){
       //console.log(jsonResult.results)
       dispatch(refillHistoricalsOrders(jsonResult.results, jsonResult.next));
     }
@@ -101,6 +103,48 @@ export const askHistoricalsOrders = (...theArgs) => (dispatch, getState) => {
         dispatch(askHistoricalsOrders(jsonResult.next));
       }
     */
+  })
+  .catch(function(reason) {
+    console.log(reason);
+  });
+}
+
+export const refillOwnHistoricalsOrders = (symbol, orders, nextLink) => ({
+  type: ORDERS_REFILL_OWN_HIS_ORDERS,
+  symbol,
+  orders,
+  nextLink
+})
+
+export const addOwnHistoricalsOrders = (symbol, orders, nextLink) => ({
+  type: ORDERS_ADD_OWN_HIS_ORDERS,
+  symbol,
+  orders,
+  nextLink
+})
+
+export const askOwnHistoricalsOrders = (symbol, instrument, nextLink) => (dispatch, getState) => {
+  let link = (nextLink)? nextLink : `https://api.robinhood.com/orders/?instrument=${instrument}`;
+
+  return fetch(link, {
+    method: 'GET',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token
+    })
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    console.log(jsonResult);
+    if(!nextLink){
+      //console.log(jsonResult.results)
+      dispatch(refillOwnHistoricalsOrders(symbol, jsonResult.results, jsonResult.next));
+    }
+    else {
+      console.log("more order histories!")
+      //console.log(jsonResult.results)
+      dispatch(addOwnHistoricalsOrders(symbol, jsonResult.results, jsonResult.next));
+    }
   })
   .catch(function(reason) {
     console.log(reason);
@@ -161,7 +205,7 @@ export const cancellingCurrentOrder = () => ({
   type: ORDERS_CANCELLING_CURRENT_ORDER
 })
 
-export const cancelOrder = (cancelLink, orderId) => (dispatch, getState) => {
+export const cancelOrder = (cancelLink, orderId, symbol, instrument) => (dispatch, getState) => {
   dispatch(cancellingCurrentOrder());
   return fetch(cancelLink, {
     method: 'POST',
@@ -180,6 +224,10 @@ export const cancelOrder = (cancelLink, orderId) => (dispatch, getState) => {
       //reload watchlist & positions after order cancelled
       dispatch(askWatchlists());
       dispatch(askPositions());
+
+      if( symbol in getState().ordersReducer.ownHistoricalsOrders) {
+        dispatch(askOwnHistoricalsOrders(symbol, instrument));
+      }
     }
     else{
       console.log(jsonResult);

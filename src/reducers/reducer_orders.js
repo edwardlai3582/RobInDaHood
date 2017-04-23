@@ -6,12 +6,16 @@ const ordersReducer = (state = {
   isAskingCurrentOrder: false,
   currentOrder: {},
   currentOrderFailedReason: "",
-  //CancelCurrentOrderState: noteven, ing, failed, succeeded
+  /////////CancelCurrentOrderState: noteven, ing, failed, succeeded
   cancelCurrentOrderState: "noteven",
   cancelFailedReason: "",
   placingOrder: false,
   orderPlacedResult: "",
-  pendingOrders: []
+  pendingOrders: [],
+  /*
+    symbol:{nextLink:"", orders:[]}
+  */
+  ownHistoricalsOrders: {}
 }, action) => {
   switch (action.type) {
     case actions.ORDERS_REMOVE_FROM_PENDING_ORDERS:
@@ -110,6 +114,24 @@ const ordersReducer = (state = {
         isAskingCurrentOrder: false,
         currentOrder: action.order,
         currentOrderFailedReason: ''
+      }
+    case actions.ORDERS_REFILL_OWN_HIS_ORDERS:
+      let tempObj = {};
+      tempObj[action.symbol] = {};
+      tempObj[action.symbol].orders = action.orders;
+      tempObj[action.symbol].nextLink = action.nextLink;
+      return {
+        ...state,
+        ownHistoricalsOrders: Object.assign({}, state.ownHistoricalsOrders, tempObj)
+      }
+    case actions.ORDERS_ADD_OWN_HIS_ORDERS:
+      tempObj = {};
+      tempObj[action.symbol] = {};
+      tempObj[action.symbol].orders = state.ownHistoricalsOrders[action.symbol].orders.concat(action.orders);
+      tempObj[action.symbol].nextLink = action.nextLink;
+      return {
+        ...state,
+        ownHistoricalsOrders: Object.assign({}, state.ownHistoricalsOrders, tempObj)
       }
     default:
       return state

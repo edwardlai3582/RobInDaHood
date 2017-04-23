@@ -85,12 +85,13 @@ class Orders extends Component {
         <div className="recentOrdersWrapper">
           {recentOrders}
         </div>
-        {(historicalsOrdersNextLink === "")? null:
-          (<div className="orderMoreButtonWrapper">
+        {(historicalsOrdersNextLink)? (
+          <div className="orderMoreButtonWrapper">
             <button onClick={addMoreHistoricalsOrder} className="orderMoreButton">
               More
             </button>
-          </div>)}
+          </div>
+        ) : null}
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}

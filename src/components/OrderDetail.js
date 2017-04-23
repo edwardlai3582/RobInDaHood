@@ -21,6 +21,10 @@ class OrderDetail extends Component {
       return (<div>{currentOrderFailedReason}</div>)
     }
     else{
+      if(Object.keys(currentOrder).length === 0 ) {
+        return null;
+      }
+
       let timeInForce = ""
       if ( currentOrder.time_in_force === "gfd" ){ timeInForce = "Good for day" }
       else if ( currentOrder.time_in_force === "gtc" ){ timeInForce = "Good til canceled" }
@@ -129,7 +133,7 @@ class OrderDetail extends Component {
                 :
                 (<button
                   className="cancelOrderButton"
-                  onClick={()=>cancelOrder(currentOrder.cancel, currentOrder.id)}
+                  onClick={()=>cancelOrder(currentOrder.cancel, currentOrder.id, instrument.symbol, instrument.url)}
                 >
                   CANCEL ORDER
                 </button>)
