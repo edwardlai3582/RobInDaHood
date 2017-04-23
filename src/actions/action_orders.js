@@ -135,7 +135,7 @@ export const askOwnHistoricalsOrders = (symbol, instrument, nextLink) => (dispat
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
+    //console.log(jsonResult);
     if(!nextLink){
       //console.log(jsonResult.results)
       dispatch(refillOwnHistoricalsOrders(symbol, jsonResult.results, jsonResult.next));

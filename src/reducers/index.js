@@ -15,6 +15,7 @@ import uiReducer from './reducer_ui'
 import localReducer from './reducer_local'
 import cardsReducer from './reducer_cards'
 import monitorReducer from './reducer_monitor'
+import earningsReducer from './reducer_earnings'
 
 const rootReducer = combineReducers({
   tokenReducer,
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   uiReducer,
   localReducer,
   cardsReducer,
-  monitorReducer
+  monitorReducer,
+  earningsReducer
 })
 
 export default rootReducer

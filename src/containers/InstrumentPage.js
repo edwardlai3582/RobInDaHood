@@ -11,6 +11,7 @@ import {
        } from '../actions'
 import Statistics from './Statistics'
 import News from './News'
+import Earnings from './Earnings'
 import Quotes from '../components/Quotes'
 import DummyQuotes from '../components/DummyQuotes'
 import Position from '../components/Position'
@@ -229,7 +230,7 @@ class InstrumentPage extends Component {
 
     let statisticsBlock = (symbol)? <Statistics symbol={symbol} /> : "Loading...";
     let newsBlock = (symbol)? <News symbol={symbol} /> : "Loading...";
-
+    let earningsBlock = (symbol)? <Earnings symbol={symbol} /> : "Loading...";
 
     let quotesBlock = (ownQuote && historicalsQuotes[symbol+span+interval+bounds] )?
       (<Quotes historicals={ historicals }
@@ -237,7 +238,7 @@ class InstrumentPage extends Component {
                previous_close={ownQuote.previous_close}
       />): <DummyQuotes />;
 
-    let ordersBlock = (ownHistoricalsOrder )? (
+    let ordersBlock = (ownHistoricalsOrder && ownHistoricalsOrder.orders.length > 0 )? (
       <SectionWrapper SectionTitle={"Orders"}>
         <Orders
           historicalsOrders={ownHistoricalsOrder.orders}
@@ -348,11 +349,12 @@ class InstrumentPage extends Component {
             {positionBlock}
           </SectionWrapper>
         :null}
-        {newsBlock}
-        {statisticsBlock}
+        { newsBlock }
+        { statisticsBlock }
+        { earningsBlock }
         { ordersBlock }
         <SectionWrapper SectionTitle={"About"}>
-          {descriptionBlock}
+          { descriptionBlock }
         </SectionWrapper>
       </div>
     )

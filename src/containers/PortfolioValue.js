@@ -87,7 +87,7 @@ class PortfolioValue extends Component {
                 }
               </Pie>
               <Tooltip
-                wrapperStyle={{ textAlign:"center", backgroundColor: 'white', color:'black', padding:'5px'}}
+                wrapperStyle={{ borderRadius: "5px", textAlign:"center", backgroundColor: 'white', color:'black', padding:'5px'}}
                 content={<PieChartTooltip/>}
               />
             </PieChart>

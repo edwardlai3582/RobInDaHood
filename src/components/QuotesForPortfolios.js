@@ -66,8 +66,8 @@ class QuotesForPortfolios extends Component {
             <XAxis dataKey="begins_at" tick={false} hide={true} />
             <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />
             {selectedButtonName==="1D" || selectedButtonName==="1W"?
-              <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px'}} content={<WithTimeTooltip/>}/>:
-              <Tooltip wrapperStyle={{ textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px' }} content={<WithoutTimeTooltip/>}/>
+              <Tooltip wrapperStyle={{ borderRadius: "5px", textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px'}} content={<WithTimeTooltip/>}/>:
+              <Tooltip wrapperStyle={{ borderRadius: "5px", textAlign:"center", width: 100, backgroundColor: 'white', color:'black', padding:'5px' }} content={<WithoutTimeTooltip/>}/>
             }
             {(selectedButtonName==="1D")? (
               <ReferenceLine y={Number(previous_close)} stroke="white" strokeDasharray="3 3" />

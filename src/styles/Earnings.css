@@ -1,0 +1,18 @@
+.earningsWrapper {
+
+}
+
+.epsTextWrapper {
+  display: flex;
+  margin: 0 auto;
+  width: 90%;
+}
+
+.epsTextWrapper > div {
+  width: 50%;
+  margin: 10px 0;
+}
+
+.epsTextWrapper > div > h6 {
+  margin: 10px 0 5px;
+}
