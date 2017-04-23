@@ -40,7 +40,7 @@ class List extends Component {
 	}
 
 	customValidateText = (text) => {
-		return (text.length > 0 && text !== "default" && text !== "Default" );
+		return (text.length > 0 && text !== "default" && text !== "Default" && this.props.noDuplicateName(text) );
 	}
 
 	render() {

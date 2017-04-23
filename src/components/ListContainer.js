@@ -50,39 +50,43 @@ class ListContainer extends Component {
   }
 
   setListsData = (localLists, instruments, checkLists) => {
-    let instrumentsHasAllNeeded = true;
-
     for(let i=0; i<localLists.length; i++ ){
       for(let j=0; j< localLists[i].list.length; j++){
         if( !instruments.hasOwnProperty(localLists[i].list[j]) ){
-          instrumentsHasAllNeeded = false;
           return null;
         }
       }
     }
 
-    if(instrumentsHasAllNeeded && localLists){
-      let tempLists = localLists.map((tempList) => {
-        let temp = {}
-        temp.list = tempList.list.filter((instrument)=>{
-          for(let i=0; i< checkLists.length; i++){
-            if( checkLists[i].list.indexOf(instrument) !== -1 ) {
-              return false;
-            }
+    let tempLists = localLists.map((tempList) => {
+      let temp = {}
+      temp.list = tempList.list.filter((instrument)=>{
+        for(let i=0; i< checkLists.length; i++){
+          if( checkLists[i].list.indexOf(instrument) !== -1 ) {
+            return false;
           }
-          return true;
-        })
-        .map((instrument)=>{
-          return instrument
-        });
-
-        temp.id = tempList.name;
-        return temp;
+        }
+        return true;
+      })
+      .map((instrument)=>{
+        return instrument
       });
 
-      this.setState({ lists: tempLists });
-    }
+      temp.id = tempList.name;
+      return temp;
+    });
 
+    this.setState({ lists: tempLists });
+  }
+
+  noDuplicateName = (name) => {
+    for (var i = 0; i < this.props.localLists.length; i++) {
+      if( this.props.localLists[i].name === name ) {
+        console.log("name duplicate!");
+        return false;
+      }
+    }
+    return true;
   }
 
   moveList = (id, atIndex) => {
@@ -112,7 +116,6 @@ class ListContainer extends Component {
     const { reorderLocalLists, reorderLocalList, deleteLocalListFolder, connectDropTarget, renameLocallistFolder, instruments } = this.props;
     const { lists } = this.state;
 
-
     return connectDropTarget(
       <div className="draggableListsWrapper">
         {lists.map((localList, index)=>{
@@ -129,6 +132,7 @@ class ListContainer extends Component {
               deleteLocalListFolder={()=>deleteLocalListFolder(index)}
               renameLocallistFolder={(name)=>renameLocallistFolder(index, name)}
               instruments={instruments}
+              noDuplicateName={this.noDuplicateName}
             />
           )
         })}
