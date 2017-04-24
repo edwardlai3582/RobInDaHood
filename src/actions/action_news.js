@@ -30,3 +30,11 @@ export const askNews = (symbol) => (dispatch, getState) => {
     console.log(reason);
   });
 }
+
+export const cleanUpNews = () => (dispatch, getState) => {
+  Object.keys(getState().newsReducer.newsAll).forEach((symbol) => {
+    if(getState().tabsReducer.keys.indexOf(symbol) === -1) {
+      dispatch(deleteNews(symbol));
+    }
+  });
+}

@@ -15,7 +15,13 @@ import { deleteToken,
          askCards,
          askMonitorTickers,
          checkPendingOrders,
-         askHistoricalsOrders
+         askHistoricalsOrders,
+         cleanUpEarnings,
+         cleanUpFundamentals,
+         cleanUpInstruments,
+         cleanUpNews,
+         cleanUpOrders,
+         cleanUpQuotes
        } from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
@@ -60,6 +66,16 @@ class DashboardPage extends Component {
       modalIsOpen: false,
       fifteenSecondsInterval: undefined
     };
+  }
+
+  componentWillMount() {
+    //delete non existent tab's data
+    this.props.onCleanUpEarnings();
+    this.props.onCleanUpFundamentals();
+    this.props.onCleanUpInstruments();
+    this.props.onCleanUpNews();
+    this.props.onCleanUpOrders();
+    this.props.onCleanUpQuotes();
   }
 
   componentDidMount() {
@@ -455,6 +471,24 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onFetchHistoricalsOrders: () => {
     dispatch(askHistoricalsOrders());
   },
+  onCleanUpEarnings: () => {
+    dispatch(cleanUpEarnings());
+  },
+  onCleanUpFundamentals: () => {
+    dispatch(cleanUpFundamentals());
+  },
+  onCleanUpInstruments: () => {
+    dispatch(cleanUpInstruments());
+  },
+  onCleanUpNews: () => {
+    dispatch(cleanUpNews());
+  },
+  onCleanUpOrders: () => {
+    dispatch(cleanUpOrders());
+  },
+  onCleanUpQuotes: () => {
+    dispatch(cleanUpQuotes());
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)

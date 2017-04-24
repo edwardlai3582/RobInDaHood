@@ -1,4 +1,4 @@
-///////////RAENING
+///////////EARNINGS
 export const EARNINGS_ADD = 'EARNINGS_ADD'
 export const EARNINGS_DELETE = 'EARNINGS_DELETE'
 
@@ -27,5 +27,13 @@ export const askEarnings = (symbol) => (dispatch, getState) => {
   })
   .catch(function(reason) {
     console.log(reason);
+  });
+}
+
+export const cleanUpEarnings = () => (dispatch, getState) => {
+  Object.keys(getState().earningsReducer.earningsAll).forEach((symbol) => {
+    if(getState().tabsReducer.keys.indexOf(symbol) === -1) {
+      dispatch(deleteEarnings(symbol));
+    }
   });
 }

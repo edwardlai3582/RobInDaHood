@@ -44,3 +44,13 @@ const tabsReducer = (state = {
 }
 
 export default tabsReducer
+
+/*
+key = data.symbol
+newTab = {
+  key: key,
+  title: data.symbol,
+  instrument: data.instrument,
+  type: data.type
+}
+*/

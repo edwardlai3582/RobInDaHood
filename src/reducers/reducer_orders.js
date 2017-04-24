@@ -133,6 +133,13 @@ const ordersReducer = (state = {
         ...state,
         ownHistoricalsOrders: Object.assign({}, state.ownHistoricalsOrders, tempObj)
       }
+    case actions.ORDERS_DELETE_OWN_HIS_ORDERS:
+      let tempOwnHistoricalsOrders = Object.assign({}, state.ownHistoricalsOrders);
+      delete tempOwnHistoricalsOrders[action.symbol];
+      return {
+        ...state,
+        ownHistoricalsOrders: tempOwnHistoricalsOrders
+      }
     default:
       return state
   }

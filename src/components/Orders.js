@@ -64,6 +64,9 @@ class Orders extends Component {
 
 
     let recentOrders = historicalsOrders.map((order, i)=>{
+      if(!instruments[order.instrument]) {
+        return null;
+      }
       return (
         <div key={i} className="orderWrapper" onClick={()=> this.openModalAndAskCurrentOrder(order.id)} >
           <div>

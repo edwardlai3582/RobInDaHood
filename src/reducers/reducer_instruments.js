@@ -14,7 +14,6 @@ const instrumentsReducer = (state = {
         ...state
       }
     case actions.ADD_INSTRUMENT:
-      console.log("ADD_INSTRUMENT");
       let newInstruments = Object.assign({}, state.instruments);
       newInstruments[action.instrument.url] = action.instrument;
       return {
@@ -23,7 +22,7 @@ const instrumentsReducer = (state = {
       }
     case actions.DELETE_INSTRUMENT:
       let newDeletedInstruments = Object.assign({}, state.instruments);
-      delete newDeletedInstruments[action.instrumentId];
+      delete newDeletedInstruments[action.instrumentUrl];
       return {
         ...state,
         instruments: newDeletedInstruments,

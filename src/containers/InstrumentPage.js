@@ -413,8 +413,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAskInstrument: (instrument) => {
     dispatch(askInstrument(instrument));
   },
-  onDeleteInstrument: (instrument) => {
-    dispatch(deleteInstrument(instrument));
+  onDeleteInstrument: (instrumentUrl) => {
+    dispatch(deleteInstrument(instrumentUrl));
   },
   onAskPosition: (url) => {
     dispatch(askPosition(url));

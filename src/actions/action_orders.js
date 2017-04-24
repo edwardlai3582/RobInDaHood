@@ -18,7 +18,8 @@ export const ORDERS_RESET_PLACE_ORDER_RELATED = 'ORDERS_RESET_PLACE_ORDER_RELATE
 export const ORDERS_PUSH_TO_PENDING_ORDERS = 'ORDERS_PUSH_TO_PENDING_ORDERS'
 export const ORDERS_REMOVE_FROM_PENDING_ORDERS = 'ORDERS_REMOVE_FROM_PENDING_ORDERS'
 export const ORDERS_REFILL_OWN_HIS_ORDERS = 'ORDERS_REFILL_OWN_HIS_ORDERS'
-export const ORDERS_ADD_OWN_HIS_ORDERS ='ORDERS_ADD_OWN_HIS_ORDERS'
+export const ORDERS_ADD_OWN_HIS_ORDERS = 'ORDERS_ADD_OWN_HIS_ORDERS'
+export const ORDERS_DELETE_OWN_HIS_ORDERS = 'ORDERS_DELETE_OWN_HIS_ORDERS'
 
 export const pushToPendingOrders = (orderID) => ({
   type: ORDERS_PUSH_TO_PENDING_ORDERS,
@@ -308,4 +309,17 @@ export const checkPendingOrders = (order) => (dispatch, getState) => {
       }
     })
   })
+}
+
+export const deleteOwnHistoricalsOrders = (symbol) => ({
+  type: ORDERS_DELETE_OWN_HIS_ORDERS,
+  symbol
+})
+
+export const cleanUpOrders = () => (dispatch, getState) => {
+  Object.keys(getState().ordersReducer.ownHistoricalsOrders).forEach((symbol) => {
+    if(getState().tabsReducer.keys.indexOf(symbol) === -1) {
+      dispatch(deleteOwnHistoricalsOrders(symbol));
+    }
+  });
 }

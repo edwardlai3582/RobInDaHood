@@ -42,3 +42,11 @@ export const askFundamental = (symbol) => (dispatch, getState) => {
     dispatch(askingFundamentalFailed(reason));
   });
 }
+
+export const cleanUpFundamentals = () => (dispatch, getState) => {
+  Object.keys(getState().fundamentalsReducer.fundamentals).forEach((symbol) => {
+    if(getState().tabsReducer.keys.indexOf(symbol) === -1) {
+      dispatch(deleteFundamental(symbol));
+    }
+  });
+}

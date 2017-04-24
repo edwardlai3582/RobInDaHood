@@ -12,9 +12,9 @@ export const addHistoricalsQuotes = (symbol, hisType, quotes) => ({
   quotes
 })
 
-export const deleteHistoricalsQuotes = (symbol) => ({
+export const deleteHistoricalsQuotes = (symbolHisType) => ({
   type: DELETE_HIS_QUOTES,
-  symbol
+  symbolHisType
 })
 
 export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatch, getState) => {
@@ -118,5 +118,23 @@ export const askMultipleQuotes = () => (dispatch, getState) => {
   })
   .catch(function(reason) {
     console.log(reason);
+  });
+}
+
+export const cleanUpQuotes = () => (dispatch, getState) => {
+  Object.keys(getState().quotesReducer.quotes).forEach((symbol) => {
+    if(getState().tabsReducer.keys.indexOf(symbol) === -1) {
+      dispatch(deleteQuote(symbol));
+    }
+  });
+
+  //delet his quotes
+  Object.keys(getState().quotesReducer.historicalsQuotes).forEach((symbolHisType) => {
+    for(let i=0; i<getState().tabsReducer.keys; i++) {
+      if(symbolHisType.indexOf(getState().tabsReducer.keys[i]) !== -1) {
+        return;
+      }
+    }
+    dispatch(deleteHistoricalsQuotes(symbolHisType));
   });
 }

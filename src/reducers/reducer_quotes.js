@@ -13,8 +13,11 @@ const quotesReducer = (state = {
         historicalsQuotes: newHistoricalsQuotes
       }
     case actions.DELETE_HIS_QUOTES:
+      let tempHistoricalsQuotes = Object.assign({}, state.historicalsQuotes);
+      delete tempHistoricalsQuotes[action.symbolHisType];
       return {
         ...state,
+        historicalsQuotes: tempHistoricalsQuotes
       }
     case actions.ADD_QUOTE:
       let newQuotes = Object.assign({}, state.quotes);
@@ -24,8 +27,11 @@ const quotesReducer = (state = {
         quotes: newQuotes
       }
     case actions.DELETE_QUOTE:
+      let tempQuotes = Object.assign({}, state.quotes);
+      delete tempQuotes[action.symbol];
       return {
         ...state,
+        quotes: tempQuotes
       }
     case actions.ADD_MULTIPLE_QUOTES:
       let tempQuotesObj = {};

@@ -19,9 +19,9 @@ export const addInstrument = instrument => ({
   instrument
 })
 
-export const deleteInstrument = (instrumentId) => ({
+export const deleteInstrument = (instrumentUrl) => ({
   type: DELETE_INSTRUMENT,
-  instrumentId
+  instrumentUrl
 })
 
 export const askInstrument = (instrument) => (dispatch, getState) => {
@@ -42,5 +42,13 @@ export const askInstrument = (instrument) => (dispatch, getState) => {
   .catch(function(reason) {
     console.log(reason);
     dispatch(askingInstrumentFailed(reason));
+  });
+}
+
+export const cleanUpInstruments = () => (dispatch, getState) => {
+  Object.keys(getState().instrumentsReducer.instruments).forEach((instrumentUrl) => {
+    if(getState().tabsReducer.keys.indexOf(getState().instrumentsReducer.instruments[instrumentUrl].symbol) === -1) {
+      dispatch(deleteInstrument(instrumentUrl));
+    }
   });
 }
