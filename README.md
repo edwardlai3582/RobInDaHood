@@ -1,7 +1,7 @@
 # RobInDaHood
 A desktop app for Robinhood
 
-![Alt text](http://i.imgur.com/UYlM9FL.png "Optional title")
+![robindahood](http://i.imgur.com/UYlM9FL.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
