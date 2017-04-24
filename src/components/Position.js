@@ -17,7 +17,8 @@ const Position = ({ position, quote }) => {
   const totalReturnPercentage = ((lastPrice - Number(average_buy_price))/Number(average_buy_price)*100).toFixed(2);
   let todaysReturn = 0;
   let todaysReturnPercentage = 0;
-  if(printDateOnly(position.created_at) === printDateOnly(new Date().toISOString())) {
+  if(printDateOnly(position.created_at) === printDateOnly(new Date().toISOString()) || printDateOnly(position.updated_at) === printDateOnly(new Date().toISOString()) ) {
+    console.log("same day");
     todaysReturn = (lastPrice - Number(average_buy_price))*quantity;
     todaysReturnPercentage = ((lastPrice - Number(average_buy_price))/Number(average_buy_price)*100).toFixed(2);
   }
