@@ -1,6 +1,8 @@
 # RobInDaHood
 A desktop app for Robinhood
 
+![Alt text](http://imgur.com/UYlM9FL)
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Project setup: https://medium.freecodecamp.com/building-an-electron-application-with-create-react-app-97945861647c#.pf5yr1mgt
