@@ -17,6 +17,12 @@ export const RENAME_POSITION_FOLDER = 'RENAME_POSITION_FOLDER'
 export const TOGGLE_LOCAL_POSITION = 'TOGGLE_LOCAL_POSITION'
 export const CONCAT_LIST_TO_LOCAL_POSITION = 'CONCAT_LIST_TO_LOCAL_POSITION'
 
+export const DELETE_LOCAL = 'DELETE_LOCAL'
+
+export const deleteLocal = () => ({
+  type: DELETE_LOCAL
+})
+
 export const toggleLocalWatchlist = (index) => ({
   type: TOGGLE_LOCAL_WATCHLIST,
   index

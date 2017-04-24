@@ -35,8 +35,11 @@ const positionsReducer = (state = {
       }
     case actions.DELETE_POSITIONS:
       return {
-        ...state,
+        isAskingPositions: false,
+        error: "",
         positions: [],
+        positionsWithZero: [],
+        eachPosition: {}
       }
     case actions.ADD_POSITION:
       let tempPosition = {};

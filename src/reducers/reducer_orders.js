@@ -18,6 +18,20 @@ const ordersReducer = (state = {
   ownHistoricalsOrders: {}
 }, action) => {
   switch (action.type) {
+    case actions.ORDERS_DELETE_ORDERS:
+      return {
+        historicalsOrders: [],
+        historicalsOrdersNextLink: "",
+        isAskingCurrentOrder: false,
+        currentOrder: {},
+        currentOrderFailedReason: "",
+        cancelCurrentOrderState: "noteven",
+        cancelFailedReason: "",
+        placingOrder: false,
+        orderPlacedResult: "",
+        pendingOrders: [],
+        ownHistoricalsOrders: {}
+      }
     case actions.ORDERS_REMOVE_FROM_PENDING_ORDERS:
       return {
         ...state,

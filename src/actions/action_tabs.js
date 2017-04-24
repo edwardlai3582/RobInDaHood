@@ -3,6 +3,11 @@ export const TAB_ADD = 'TAB_ADD'
 export const TAB_DELETE = 'TAB_DELETE'
 export const TAB_SELECT = 'TAB_SELECT'
 export const TAB_REORDER = 'TAB_REORDER'
+export const TABS_DELETE_ALL = 'TABS_DELETE_ALL'
+
+export const deleteTabs = () => ({
+  type: TABS_DELETE_ALL
+})
 
 export const addTab = (currentKey, newTab) => ({
   type: TAB_ADD,

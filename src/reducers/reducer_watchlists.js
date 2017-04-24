@@ -33,8 +33,9 @@ const watchlistsReducer = (state = {
       }
     case actions.DELETE_WATCHLISTS:
       return {
-        ...state,
-        watchlists: [],
+        isAskingWatchlists: false,
+        error: "",
+        watchlists: []
       }
     case actions.ADD_WATCHLIST:
       return {

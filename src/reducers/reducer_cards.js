@@ -5,6 +5,11 @@ const cardsReducer = (state = {
   cardsLastUpdated: ""
 }, action) => {
   switch (action.type) {
+    case actions.CARDS_DELETE:
+      return {
+        ...state,
+        cards: []
+      }
     case actions.CARDS_ADD:
       return {
         ...state,

@@ -11,6 +11,17 @@ const portfoliosReducer = (state = {
   historicalsPortfolios: {},
 }, action) => {
   switch (action.type) {
+    case actions.DELETE_PORTFOLIOS:
+      return {
+        quotes: {
+          span: 'day',
+          interval: '5minute',
+          bounds: 'trading'
+        },
+        selectedButton: '1D',
+        portfolios: {},
+        historicalsPortfolios: {},
+      }
 
     case actions.PORTFOLIO_PAGE_SET_SELECTED_BUTTON:
       return Object.assign({}, state, {

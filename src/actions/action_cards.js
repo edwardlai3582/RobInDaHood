@@ -1,5 +1,10 @@
 ////////////CARDS
 export const CARDS_ADD = 'CARDS_ADD'
+export const CARDS_DELETE = 'CARDS_DELETE'
+
+export const deleteCards = () => ({
+  type: CARDS_DELETE
+})
 
 export const addCards = (cards) => ({
   type: CARDS_ADD,

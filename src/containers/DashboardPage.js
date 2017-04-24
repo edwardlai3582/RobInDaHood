@@ -1,28 +1,34 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
-import { deleteToken,
-         askAccount,
-         askWatchlists,
-         askPositions, askPositionsWithZero,
-         askMultipleQuotes,
-         addTab, selectTab,
-         addInstrument,
-         resetPlaceOrderRelated,
-         toggleLocalWatchlist,
-         toggleLocalPosition,
-         toggleWatchlistsModule, togglePositionsModule,
-         askCards,
-         askMonitorTickers,
-         checkPendingOrders,
-         askHistoricalsOrders,
-         cleanUpEarnings,
-         cleanUpFundamentals,
-         cleanUpInstruments,
-         cleanUpNews,
-         cleanUpOrders,
-         cleanUpQuotes
-       } from '../actions'
+import {
+  deleteToken,
+  deleteAccount,
+  askAccount,
+  askWatchlists, deleteWatchlists,
+  askPositions, askPositionsWithZero, deletePositions,
+  askMultipleQuotes,
+  addTab, selectTab, deleteTabs,
+  addInstrument,
+  resetPlaceOrderRelated,
+  toggleLocalWatchlist,
+  toggleLocalPosition,
+  toggleWatchlistsModule, togglePositionsModule,
+  askCards,
+  deleteCards,
+  askMonitorTickers,
+  checkPendingOrders,
+  askHistoricalsOrders,
+  cleanUpEarnings,
+  cleanUpFundamentals,
+  cleanUpInstruments,
+  cleanUpNews,
+  cleanUpOrders,
+  cleanUpQuotes,
+  deleteOrders,
+  deletePortfolios,
+  resetModule
+} from '../actions'
 import Dashboard from '../components/Dashboard'
 import LeftPanelItem from '../components/LeftPanelItem'
 import Search from '../components/Search'
@@ -160,7 +166,7 @@ class DashboardPage extends Component {
     this.setState({modalIsOpen: false});
   }
 
-  logout = () => { this.props.onDeleteToken() }
+  logout = () => { this.props.onLogout() }
 
   handleaddTab = (data) => {
     console.log(data);
@@ -417,9 +423,6 @@ const mapStateToProps = ({
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onDeleteToken: () => {
-    dispatch(deleteToken());
-  },
   onAskAccount: () => {
     dispatch(askAccount());
   },
@@ -488,6 +491,18 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onCleanUpQuotes: () => {
     dispatch(cleanUpQuotes());
+  },
+  onLogout: () => {
+    dispatch(deleteToken());
+    dispatch(deleteAccount());
+    dispatch(deleteCards());
+    dispatch(deleteOrders());
+    dispatch(deletePortfolios());
+    dispatch(deletePositions());
+    dispatch(deleteWatchlists());
+    dispatch(deleteTabs());
+    dispatch(resetModule());
+    //dispatch(deleteLocal());
   }
 })
 

@@ -17,8 +17,7 @@ export const askEarnings = (symbol) => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/marketdata/earnings/?symbol=${symbol}`, {
     method: 'GET',
     headers: new Headers({
-      'Accept': 'application/json',
-      'Authorization': getState().tokenReducer.token
+      'Accept': 'application/json'
     })
   })
   .then(response => response.json())

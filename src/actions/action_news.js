@@ -17,8 +17,7 @@ export const askNews = (symbol) => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/midlands/news/${symbol}/`, {
     method: 'GET',
     headers: new Headers({
-      'Accept': 'application/json',
-      'Authorization': getState().tokenReducer.token
+      'Accept': 'application/json'
     })
   })
   .then(response => response.json())

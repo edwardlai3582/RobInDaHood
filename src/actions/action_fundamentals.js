@@ -29,8 +29,7 @@ export const askFundamental = (symbol) => (dispatch, getState) => {
   return fetch(`https://api.robinhood.com/fundamentals/${symbol}/`, {
     method: 'GET',
     headers: new Headers({
-      'Accept': 'application/json',
-      'Authorization': getState().tokenReducer.token
+      'Accept': 'application/json'
     })
   })
   .then(response => response.json())

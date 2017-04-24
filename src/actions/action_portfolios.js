@@ -2,6 +2,11 @@
 export const ADD_HIS_PORTFOLIOS = 'ADD_HIS_PORTFOLIOS'
 export const DELETE_HIS_PORTFOLIOS = 'DELETE_HIS_PORTFOLIOS'
 export const ADD_PORTFOLIOS = 'ADD_PORTFOLIOS'
+export const DELETE_PORTFOLIOS = 'DELETE_PORTFOLIOS'
+
+export const deletePortfolios = () => ({
+  type: DELETE_PORTFOLIOS
+})
 
 export const addHistoricalsPortfolios = (hisType, portfolios) => ({
   type: ADD_HIS_PORTFOLIOS,

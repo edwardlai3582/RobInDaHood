@@ -5,6 +5,11 @@ const uiReducer = (state = {
   positionsModuleOpen: false
 }, action) => {
   switch (action.type) {
+    case actions.RESET_BOTH_MODULE:
+      return {
+        watchlistsModuleOpen: false,
+        positionsModuleOpen: false
+      }
     case actions.TOGGLE_WATCHLISTS_MODULE:
       return {
         ...state,

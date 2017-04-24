@@ -8,6 +8,12 @@ const tabsReducer = (state = {
   tabs: {}
 }, action) => {
   switch (action.type) {
+    case actions.TABS_DELETE_ALL:
+      return {
+        selectedKey: NOTABKEY,
+        keys: [],
+        tabs: {}
+      }      
     case actions.TAB_ADD:
       let tempTabObject = {};
       tempTabObject[action.currentKey] = action.newTab;

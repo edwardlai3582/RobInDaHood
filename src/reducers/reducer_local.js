@@ -5,6 +5,11 @@ const localReducer = (state = {
   localWatchlists: []
 }, action) => {
   switch (action.type) {
+    case actions.DELETE_LOCAL:
+      return {
+        localPositions: [],
+        localWatchlists: []  
+      }
     case actions.TOGGLE_LOCAL_WATCHLIST:
       let tempLocalWatchlists = state.localWatchlists.slice(0);
       tempLocalWatchlists[action.index].open = !state.localWatchlists[action.index].open;
