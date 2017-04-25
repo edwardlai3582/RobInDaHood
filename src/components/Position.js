@@ -16,30 +16,29 @@ const Position = ({ position, quote }) => {
     totalReturn = "-US$"+(-1)*totalReturn.toFixed(2)
   }
   else {
-    totalReturn = "US$"+totalReturn.toFixed(2)
+    totalReturn = "+US$"+totalReturn.toFixed(2)
   }
   const totalReturnPercentage = ( ( lastPrice - average_buy_price ) / average_buy_price*100 ).toFixed(2);
-
+//console.log(position);
   let todaysReturn = 0;
   let todaysReturnPercentage = 0;
   if( intraday_average_buy_price > 0 && intraday_quantity > 0 ) {
     let TodayOnlyReturn = (lastPrice - intraday_average_buy_price) * intraday_quantity;
     let notTodayQuantity = quantity - intraday_quantity;
-    let notTodayAvgPrice = (( average_buy_price * quantity) - (intraday_average_buy_price*intraday_quantity))/notTodayQuantity
 
     todaysReturn = (lastPrice - previous_close) * notTodayQuantity + TodayOnlyReturn;
-    todaysReturnPercentage =  (( todaysReturn / ( (notTodayAvgPrice*notTodayQuantity) + (intraday_average_buy_price*intraday_quantity) ) )*100).toFixed(2);
+    todaysReturnPercentage =  ( (todaysReturn / ( previous_close * quantity )) * 100 ).toFixed(2);
   }
   else {
     todaysReturn = (lastPrice - previous_close)*quantity;
-    todaysReturnPercentage = ((lastPrice - previous_close)/previous_close*100).toFixed(2);
+    todaysReturnPercentage = ( (lastPrice - previous_close) / previous_close * 100 ).toFixed(2);
   }
 
   if(todaysReturn < 0) {
     todaysReturn = "-US$"+(-1)*todaysReturn.toFixed(2)
   }
   else {
-    todaysReturn = "US$"+todaysReturn.toFixed(2)
+    todaysReturn = "+US$"+todaysReturn.toFixed(2)
   }
 
   return (
