@@ -267,7 +267,7 @@ class DashboardPage extends Component {
       localWatchlists.forEach((localWatchlist) => {
         let localWatchlistData = localWatchlist.list.filter((instrument)=>{
           for(let i=0; i< positions.length; i++){
-            if((positions[i].instrument === instrument)){
+            if( positions[i].instrument === instrument && Number(positions[i].quantity) !== 0 ) {
               return false;
             }
           }
@@ -352,6 +352,12 @@ class DashboardPage extends Component {
                 id={"history"}
                 onClick={()=>this.handleaddNonStockTab("history")}
                 className={selectedKey === "history"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
+              />
+              <LeftPanelItem
+                symbol={"PENDING ORDERS"}
+                id={"pendingOrders"}
+                onClick={()=>this.handleaddNonStockTab("pendingOrders")}
+                className={selectedKey === "pendingOrders"? "leftSingleDiv selectedModuleDiv" : "leftSingleDiv"}
               />
               <LeftPanelItem
                 symbol={"PRICE ALERT"}

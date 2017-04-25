@@ -86,7 +86,7 @@ class Orders extends Component {
     return (
       <div className="OrdersWrapper" >
         <div className="recentOrdersWrapper">
-          {recentOrders}
+          {(historicalsOrders.length > 0)? recentOrders : "No Orders"}        
         </div>
         {(historicalsOrdersNextLink)? (
           <div className="orderMoreButtonWrapper">
@@ -101,6 +101,7 @@ class Orders extends Component {
           onRequestClose={this.closeModal}
           style={customStyles}
           contentLabel="Order Modal"
+          shouldCloseOnOverlayClick={ cancelCurrentOrderState !== "ing" }
         >
           <OrderDetail
             currentOrder={currentOrder}

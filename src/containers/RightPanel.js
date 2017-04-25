@@ -6,6 +6,7 @@ import InstrumentPage from './InstrumentPage'
 import PortfolioPage from './PortfolioPage'
 import HistoryPage from './HistoryPage'
 import PriceAlertPage from './PriceAlertPage'
+import PendingOrdersPage from './PendingOrdersPage'
 import '../styles/Tabs.css'
 
 const tabsClassNames = {
@@ -99,6 +100,13 @@ class RightPanel extends Component {
         return (
           <Tab key={tabs[key].key} title={"Price Alert"}>
             <PriceAlertPage isCurrent={isCurrent} />
+          </Tab>
+        );
+      }
+      else if(tabs[key].type === "pendingOrders") {
+        return (
+          <Tab key={tabs[key].key} title={"Pending Orders"}>
+            <PendingOrdersPage isCurrent={isCurrent} />
           </Tab>
         );
       }

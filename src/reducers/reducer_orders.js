@@ -33,14 +33,18 @@ const ordersReducer = (state = {
         ownHistoricalsOrders: {}
       }
     case actions.ORDERS_REMOVE_FROM_PENDING_ORDERS:
+      let tempObj = Object.assign({}, state.pendingOrders);
+      delete tempObj[action.orderID];
       return {
         ...state,
-        pendingOrders: state.pendingOrders.filter((orderID) => orderID !== action.orderID)
+        pendingOrders: tempObj
       }
-    case actions.ORDERS_PUSH_TO_PENDING_ORDERS:
+    case actions.ORDERS_ADD_TO_PENDING_ORDERS:
+      tempObj = {}
+      tempObj[action.order.id] = action.order;
       return {
         ...state,
-        pendingOrders: [...state.pendingOrders, action.orderID]
+        pendingOrders: Object.assign({}, state.pendingOrders, tempObj)
       }
     case actions.ORDERS_RESET_PLACE_ORDER_RELATED:
       return {
@@ -130,7 +134,7 @@ const ordersReducer = (state = {
         currentOrderFailedReason: ''
       }
     case actions.ORDERS_REFILL_OWN_HIS_ORDERS:
-      let tempObj = {};
+      tempObj = {};
       tempObj[action.symbol] = {};
       tempObj[action.symbol].orders = action.orders;
       tempObj[action.symbol].nextLink = action.nextLink;

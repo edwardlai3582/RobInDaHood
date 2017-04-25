@@ -15,7 +15,7 @@ export const ORDERS_PLACING_ORDER = 'ORDERS_PLACING_ORDER'
 export const ORDERS_ORDER_PLACED = 'ORDERS_ORDER_PLACED'
 export const ORDERS_ORDER_DIDNT_PLACE = 'ORDERS_ORDER_DIDNT_PLACE'
 export const ORDERS_RESET_PLACE_ORDER_RELATED = 'ORDERS_RESET_PLACE_ORDER_RELATED'
-export const ORDERS_PUSH_TO_PENDING_ORDERS = 'ORDERS_PUSH_TO_PENDING_ORDERS'
+export const ORDERS_ADD_TO_PENDING_ORDERS = 'ORDERS_ADD_TO_PENDING_ORDERS'
 export const ORDERS_REMOVE_FROM_PENDING_ORDERS = 'ORDERS_REMOVE_FROM_PENDING_ORDERS'
 export const ORDERS_REFILL_OWN_HIS_ORDERS = 'ORDERS_REFILL_OWN_HIS_ORDERS'
 export const ORDERS_ADD_OWN_HIS_ORDERS = 'ORDERS_ADD_OWN_HIS_ORDERS'
@@ -26,9 +26,9 @@ export const deleteOrders = () => ({
   type: ORDERS_DELETE_ORDERS
 })
 
-export const pushToPendingOrders = (orderID) => ({
-  type: ORDERS_PUSH_TO_PENDING_ORDERS,
-  orderID
+export const addToPendingOrders = (order) => ({
+  type: ORDERS_ADD_TO_PENDING_ORDERS,
+  order
 })
 
 export const removeFromPendingOrders = (orderID) => ({
@@ -98,10 +98,10 @@ export const askHistoricalsOrders = (nextLink) => (dispatch, getState) => {
     jsonResult.results.forEach((result) => {
       //check pendingOrders array
       if(result.state !== "filled" && result.state !== "rejected" && result.state !== "cancelled" && result.state !== "failed"){
-        console.log(result.state);
-        if(getState().ordersReducer.pendingOrders.indexOf(result.id) === -1) {
-          dispatch(pushToPendingOrders(result.id));
-        }
+        dispatch(addToPendingOrders(result));
+      }
+      else {
+        dispatch(removeFromPendingOrders(result.id))
       }
     })
     /*
@@ -230,7 +230,7 @@ export const cancelOrder = (cancelLink, orderId, symbol, instrument) => (dispatc
       //reload watchlist & positions after order cancelled
       dispatch(askWatchlists());
       dispatch(askPositions());
-
+      dispatch(removeFromPendingOrders(orderId));
       if( symbol in getState().ordersReducer.ownHistoricalsOrders) {
         dispatch(askOwnHistoricalsOrders(symbol, instrument));
       }
@@ -276,7 +276,8 @@ export const placeOrder = (order) => (dispatch, getState) => {
 
       //add to pendingOrders array
       if(jsonResult.state !== "filled" && jsonResult.state !== "rejected" && jsonResult.state !== "cancelled" && jsonResult.state !== "failed"){
-        dispatch(pushToPendingOrders(jsonResult.id));
+        dispatch(addToPendingOrders(jsonResult));
+        console.log(jsonResult);
       }
     }
     else{
@@ -291,14 +292,13 @@ export const placeOrder = (order) => (dispatch, getState) => {
 }
 
 export const checkPendingOrders = (order) => (dispatch, getState) => {
-  const pendingOrders = getState().ordersReducer.pendingOrders;
+  const pendingOrderIDs = Object.keys(getState().ordersReducer.pendingOrders);
 
-  if(pendingOrders.length === 0) {
-    //console.log("no pending order");
+  if(pendingOrderIDs.length === 0) {
     return;
   }
 
-  return Promise.all(pendingOrders.map(orderID =>
+  return Promise.all(pendingOrderIDs.map(orderID =>
     fetch(`https://api.robinhood.com/orders/${orderID}/`, {
       method: 'GET',
       headers: new Headers({
@@ -307,10 +307,11 @@ export const checkPendingOrders = (order) => (dispatch, getState) => {
       })
     }).then(response => response.json())
   )).then(jsonResults => {
-    console.log(jsonResults);
+    //console.log(jsonResults);
     jsonResults.forEach((jsonResult) => {
       if(jsonResult.state === "filled" || jsonResult.state === "rejected" || jsonResult.state === "cancelled" || jsonResult.state === "failed") {
         dispatch(removeFromPendingOrders(jsonResult.id));
+        dispatch(askPositions());
       }
     })
   })

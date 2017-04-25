@@ -103,8 +103,15 @@ class InstrumentPage extends Component {
         break;
       }
     }
-    if(!thisIsInWatchlists){
-      console.log("this instrument is not in watchlists, so killed");
+    let thisIsInPostitions = false;
+    for(let i=0; i< this.props.positions.length; i++){
+      if(this.props.positions[i].instrument === this.props.instrument){
+        thisIsInPostitions = true;
+        break;
+      }
+    }
+    if(!thisIsInWatchlists && !thisIsInPostitions){
+      console.log("this instrument is not in watchlists nor positions, so killed");
       this.props.onDeleteInstrument(this.props.instrument);
     }
   }
@@ -271,7 +278,7 @@ class InstrumentPage extends Component {
 
     let positionBlock = null;
     //need to change
-    if(ownEachPosition){
+    if( ownEachPosition ){
       positionBlock = (ownEachPosition && ownQuote)? <Position quote={ownQuote} position={ownEachPosition} /> : "Loading...";
     }
 
@@ -344,7 +351,7 @@ class InstrumentPage extends Component {
             <div className="notTradeable">not tradeable</div>
           )}
         </SectionWrapper>
-        {(ownEachPosition)?
+        {(ownEachPosition && ownEachPosition.quantity > 0 )?
           <SectionWrapper SectionTitle={"Position"}>
             {positionBlock}
           </SectionWrapper>

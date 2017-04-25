@@ -51,7 +51,10 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addPositions(jsonResult.results));
-        dispatch(addLocalPositions(jsonResult.results.map((position)=>{
+        dispatch(addLocalPositions(jsonResult.results.filter((position) => {
+          //if quantity = 0 dont show
+          return ( Number(position.quantity) > 0 );
+        }).map((position)=>{
           return position.instrument;
         })));
         jsonResult.results.forEach((instrument)=>{

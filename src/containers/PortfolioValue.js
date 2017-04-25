@@ -44,6 +44,11 @@ class PortfolioValue extends Component {
     let chartData=[];
 
     positions.forEach((position, index)=>{
+      // if quantity = 0 dont show
+      if( Number(position.quantity) === 0 ) {
+        return;
+      }
+      
       let symbol = instruments[position.instrument].symbol;
       let quantity = Number(position.quantity);
       let last_trade_price = Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price );
