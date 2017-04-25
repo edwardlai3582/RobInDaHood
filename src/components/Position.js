@@ -27,7 +27,6 @@ const Position = ({ position, quote }) => {
     let notTodayQuantity = quantity - intraday_quantity;
     let notTodayAvgPrice = (( average_buy_price * quantity) - (intraday_average_buy_price*intraday_quantity))/notTodayQuantity
 
-    //let notTodayPrice
     todaysReturn = (lastPrice - previous_close) * notTodayQuantity + TodayOnlyReturn;
     todaysReturnPercentage =  (( todaysReturn / ( (notTodayAvgPrice*notTodayQuantity) + (intraday_average_buy_price*intraday_quantity) ) )*100).toFixed(2);
   }
