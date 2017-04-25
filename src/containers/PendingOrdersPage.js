@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { askCurrentOrder, cancelOrder } from '../actions'
 import SectionWrapper from '../components/SectionWrapper'
 import Orders from '../components/Orders'
+import { askHistoricalsOrders } from '../actions'
 import '../styles/HistoryPage.css'
 
 class PendingOrdersPage extends Component {
@@ -13,6 +14,10 @@ class PendingOrdersPage extends Component {
     cancelCurrentOrderState: PropTypes.string.isRequired,
     instruments: PropTypes.object.isRequired,
     isCurrent: PropTypes.bool.isRequired
+  }
+
+  componentDidMount() {
+    this.props.onFetchHistoricalsOrders();
   }
 
   askCurrentOrder = (orderId) => {
@@ -56,7 +61,7 @@ class PendingOrdersPage extends Component {
             <h1 className="instrumentH1">Pending Orders</h1>
           </div>
         </header>
-        
+
         <SectionWrapper SectionTitle={""}>
           { pendingOrdersBlock }
         </SectionWrapper>
@@ -88,6 +93,9 @@ const mapStateToProps = ({ ordersReducer, instrumentsReducer  }) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  onFetchHistoricalsOrders: () => {
+    dispatch(askHistoricalsOrders());
+  },
   onFetchCurrentOrder: (orderId) => {
     dispatch(askCurrentOrder(orderId))
   },

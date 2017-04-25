@@ -77,7 +77,10 @@ class Orders extends Component {
           </div>
           <div>
             {(order.state === "filled")?
-              "$"+(Number(order.quantity) * Number(order.average_price)).toFixed(2) : capFirst(order.state)}
+              "$"+(Number(order.quantity) * Number(order.average_price)).toFixed(2)
+              : (order.state === "unconfirmed" || order.state === "confirmed")?
+              "Placed" : 
+              capFirst(order.state)}
           </div>
         </div>
       )
@@ -86,7 +89,7 @@ class Orders extends Component {
     return (
       <div className="OrdersWrapper" >
         <div className="recentOrdersWrapper">
-          {(historicalsOrders.length > 0)? recentOrders : "No Orders"}        
+          {(historicalsOrders.length > 0)? recentOrders : "No Orders"}
         </div>
         {(historicalsOrdersNextLink)? (
           <div className="orderMoreButtonWrapper">

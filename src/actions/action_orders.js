@@ -1,3 +1,6 @@
+const electron = window.require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
 import { askWatchlists } from './action_watchlists'
 import { askPositions }  from './action_positions'
 ////////////ORDERS
@@ -99,6 +102,7 @@ export const askHistoricalsOrders = (nextLink) => (dispatch, getState) => {
       //check pendingOrders array
       if(result.state !== "filled" && result.state !== "rejected" && result.state !== "cancelled" && result.state !== "failed"){
         dispatch(addToPendingOrders(result));
+        console.log(result);
       }
       else {
         dispatch(removeFromPendingOrders(result.id))
@@ -276,8 +280,9 @@ export const placeOrder = (order) => (dispatch, getState) => {
 
       //add to pendingOrders array
       if(jsonResult.state !== "filled" && jsonResult.state !== "rejected" && jsonResult.state !== "cancelled" && jsonResult.state !== "failed"){
-        dispatch(addToPendingOrders(jsonResult));
+        console.log("add to pending orders:");
         console.log(jsonResult);
+        dispatch(addToPendingOrders(jsonResult));
       }
     }
     else{
@@ -291,12 +296,15 @@ export const placeOrder = (order) => (dispatch, getState) => {
   });
 }
 
-export const checkPendingOrders = (order) => (dispatch, getState) => {
+export const checkPendingOrders = () => (dispatch, getState) => {
   const pendingOrderIDs = Object.keys(getState().ordersReducer.pendingOrders);
 
   if(pendingOrderIDs.length === 0) {
     return;
   }
+
+  console.log("==whats in pending orders==");
+  console.log(getState().ordersReducer.pendingOrders);
 
   return Promise.all(pendingOrderIDs.map(orderID =>
     fetch(`https://api.robinhood.com/orders/${orderID}/`, {
@@ -309,9 +317,21 @@ export const checkPendingOrders = (order) => (dispatch, getState) => {
   )).then(jsonResults => {
     //console.log(jsonResults);
     jsonResults.forEach((jsonResult) => {
+      let symbol = getState().instrumentsReducer.instruments[jsonResult.instrument].symbol;
       if(jsonResult.state === "filled" || jsonResult.state === "rejected" || jsonResult.state === "cancelled" || jsonResult.state === "failed") {
         dispatch(removeFromPendingOrders(jsonResult.id));
         dispatch(askPositions());
+        let orderInfo = {};
+        orderInfo.title = `Order of $${symbol} is ${jsonResult.state}`;
+        orderInfo.message = (jsonResult.reject_reason)? `${jsonResult.reject_reason}` : (jsonResult.state === "filled")? `Your order to buy ${Number(jsonResult.quantity).toFixed(2)} shares of $${symbol} was executed at $${Number(jsonResult.price).toFixed(2)} per sahre` : "";
+        ipcRenderer.send('order', orderInfo);
+      }
+      //not yet removed and state changed
+      if( getState().ordersReducer.pendingOrders[jsonResult.id] && jsonResult.state !== getState().ordersReducer.pendingOrders[jsonResult.id].state) {
+        console.log(`pending order state: ${getState().ordersReducer.pendingOrders[jsonResult.id].state} => ${jsonResult.state}`);
+        dispatch(addToPendingOrders(jsonResult));
+        dispatch(askHistoricalsOrders());
+        dispatch(askOwnHistoricalsOrders(symbol, jsonResult.instrument));
       }
     })
   })
