@@ -27,7 +27,7 @@ class PortfolioValue extends Component {
   }
 
   render() {
-    const { positions, quotes, instruments } = this.props;
+    const { positions, quotes, instruments, cash, market_value } = this.props;
     const { chartActiveIndex } = this.state;
 
     //check all needed data exist
@@ -48,7 +48,7 @@ class PortfolioValue extends Component {
       if( Number(position.quantity) === 0 ) {
         return;
       }
-      
+
       let symbol = instruments[position.instrument].symbol;
       let quantity = Number(position.quantity);
       let last_trade_price = Number((quotes[symbol].last_extended_hours_trade_price)? quotes[symbol].last_extended_hours_trade_price : quotes[symbol].last_trade_price );
@@ -59,14 +59,14 @@ class PortfolioValue extends Component {
         quantity: quantity,
         last_trade_price: last_trade_price,
         value: equityValue,
-        total: Number(this.props.market_value)
+        total: Number(market_value) + Number(cash)
       });
     })
 
     chartData.push({
       name:  "Cash",
-      value: Number(this.props.equity)-Number(this.props.market_value),
-      total: Number(this.props.market_value)
+      value: Number(cash),
+      total: Number(market_value) + Number(cash)
     });
 
     return (
@@ -98,8 +98,8 @@ class PortfolioValue extends Component {
             </PieChart>
           </div>
           <div className="valueWrapper">
-            <div>{`Stocks: $${Number(this.props.market_value).toFixed(2)}`}</div>
-            <div>{`Cash: $${(Number(this.props.equity)-Number(this.props.market_value)).toFixed(2)}`}</div>
+            <div>{`Stocks: $${Number(market_value).toFixed(2)}`}</div>
+            <div>{`Cash: $${Number(cash).toFixed(2)}`}</div>
           </div>
         </div>
       </SectionWrapper>

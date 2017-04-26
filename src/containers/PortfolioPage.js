@@ -168,7 +168,8 @@ class PortfolioPage extends Component {
       historicalsPortfolios,
       portfolios,
       quotes,
-      selectedButton
+      selectedButton,
+      account
     } = this.props
 
     const { span, interval } = quotes;
@@ -179,13 +180,13 @@ class PortfolioPage extends Component {
     let priceRelatedBlock = (portfolios && historicalsPortfolios[span+interval])? (
       <div className="priceRelatedWrapper">
         <div className="last_trade_price">
-          { `$${(portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity).toFixed(2) : Number(portfolios.last_core_equity).toFixed(2)}` }
+          { `$${(portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity).toFixed(2) : Number(portfolios.equity).toFixed(2)}` }
         </div>
         <HistoryPriceDisplay
           selectedButtonName={selectedButton}
           historicals={historicalsPortfolios[span+interval].equity_historicals}
           previous_close={portfolios.adjusted_equity_previous_close.toString()}
-          last_trade_price={portfolios.last_core_equity}
+          last_trade_price={portfolios.equity}
           last_extended_hours_trade_price={portfolios.extended_hours_equity}
           updated_at={historicalsPortfolios[span+interval].open_time}
         />
@@ -199,10 +200,10 @@ class PortfolioPage extends Component {
           previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
 
-    let portfolioValueBlock = (portfolios)? (
+    let portfolioValueBlock = ( portfolios && account )? (
       <PortfolioValue
-        market_value={(portfolios.extended_hours_market_value)? portfolios.extended_hours_market_value : portfolios.market_value }
-        equity={(portfolios.extended_hours_equity)? portfolios.extended_hours_equity : portfolios.equity }
+        market_value={ (portfolios.extended_hours_market_value)? portfolios.extended_hours_market_value : portfolios.market_value }
+        cash={ (account.margin_balances)? account.margin_balances.unallocated_margin_cash : account.cash_balances.buying_power}
       />
     ) : null;
 
@@ -230,7 +231,7 @@ class PortfolioPage extends Component {
   }
 }
 
-const mapStateToProps = ({ portfoliosReducer }) => {
+const mapStateToProps = ({ portfoliosReducer, accountReducer }) => {
   const {
     historicalsPortfolios = {},
     portfolios = {},
@@ -238,11 +239,14 @@ const mapStateToProps = ({ portfoliosReducer }) => {
     quotes
   } = portfoliosReducer;
 
+  const { account } = accountReducer;
+
   return {
     quotes,
     selectedButton,
     historicalsPortfolios,
-    portfolios
+    portfolios,
+    account
   };
 }
 

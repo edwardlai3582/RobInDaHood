@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import '../styles/Position.css'
-import { printDateOnly } from '../utils'
 
 const Position = ({ position, quote }) => {
   const quantity = Number(position.quantity);
