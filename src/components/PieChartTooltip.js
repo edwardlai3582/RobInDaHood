@@ -21,8 +21,9 @@ class PieChartTooltip extends Component {
           {(quantity)? (
             <div> {`${quantity} X $${last_trade_price.toFixed(2)}`} </div>
           ) : null}
+
           <div style={{borderTop: "1px solid black", paddingTop: "2px", marginTop: "2px"}}>
-            {`$${value.toFixed(2)} (${(value/total*100).toFixed(2)}%)`}
+            {(total)? `$${value.toFixed(2)} (${(value/total*100).toFixed(2)}%)` : `$${value.toFixed(2)}` }
           </div>
         </div>
       );

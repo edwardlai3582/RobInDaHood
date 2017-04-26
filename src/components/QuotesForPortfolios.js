@@ -51,17 +51,22 @@ class QuotesForPortfolios extends Component {
     else {
       data = historicals;
     }
-
+    console.log(data);
+    //console.log(previous_close);
+//console.log(data[data.length-1]);
     const strokeColor = (selectedButtonName==="1D")? (
-      (previous_close < data[data.length-1].close_equity)? '#00FF73' : '#F35A2B'
+      (previous_close < data[data.length-1].adjusted_close_equity)? '#00FF73' : '#F35A2B'
     ):(data[0].not_reg_close_equity < data[data.length-1].not_reg_close_equity)? '#00FF73' : '#F35A2B';
-
+/*
+<Line type="monotone" dataKey="not_reg_close_equity" stroke={strokeColor} dot={false} />
+<Line type="monotone" dataKey="reg_close_equity" stroke={strokeColor} strokeWidth="3" dot={false} />
+*/
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >
         <ResponsiveContainer width="100%" height="100%" minHeight={1} debounce={3}>
           <LineChart data={data} margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
-            <Line type="monotone" dataKey="not_reg_close_equity" stroke={strokeColor} dot={false} />
-            <Line type="monotone" dataKey="reg_close_equity" stroke={strokeColor} strokeWidth="3" dot={false} />
+
+            <Line type="monotone" dataKey="adjusted_open_equity" stroke={strokeColor} strokeWidth="3" dot={false} />
 
             <XAxis dataKey="begins_at" tick={false} hide={true} />
             <YAxis interval="preserveStartEnd" domain={['auto', 'auto']} tick={{fill: 'white'}} axisLine={{stroke:"white"}} tickLine={{stroke:"white"}} />

@@ -72,23 +72,24 @@ class HistoryPriceDisplay extends Component {
       );
     }
     else if(data[0]) {
-      let firstDayPrice = data[0].close_price || data[0].adjusted_open_equity;
-      let lastDayPrice = data[data.length-1].close_price || data[data.length-1].adjusted_open_equity;
-
+      let firstDayPrice = data[0].adjusted_open_equity || data[0].close_price ;
+      //let lastDayPrice = data[data.length-1].close_price || data[data.length-1].adjusted_open_equity;
+      console.log(last_trade_price);
+console.log(data[0]);
       displayBlock = (
         <p>
           <span className={
-              (Number(lastDayPrice).toFixed(2) > Number(firstDayPrice))?
+              (Number(last_trade_price).toFixed(2) > Number(firstDayPrice))?
                 "greenUp"
                 :
-                (Number(lastDayPrice).toFixed(2) === Number(firstDayPrice))?
+                (Number(last_trade_price).toFixed(2) === Number(firstDayPrice))?
                 "whiteNomove":"redDown"
           }>
-            { (Number(lastDayPrice) - Number(firstDayPrice) >0)? '+' : (Number(lastDayPrice) - Number(firstDayPrice) < 0)? '-' : ''}
+            { (Number(last_trade_price) - Number(firstDayPrice) >0)? '+' : (Number(last_trade_price) - Number(firstDayPrice) < 0)? '-' : ''}
             { 'US$' }
-            { Math.abs((Number(lastDayPrice) - Number(firstDayPrice)).toFixed(2)) }
+            { Math.abs((Number(last_trade_price) - Number(firstDayPrice)).toFixed(2)) }
             { ' (' }
-            { displayPercentage(lastDayPrice, firstDayPrice) }
+            { displayPercentage(last_trade_price, firstDayPrice) }
             { ')' }
           </span>
           <span style={{fontWeight: 'bold'}}>

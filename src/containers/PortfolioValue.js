@@ -26,9 +26,50 @@ class PortfolioValue extends Component {
     });
   }
 
+  fillColor = (entry, index) => {
+    if( entry.name === "Gold used" && index === this.state.chartActiveIndex ) {
+      return "gold";
+    }
+    else if( entry.name === "Gold used" ) {
+      return "#FCFC83";
+    }
+    else if(index === this.state.chartActiveIndex) {
+      return "#40C9BD";
+    }
+    else {
+      return "#CFF1EE";
+    }
+  }
+
   render() {
-    const { positions, quotes, instruments, cash, market_value } = this.props;
-    const { chartActiveIndex } = this.state;
+    const { positions, quotes, instruments, market_value, equity, account } = this.props;
+    if(!account) return null;
+
+    let goldUsed = false;
+    let cashName = "Cash";
+    let cashValue = 0;
+    if( account.type === "cash") {
+      cashName = "Cash";
+      cashValue = account.cash_balances.buying_power;
+    }
+    else {
+      let { margin_limit, unallocated_margin_cash, } = account.margin_balances;
+      goldUsed = ( Number(margin_limit) > Number(unallocated_margin_cash) )? true : false;
+
+      if( Number(margin_limit) === 0 ) {
+        cashName = "Cash";
+        cashValue = unallocated_margin_cash;
+      }
+      else if( goldUsed ) {
+        cashName = "Gold used";
+        cashValue = Number(margin_limit) - Number(unallocated_margin_cash);
+      }
+      else {
+        cashName = "Cash";
+        cashValue = Number(unallocated_margin_cash) - Number(margin_limit);
+      }
+    }
+
 
     //check all needed data exist
     for(let i=0; i< positions.length; i++) {
@@ -59,21 +100,28 @@ class PortfolioValue extends Component {
         quantity: quantity,
         last_trade_price: last_trade_price,
         value: equityValue,
-        total: Number(market_value) + Number(cash)
+        total: equity
       });
     })
 
     chartData.push({
-      name:  "Cash",
-      value: Number(cash),
-      total: Number(market_value) + Number(cash)
+      name:  cashName,
+      value: cashValue
     });
 
     return (
-      <SectionWrapper SectionTitle={"Portfolio Value"}>
+      <SectionWrapper SectionTitle={"Account"}>
+        <div>
+          <div>
+            Total market value
+          </div>
+          <div>
+            {`$${ Number(market_value).toFixed(2) }`}
+          </div>
+        </div>
         <div className="PortfolioValueWrapper">
           <div className="pieChartWrapper">
-            <PieChart width={300} height={300}>
+            <PieChart width={350} height={300}>
               <Pie
                 isAnimationActive={false}
                 onMouseOver={this.handleMouseOver}
@@ -87,7 +135,7 @@ class PortfolioValue extends Component {
               >
                 {
                   chartData.map((entry, index) => (
-                    <Cell cursor="pointer" fill={index === chartActiveIndex ? "#40C9BD" : "#CFF1EE" } key={`cell-${index}`}/>
+                    <Cell cursor="pointer" fill={ this.fillColor(entry, index) } key={`cell-${index}`}/>
                   ))
                 }
               </Pie>
@@ -97,10 +145,19 @@ class PortfolioValue extends Component {
               />
             </PieChart>
           </div>
-          <div className="valueWrapper">
-            <div>{`Stocks: $${Number(market_value).toFixed(2)}`}</div>
-            <div>{`Cash: $${Number(cash).toFixed(2)}`}</div>
-          </div>
+
+          {(goldUsed)? (
+            <div className="valueWrapper">
+              <div>{`Portfolio: $${equity}`}</div>
+              <div>{`${cashName}: $${Number(cashValue).toFixed(2)}`}</div>
+            </div>
+          ) : (
+            <div className="valueWrapper">
+              <div>{`Stocks: $${equity}`}</div>
+              <div>{`Cash: $${Number(cashValue).toFixed(2)}`}</div>
+            </div>
+          )}
+
         </div>
       </SectionWrapper>
     )
@@ -109,13 +166,14 @@ class PortfolioValue extends Component {
 
 
 
-const mapStateToProps = ({ positionsReducer, quotesReducer, instrumentsReducer }, ownProps) => {
+const mapStateToProps = ({ positionsReducer, quotesReducer, instrumentsReducer, accountReducer }, ownProps) => {
   const { positions } = positionsReducer;
   const { quotes } = quotesReducer;
   const { instruments } = instrumentsReducer;
+  const { account } = accountReducer;
 
   return {
-    positions, quotes, instruments
+    positions, quotes, instruments, account
   };
 }
 

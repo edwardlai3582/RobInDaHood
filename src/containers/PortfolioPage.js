@@ -83,7 +83,7 @@ class PortfolioPage extends Component {
   }
 
   startPortfolioPoller = () => {
-    this.oneMinuteInterval = setInterval(this.oneMinuteJobs, 60000);
+    this.oneMinuteInterval = setInterval(this.oneMinuteJobs, 15000);
   }
 
   clearPortfolioPoller = () => {
@@ -168,8 +168,7 @@ class PortfolioPage extends Component {
       historicalsPortfolios,
       portfolios,
       quotes,
-      selectedButton,
-      account
+      selectedButton
     } = this.props
 
     const { span, interval } = quotes;
@@ -186,7 +185,7 @@ class PortfolioPage extends Component {
           selectedButtonName={selectedButton}
           historicals={historicalsPortfolios[span+interval].equity_historicals}
           previous_close={portfolios.adjusted_equity_previous_close.toString()}
-          last_trade_price={portfolios.equity}
+          last_trade_price={(portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity).toFixed(2) : Number(portfolios.equity).toFixed(2)}
           last_extended_hours_trade_price={portfolios.extended_hours_equity}
           updated_at={historicalsPortfolios[span+interval].open_time}
         />
@@ -200,10 +199,10 @@ class PortfolioPage extends Component {
           previous_close={portfolios.adjusted_equity_previous_close}
       />): <DummyQuotes />;
 
-    let portfolioValueBlock = ( portfolios && account )? (
+    let portfolioValueBlock = ( portfolios )? (
       <PortfolioValue
         market_value={ (portfolios.extended_hours_market_value)? portfolios.extended_hours_market_value : portfolios.market_value }
-        cash={ (account.margin_balances)? account.margin_balances.unallocated_margin_cash : account.cash_balances.buying_power}
+        equity={ (portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity).toFixed(2) : Number(portfolios.equity).toFixed(2) }
       />
     ) : null;
 
@@ -231,7 +230,7 @@ class PortfolioPage extends Component {
   }
 }
 
-const mapStateToProps = ({ portfoliosReducer, accountReducer }) => {
+const mapStateToProps = ({ portfoliosReducer }) => {
   const {
     historicalsPortfolios = {},
     portfolios = {},
@@ -239,14 +238,11 @@ const mapStateToProps = ({ portfoliosReducer, accountReducer }) => {
     quotes
   } = portfoliosReducer;
 
-  const { account } = accountReducer;
-
   return {
     quotes,
     selectedButton,
     historicalsPortfolios,
-    portfolios,
-    account
+    portfolios
   };
 }
 
