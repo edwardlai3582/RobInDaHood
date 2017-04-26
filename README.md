@@ -29,4 +29,3 @@ npm run dist
 - [ ] Dividends related
 - [ ] Markets related
 - [ ] refactor the code
-- [ ] today return
