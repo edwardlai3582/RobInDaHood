@@ -243,8 +243,8 @@ class DashboardPage extends Component {
       onToggleLocalWatchlist,
       onToggleLocalPosition
     } = this.props
-    let watchlistsMenu = "loading watchlists...";
-    let positionsMenu = "loading positions...";
+    let watchlistsMenu = (<div> loading watchlists... </div>);
+    let positionsMenu = (<div> loading positions... </div>);
     let instrumentsHasAllNeeded = true;
 
     for(let i=0; i< watchlists.length; i++){
