@@ -1,21 +1,36 @@
 const electron = require('electron');
+const { shell, ipcMain }  = require('electron');
 const path = require('path');
 const url = require('url');
-const {shell} = require('electron');
-// Module to control application life.
+const notifier = require('node-notifier');
+
 const app = electron.app;
 const appId = "com.electron.robindahood";
-
-let errMessage = "err neh"
-let resMessage = "res neh"
-
 app.setAppUserModelId(appId);
 const Menu = electron.Menu;
 const Tray = electron.Tray;
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow;
+let tray;
 
-const notifier = require('node-notifier');
+const template = [
+  {
+    role: 'help',
+    submenu: [
+      {
+        role: 'toggledevtools'
+      },
+      {
+        role: 'reload'
+      }
+    ]
+  }
+]
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
+
 notifier.on('click', function (notifierObject, options) {
   //"robinhood://web?url=https%3A%2F%2Fwww.benzinga.com%2Fanalyst-ratings%2Fanalyst-color%2F17%2F04%2F9323486%2F4-reasons-even-ebay-fans-are-cautious-on-the-stock"
   //"robinhood://instrument/?id=8f9073f0-3ce2-47bd-a853-3d034c383441"
@@ -36,78 +51,57 @@ notifier.on('click', function (notifierObject, options) {
   }
 });
 
-const template = [
-  {
-    role: 'help',
-    submenu: [
-      {
-        role: 'toggledevtools'
-      },
-      {
-        role: 'reload'
-      }
-    ]
-  }
-]
-const menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)
-
-//  Example of IPC Renderer, http://electron.atom.io/docs/api/ipc-main/
-
-const {ipcMain} = require('electron');
-ipcMain.on('cards', (event, arg) => {
-  notifier.notify({
-    title: arg.title,
-    message: arg.message,
-    action: arg.action,
-    sound: true, // Only Notification Center or Windows Toasters
-    wait: true,
-    appName: appId
-    //install: appId
-  }, function (err, response, metadata) {
-    // Response is response from notification
-    console.log('Error:', err);
-    errMessage = err;
-    resMessage = response;
-    event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
+const setIPC = () => {
+  ipcMain.on('cards', (event, arg) => {
+    notifier.notify({
+      title: arg.title,
+      message: arg.message,
+      action: arg.action,
+      sound: true, // Only Notification Center or Windows Toasters
+      wait: true,
+      appName: appId
+      //install: appId
+    }, function (err, response, metadata) {
+      // Response is response from notification
+      console.log('Error:', err);
+      errMessage = err;
+      resMessage = response;
+      event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
+    });
   });
-});
-ipcMain.on('price-alert', (event, arg) => {
-  notifier.notify({
-    title: arg.title,
-    message: arg.message,
-    sound: true, // Only Notification Center or Windows Toasters
-    wait: true,
-    appName: appId
-  }, function (err, response, metadata) {
-    // Response is response from notification
-    console.log('Error:', err);
-    errMessage = err;
-    resMessage = response;
-    event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
-  });
-});
-ipcMain.on('order', (event, arg) => {
-  notifier.notify({
-    title: arg.title,
-    message: arg.message,
-    sound: true, // Only Notification Center or Windows Toasters
-    wait: true,
-    appName: appId
-  }, function (err, response, metadata) {
-    // Response is response from notification
-    console.log('Error:', err);
-    errMessage = err;
-    resMessage = response;
-    event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
-  });
-});
 
+  ipcMain.on('price-alert', (event, arg) => {
+    notifier.notify({
+      title: arg.title,
+      message: arg.message,
+      sound: true, // Only Notification Center or Windows Toasters
+      wait: true,
+      appName: appId
+    }, function (err, response, metadata) {
+      // Response is response from notification
+      console.log('Error:', err);
+      errMessage = err;
+      resMessage = response;
+      event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
+    });
+  });
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
-let tray = null;
+  ipcMain.on('order', (event, arg) => {
+    notifier.notify({
+      title: arg.title,
+      message: arg.message,
+      sound: true, // Only Notification Center or Windows Toasters
+      wait: true,
+      appName: appId
+    }, function (err, response, metadata) {
+      // Response is response from notification
+      console.log('Error:', err);
+      errMessage = err;
+      resMessage = response;
+      event.sender.send('asynchronous-reply', [errMessage, resMessage, metadata]);
+    });
+  });
+}
 
 const createWindow = () => {
     // Create the browser window.
@@ -181,6 +175,7 @@ app.on('ready', ()=>{
   console.log("APP START");
   createWindow();
   createTray();
+  setIPC();
 });
 
 // Quit when all windows are closed.
