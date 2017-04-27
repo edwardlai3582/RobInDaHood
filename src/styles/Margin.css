@@ -1,0 +1,13 @@
+.marginEach {
+  display: flex;
+  padding: 10px 0;
+}
+
+.marginEachTitle {
+  width: 50%;
+  color: black;
+}
+
+.marginEachValue {
+  width: 50%;
+}

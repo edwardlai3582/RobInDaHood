@@ -10,6 +10,7 @@ import {
          askOwnHistoricalsOrders, askCurrentOrder, cancelOrder
        } from '../actions'
 import Statistics from './Statistics'
+import Margin from '../components/Margin'
 import News from './News'
 import Earnings from './Earnings'
 import Quotes from '../components/Quotes'
@@ -236,6 +237,7 @@ class InstrumentPage extends Component {
     }
 
     let statisticsBlock = (symbol)? <Statistics symbol={symbol} /> : "Loading...";
+    let marginBlock = (ownInstrument && account)? <Margin ownInstrument={ownInstrument} account={account} /> : "Loading...";
     let newsBlock = (symbol)? <News symbol={symbol} /> : "Loading...";
     let earningsBlock = (symbol)? <Earnings symbol={symbol} /> : "Loading...";
 
@@ -356,6 +358,7 @@ class InstrumentPage extends Component {
             {positionBlock}
           </SectionWrapper>
         :null}
+        { marginBlock }
         { newsBlock }
         { statisticsBlock }
         { earningsBlock }
