@@ -183,7 +183,7 @@ class PlaceOrder extends Component {
     }
     //check result
     if(side === BUY){
-      if((quantity * Number(currentPrice)) > Number(buyingPower)){
+      if((quantity * Number(currentPrice)) > buyingPower ){
         this.setState({resultWarning: "You don't have enough cash to buy!"});
         return;
       }
