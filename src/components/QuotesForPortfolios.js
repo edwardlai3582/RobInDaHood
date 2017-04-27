@@ -51,7 +51,7 @@ class QuotesForPortfolios extends Component {
     else {
       data = historicals;
     }
-    console.log(data);
+    //console.log(data);
     //console.log(previous_close);
 //console.log(data[data.length-1]);
     const strokeColor = (selectedButtonName==="1D")? (

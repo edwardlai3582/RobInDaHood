@@ -11,6 +11,7 @@ import DummyQuotes from '../components/DummyQuotes'
 import SectionWrapper from '../components/SectionWrapper'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
 import PortfolioValue from './PortfolioValue'
+import BuyingPower from './BuyingPower'
 import '../styles/PortfolioPage.css'
 
 import EditableLocalPositions from './EditableLocalPositions'
@@ -222,6 +223,7 @@ class PortfolioPage extends Component {
         </SectionWrapper>
 
         { portfolioValueBlock }
+        { <BuyingPower /> }
 
         <EditableLocalPositions />
         <EditableLocalWatchLists />

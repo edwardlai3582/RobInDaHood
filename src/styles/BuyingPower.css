@@ -1,0 +1,23 @@
+.buyingPowerWrapper {
+
+}
+
+.each {
+  display: flex;
+}
+
+.each:last-child {
+  border-top: 1px solid var(--main-color);
+  font-weight: bold;
+}
+
+.each > div {
+  width: 33%;
+  text-align: right;
+  padding: 5px;
+}
+
+.each > div:first-child {
+  width: 33%;
+  text-align: left;
+}
