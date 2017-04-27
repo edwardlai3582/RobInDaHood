@@ -157,7 +157,7 @@ class PlaceOrder extends Component {
 
   handleOrder = () => {
     const { typeName, quantity, price, stop_price, side, type, trigger } = this.state;
-    const { currentPrice, shares, cashCanUse } = this.props;
+    const { currentPrice, shares, buyingPower } = this.props;
     //check input==0
     if(quantity === 0) {
       this.setState({quantityWarning: "Need to be larger than 0."});
@@ -183,7 +183,7 @@ class PlaceOrder extends Component {
     }
     //check result
     if(side === BUY){
-      if((quantity * Number(currentPrice)) > Number(cashCanUse)){
+      if((quantity * Number(currentPrice)) > Number(buyingPower)){
         this.setState({resultWarning: "You don't have enough cash to buy!"});
         return;
       }
@@ -229,7 +229,7 @@ class PlaceOrder extends Component {
             modalIsOpen, shouldCloseOnOverlayClick,
             orderStage
           } = this.state;
-    const { currentPrice, shares, cashCanUse, symbol, orderPlacedResult } = this.props;
+    const { currentPrice, shares, buyingPower, symbol, orderPlacedResult } = this.props;
     console.log(orderStage);
     let resultBlock = (
       <div className="resultWrapper">
@@ -253,7 +253,7 @@ class PlaceOrder extends Component {
       <div className="orderOptionWrapper grey">
         <div className="orderOptionName">{(side === BUY)?"Cash available":"Shares available"}</div>
         <div className="orderOption">
-          {(side === BUY)?`${Number(cashCanUse)}` : `${Number(shares)}` }
+          {(side === BUY)?`${ buyingPower.toFixed(2) }` : `${Number(shares)}` }
         </div>
       </div>
     );

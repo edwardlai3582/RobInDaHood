@@ -146,6 +146,49 @@ class InstrumentPage extends Component {
     this.setState({isInWatchLists:false});
   }
 
+  getOvernightBuyingPowerForInstrument = () => {
+    const overnight_ratio = Number(this.props.account.margin_balances.overnight_ratio);
+    const overnight_buying_power = Number(this.props.account.margin_balances.overnight_buying_power);
+    const margin_initial_ratio = Number(this.props.ownInstrument.margin_initial_ratio);
+
+    return overnight_buying_power / Math.max(overnight_ratio, margin_initial_ratio);
+  }
+
+  isInstant = () => {
+    const margin_limit = this.props.account.margin_balances.margin_limit;
+
+    if ( margin_limit !== null) {
+      return Number(margin_limit) === 0;
+    }
+    return false;
+  }
+
+  getDayTradeBuyingPowerForInstrument = () => {
+    const day_trade_ratio_from_account = Number(this.props.account.margin_balances.day_trade_ratio);
+    const day_trade_ratio_from_instrument = Number(this.props.ownInstrument.day_trade_ratio);
+    const day_trade_buying_power = Number(this.props.account.margin_balances.day_trade_buying_power);
+
+    return day_trade_buying_power / Math.max(day_trade_ratio_from_account, day_trade_ratio_from_instrument);
+  }
+
+  getBuyingPowerForInstrument = () => {
+    const { type, cash_balances, margin_balances } = this.props.account;
+    if( type === "cash" ) {
+      return Number(cash_balances.buying_power);
+    }
+    else {
+      let temp2 = this.getOvernightBuyingPowerForInstrument();
+      let temp1 = temp2;
+      if(this.isInstant()) {
+        temp1 = Math.min(temp2, this.getDayTradeBuyingPowerForInstrument());
+      }
+      if( margin_balances.margin_limit === null ) {
+        return temp1;
+      }
+      return Math.min(temp1, Number(margin_balances.unallocated_margin_cash));
+    }
+  }
+
   addMoreHistoricalsOrder = () => {
     this.props.onAskOwnHistoricalsOrders( this.props.ownHistoricalsOrder.nextLink );
   }
@@ -237,7 +280,7 @@ class InstrumentPage extends Component {
     }
 
     let statisticsBlock = (symbol)? <Statistics symbol={symbol} /> : "Loading...";
-    let marginBlock = (ownInstrument && account)? <Margin ownInstrument={ownInstrument} account={account} /> : "Loading...";
+    let marginBlock = (ownInstrument && account)? <Margin ownInstrument={ownInstrument} buyingPower={this.getBuyingPowerForInstrument()} /> : "Loading...";
     let newsBlock = (symbol)? <News symbol={symbol} /> : "Loading...";
     let earningsBlock = (symbol)? <Earnings symbol={symbol} /> : "Loading...";
 
@@ -340,7 +383,7 @@ class InstrumentPage extends Component {
           {(ownQuote && ownInstrument.tradeable && account && account.type)?(
             <PlaceOrder symbol={symbol}
                         shares={(ownEachPosition)? ownEachPosition.quantity : 0 }
-                        cashCanUse={(account.type === "margin")? account.margin_balances.unallocated_margin_cash : account.cash_balances.buying_power }
+                        buyingPower={this.getBuyingPowerForInstrument() }
                         accountUrl={account.url}
                         instrumentUrl={instrument}
                         currentPrice={ ownQuote.last_extended_hours_trade_price || ownQuote.last_trade_price }
