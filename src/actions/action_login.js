@@ -99,7 +99,6 @@ export const askToken = (username, password, mfa) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
     if(jsonResult.hasOwnProperty("token")){
       dispatch(addToken(jsonResult.token));
       dispatch(askAccount());

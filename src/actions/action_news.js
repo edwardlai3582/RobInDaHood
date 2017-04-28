@@ -22,7 +22,6 @@ export const askNews = (symbol) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     dispatch(addNews(symbol, jsonResult));
   })
   .catch(function(reason) {

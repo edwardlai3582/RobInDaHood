@@ -28,7 +28,6 @@ export const askMarket = (marketUrl) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     dispatch(addMarket(jsonResult));
   })
   .catch(function(reason) {
@@ -46,7 +45,6 @@ export const askMarketsHour = (todays_hours) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     dispatch(addMarketsHours( jsonResult, todays_hours ));
   })
   .catch(function(reason) {

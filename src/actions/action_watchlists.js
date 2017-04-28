@@ -59,7 +59,6 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
-            console.log("ask for watchlists");
           }
         });
       }
@@ -74,7 +73,6 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
-            console.log("ask for watchlists");
           }
         });
       }
@@ -84,8 +82,7 @@ export const askWatchlists = (...theArgs) => (dispatch, getState) => {
       }
     }
     else {
-      //jsonResult[Object.keys(jsonResult)[0]][0])
-      dispatch(askingWatchlistsFailed("QQ"));
+      dispatch(askingWatchlistsFailed("something not right"));
     }
   })
   .catch(function(reason) {
@@ -108,10 +105,8 @@ export const addToWatchlists = (instrumentSymbol) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
     if(jsonResult[0].created_at){
       dispatch(addWatchlist(jsonResult[0]));
-      //dispatch(addLocalWatchlist(jsonResult[0]));
       dispatch(addLocalWatchlist(jsonResult[0].instrument));
     }
   })
@@ -150,7 +145,6 @@ export const removeFromWatchlists = (instrumentId) => (dispatch, getState) =>{
     })
   })
   .then(response => {
-    console.log(response);
     dispatch(removeLocalWatchlist(instrumentId));
     dispatch(removeWatchlist(instrumentId));
   })

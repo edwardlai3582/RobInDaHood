@@ -21,7 +21,6 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
   //check if already requested on sameday
   if( span !== "day" && getState().quotesReducer.historicalsQuotes[ symbol+span+interval+bounds ] ){
     if( getState().quotesReducer.historicalsQuotes[symbol+span+interval+bounds].timestamp === (new Date()).toISOString().substring(0, 10) ){
-      //console.log("same day no need to request!");
       return;
     }
   }
@@ -35,7 +34,6 @@ export const askHistoricalsQuotes = (symbol, span, interval, bounds) => (dispatc
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     //parse string to number
     //open_price, close_price, high_price, low_price
     jsonResult.historicals.forEach((historical, index, theArray)=>{
@@ -79,7 +77,6 @@ export const askQuote = (symbol) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     dispatch(addQuote(symbol, jsonResult));
   })
   .catch(function(reason) {
@@ -93,15 +90,13 @@ export const addMultipleQuotes = (quotesArray) => ({
 })
 
 export const askMultipleQuotes = () => (dispatch, getState) => {
-  //console.log('askMultipleQuotes');
   let symbolArray = Object.keys(getState().instrumentsReducer.instruments).map((instrumentKey)=>{
     return getState().instrumentsReducer.instruments[instrumentKey].symbol;
   });
   if(symbolArray.length === 0) {
     return;
   }
-  //console.log(getState().instrumentsReducer);
-  //console.log(symbolArray);
+
   return fetch(`https://api.robinhood.com/quotes/?symbols=${symbolArray.join(',')}`, {
     method: 'GET',
     headers: new Headers({
@@ -111,7 +106,6 @@ export const askMultipleQuotes = () => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult.results);
     if(jsonResult.results){
       dispatch(addMultipleQuotes(jsonResult.results));
     }

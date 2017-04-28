@@ -37,7 +37,6 @@ export const askHistoricalsPortfolios = (span, interval, bounds) => (dispatch, g
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     if(jsonResult.equity_historicals){
       //parse string to number
       //adjusted_close_equity, adjusted_open_equity, close_market_value, open_market_value, net_return, open_equity, close_equity
@@ -104,7 +103,7 @@ export const askPortfolios = () => (dispatch, getState) => {
       res.start_date = jsonResult.results[0].start_date
       ////can be null
       res.extended_hours_market_value =  jsonResult.results[0].extended_hours_market_value
-      //console.log(res);
+  
       dispatch(addPortfolios(res));
     }
     else {

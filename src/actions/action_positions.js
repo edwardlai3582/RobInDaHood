@@ -47,7 +47,6 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addPositions(jsonResult.results));
@@ -60,7 +59,6 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
-            console.log("ask for positions");
           }
         });
       }
@@ -68,7 +66,6 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
         console.log("more watchlists!")
         dispatch(addMorePositions(jsonResult.results));
         if( !jsonResult.next ){
-          //dispatch(addLocalPositions([...getState().positionsReducer.positions, ...jsonResult.results]));
           dispatch(addLocalPositions([...getState().positionsReducer.positions, ...jsonResult.results].map((position)=>{
             return position.instrument;
           })));
@@ -76,7 +73,6 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
-            console.log("ask for positions");
           }
         });
       }
@@ -86,8 +82,7 @@ export const askPositions = (...theArgs) => (dispatch, getState) => {
       }
     }
     else {
-      //jsonResult[Object.keys(jsonResult)[0]][0])
-      dispatch(askingPositionsFailed("QQ"));
+      dispatch(askingPositionsFailed("something not right"));
     }
   })
   .catch(function(reason) {
@@ -102,7 +97,6 @@ export const addPosition = position => ({
 })
 
 export const askPosition = (url) => (dispatch, getState) => {
-  //dispatch(askingPositions());
   //searcg non zero
   return fetch( url, {
     method: 'GET',
@@ -113,14 +107,12 @@ export const askPosition = (url) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("quantity")){
       dispatch(addPosition(jsonResult));
     }
   })
   .catch(function(reason) {
     console.log(reason);
-    //dispatch(askingPositionsFailed(reason));
   });
 }
 
@@ -146,14 +138,12 @@ export const askPositionsWithZero = (...theArgs) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     if(jsonResult.hasOwnProperty("results")){
       if(theArgs.length === 0){
         dispatch(addPositionsWithZero(jsonResult.results));
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
-            console.log("ask for positionsWithZero");
           }
         });
       }
@@ -163,7 +153,6 @@ export const askPositionsWithZero = (...theArgs) => (dispatch, getState) => {
         jsonResult.results.forEach((instrument)=>{
           if(!getState().instrumentsReducer.instruments[instrument.instrument]){
             dispatch(askInstrument(instrument.instrument));
-            console.log("ask for positionsWithZero");
           }
         });
       }
@@ -171,10 +160,6 @@ export const askPositionsWithZero = (...theArgs) => (dispatch, getState) => {
       if(jsonResult.next){
         dispatch(askPositionsWithZero(jsonResult.next));
       }
-    }
-    else {
-      //jsonResult[Object.keys(jsonResult)[0]][0])
-      //dispatch(askingPositionsFailed("QQ"));
     }
   })
   .catch(function(reason) {

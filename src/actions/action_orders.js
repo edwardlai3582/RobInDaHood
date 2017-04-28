@@ -89,12 +89,10 @@ export const askHistoricalsOrders = (nextLink) => (dispatch, getState) => {
   .then(response => response.json())
   .then(jsonResult => {
     if(!nextLink){
-      //console.log(jsonResult.results)
       dispatch(refillHistoricalsOrders(jsonResult.results, jsonResult.next));
     }
     else {
       console.log("more order histories!")
-      //console.log(jsonResult.results)
       dispatch(addHistoricalsOrders(jsonResult.results, jsonResult.next));
     }
 
@@ -102,17 +100,11 @@ export const askHistoricalsOrders = (nextLink) => (dispatch, getState) => {
       //check pendingOrders array
       if(result.state !== "filled" && result.state !== "rejected" && result.state !== "cancelled" && result.state !== "failed"){
         dispatch(addToPendingOrders(result));
-        console.log(result);
       }
       else {
         dispatch(removeFromPendingOrders(result.id))
       }
     })
-    /*
-      if(jsonResult.next){
-        dispatch(askHistoricalsOrders(jsonResult.next));
-      }
-    */
   })
   .catch(function(reason) {
     console.log(reason);
@@ -145,14 +137,11 @@ export const askOwnHistoricalsOrders = (symbol, instrument, nextLink) => (dispat
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     if(!nextLink){
-      //console.log(jsonResult.results)
       dispatch(refillOwnHistoricalsOrders(symbol, jsonResult.results, jsonResult.next));
     }
     else {
       console.log("more order histories!")
-      //console.log(jsonResult.results)
       dispatch(addOwnHistoricalsOrders(symbol, jsonResult.results, jsonResult.next));
     }
   })
@@ -226,7 +215,6 @@ export const cancelOrder = (cancelLink, orderId, symbol, instrument) => (dispatc
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
     if(Object.keys(jsonResult).length === 0){
       dispatch(cancelCurrentOrderSucceeded());
       dispatch(askCurrentOrder(orderId));
@@ -270,7 +258,6 @@ export const placeOrder = (order) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    console.log(jsonResult);
     if(jsonResult.url){
       dispatch(orderPlaced());
       dispatch(askHistoricalsOrders());
@@ -303,8 +290,8 @@ export const checkPendingOrders = () => (dispatch, getState) => {
     return;
   }
 
-  console.log("==whats in pending orders==");
-  console.log(getState().ordersReducer.pendingOrders);
+  //console.log("==whats in pending orders==");
+  //console.log(getState().ordersReducer.pendingOrders);
 
   return Promise.all(pendingOrderIDs.map(orderID =>
     fetch(`https://api.robinhood.com/orders/${orderID}/`, {
@@ -315,7 +302,6 @@ export const checkPendingOrders = () => (dispatch, getState) => {
       })
     }).then(response => response.json())
   )).then(jsonResults => {
-    //console.log(jsonResults);
     jsonResults.forEach((jsonResult) => {
       let symbol = getState().instrumentsReducer.instruments[jsonResult.instrument].symbol;
       if(jsonResult.state === "filled" || jsonResult.state === "rejected" || jsonResult.state === "cancelled" || jsonResult.state === "failed") {

@@ -230,7 +230,7 @@ class PlaceOrder extends Component {
             orderStage
           } = this.state;
     const { currentPrice, shares, buyingPower, symbol, orderPlacedResult } = this.props;
-    console.log(orderStage);
+
     let resultBlock = (
       <div className="resultWrapper">
         <div className="orderOptionName"> {(side === BUY)? "Estimated Cost" : "Estimated Credit"} </div>

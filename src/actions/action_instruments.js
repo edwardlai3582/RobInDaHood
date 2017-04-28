@@ -34,7 +34,6 @@ export const askInstrument = (instrument) => (dispatch, getState) => {
   })
   .then(response => response.json())
   .then(jsonResult => {
-    //console.log(jsonResult);
     dispatch(addInstrument(jsonResult));
     dispatch(askQuote(jsonResult.symbol));
   })
