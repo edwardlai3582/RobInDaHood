@@ -4,7 +4,7 @@ import {
   deleteMonitorTicker,
   addMonitorTicker
 } from '../actions'
-import '../styles/PriceAlert.css'
+import '../styles/PriceAlertToggle.css'
 
 class PriceAlertToggle extends Component  {
   static propTypes = {

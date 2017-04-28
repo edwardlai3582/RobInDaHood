@@ -7,22 +7,24 @@
   justify-content:space-between;
   flex-wrap:wrap;
   align-items:center;
-  border: 1px solid white;
   margin-bottom: 5px;
+  background-color: teal;
 }
 
 .priceAlertTicker > div {
   font-size: 1.1rem;
-  width: 33%;
+  width: 30%;
   margin: 5px 0;
 }
 
 .priceAlertSymbol {
-    text-align: center;
+    text-align: left;
+    padding-left: 10px;
 }
 
 .priceAlertTickerSetting {
   vertical-align: baseline;
+  text-align: center;
 }
 
 .priceAlertTickerSetting > * {
@@ -35,7 +37,7 @@
 
 .priceAlertTickerButton {
   background-color: #FA5882;
-  border: 1px solid white;
+  border: none;
   border-radius: 5px;
   color: white;
   cursor: pointer;
