@@ -104,24 +104,18 @@ class PortfolioValue extends Component {
       });
     })
 
+    /*
     chartData.push({
       name:  cashName,
       value: cashValue
     });
+    */
 
     return (
       <SectionWrapper SectionTitle={"Account"}>
-        <div>
-          <div>
-            Total market value
-          </div>
-          <div>
-            {`$${ Number(market_value).toFixed(2) }`}
-          </div>
-        </div>
         <div className="PortfolioValueWrapper">
           <div className="pieChartWrapper">
-            <PieChart width={350} height={300}>
+            <PieChart width={330} height={300}>
               <Pie
                 isAnimationActive={false}
                 onMouseOver={this.handleMouseOver}
@@ -146,18 +140,20 @@ class PortfolioValue extends Component {
             </PieChart>
           </div>
 
-          {(goldUsed)? (
-            <div className="valueWrapper">
-              <div>{`Portfolio: $${equity}`}</div>
-              <div>{`${cashName}: $${Number(cashValue).toFixed(2)}`}</div>
+          <div className="valueWrapper">
+            <div className="eachValue">
+              <div className="valueName"> {(goldUsed)? "Portfolio" : "Stocks" } </div>
+              <div className="valueValue"> {`$${equity}`} </div>
             </div>
-          ) : (
-            <div className="valueWrapper">
-              <div>{`Stocks: $${equity}`}</div>
-              <div>{`Cash: $${Number(cashValue).toFixed(2)}`}</div>
+            <div className="eachValue">
+              <div className="valueName"> {`${cashName}`} </div>
+              <div className="valueValue"> {`$${Number(cashValue).toFixed(2)}`} </div>
             </div>
-          )}
-
+            <div className="eachValue">
+              <div className="valueName"> Total market value </div>
+              <div className="valueValue"> {`$${ Number(market_value).toFixed(2) }`} </div>
+            </div>
+          </div>
         </div>
       </SectionWrapper>
     )

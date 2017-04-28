@@ -5,15 +5,39 @@
 }
 
 .pieChartWrapper {
+
 }
 
 .valueWrapper {
   display: flex;
+  flex-grow: 1;
   flex-direction:column;
   justify-content:center;
   font-size: 1.4rem;
+  padding: 20px;
 }
 
 .valueWrapper > div {
   padding: 10px 0;
+}
+
+.eachValue {
+  display: flex;
+  flex-direction:row;
+}
+
+.eachValue:last-child {
+  border-top: 1px solid var(--main-color);
+}
+
+.eachValue > .valueName {
+  width: 50%;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.eachValue > .valueValue {
+  width: 50%;
+  text-align: right;
+  padding-right: 10px;
 }
