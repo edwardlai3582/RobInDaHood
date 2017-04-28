@@ -68,7 +68,7 @@ class Quotes extends Component {
     return (
       <div className="quotesWrapper" ref={(div) => { this.qw = div; }} >
         <ResponsiveContainer width="100%" height="100%" minHeight={1} debounce={3}>
-          <LineChart data={data} margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
+          <LineChart isAnimationActive={false} data={data} margin={{ top: 15, right: 15, left: 0, bottom: 15 }}>
             <Line type="monotone" dataKey="not_reg_close_price" stroke={strokeColor} dot={false} />
             <Line type="monotone" dataKey="reg_close_price" stroke={strokeColor} strokeWidth="3" dot={false} />
 
