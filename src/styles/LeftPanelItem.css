@@ -14,4 +14,6 @@
   margin-left: 8%;
   display: flex;
   justify-content:flex-start;
+  text-align: right;
+  padding-right: 5px;
 }
