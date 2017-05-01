@@ -23,7 +23,7 @@ import Orders from '../components/Orders'
 import PlaceOrder from '../components/PlaceOrder'
 import HistoryPriceDisplay from '../components/HistoryPriceDisplay'
 import PriceAlertToggle from './PriceAlertToggle'
-import { isLater } from '../utils'
+import { isLater, myFixed } from '../utils'
 import '../styles/Instrument.css'
 
 class InstrumentPage extends Component {
@@ -330,7 +330,7 @@ class InstrumentPage extends Component {
     let priceRelatedBlock = (ownQuote)? (
       <div className="priceRelatedWrapper">
         <div className="last_trade_price">
-          { `$${(ownQuote.last_extended_hours_trade_price)? Number(ownQuote.last_extended_hours_trade_price).toFixed(2) : Number(ownQuote.last_trade_price).toFixed(2)}` }
+          { `$${(ownQuote.last_extended_hours_trade_price)? myFixed(Number(ownQuote.last_extended_hours_trade_price)) : myFixed(Number(ownQuote.last_trade_price))}` }
         </div>
         <HistoryPriceDisplay
           selectedButtonName={selectedButtonName}

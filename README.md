@@ -30,4 +30,4 @@ npm run dist
 - [ ] Markets related
 - [ ] refactor the code
 - [ ] RH Gold related
-- [ ] own toFixed(2) => if smaller than 1, show all digit
+- [x] own toFixed(2) => if smaller than 1, show all digit

@@ -12,6 +12,16 @@ import reducer from './reducers'
 import App from './containers/App'
 import './styles/App.css'
 
+/*
+Number.prototype.myFixed = function(digits){
+  if( Number(this) < 1 ) {
+    return Number.prototype.toFixed.call(this, 4);
+  }
+
+  return Number.prototype.toFixed.call(this, digits);
+}
+*/
+
 const middleware = [ thunk ]
 /*
 if (process.env.NODE_ENV !== 'production') {

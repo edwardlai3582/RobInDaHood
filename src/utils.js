@@ -1,3 +1,12 @@
+export const myFixed = (number) => {
+    if(Number(number) < 1){
+      return Number( number.toFixed(4) ).toString();
+    }
+    else {
+      return Number(number).toFixed(2);
+    }
+}
+
 export const capFirst = (string) => {
     if(typeof string !== 'string'){
       return `${string}`;
