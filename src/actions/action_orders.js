@@ -191,6 +191,43 @@ export const askCurrentOrder = (orderId) => (dispatch, getState) => {
   });
 }
 
+export const checkPendingOrders = () => (dispatch, getState) => {
+  const pendingOrderIDs = Object.keys(getState().ordersReducer.pendingOrders);
+  if(pendingOrderIDs.length === 0) {
+    return;
+  }
+  //console.log("==whats in pending orders==");
+  //console.log(getState().ordersReducer.pendingOrders);
+  return Promise.all(pendingOrderIDs.map(orderID =>
+    fetch(`https://api.robinhood.com/orders/${orderID}/`, {
+      method: 'GET',
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Authorization': getState().tokenReducer.token
+      })
+    }).then(response => response.json())
+  )).then(jsonResults => {
+    jsonResults.forEach((jsonResult) => {
+      let symbol = getState().instrumentsReducer.instruments[jsonResult.instrument].symbol;
+      if(jsonResult.state === "filled" || jsonResult.state === "rejected" || jsonResult.state === "cancelled" || jsonResult.state === "failed") {
+        dispatch(removeFromPendingOrders(jsonResult.id));
+        dispatch(askPositions());
+        let orderInfo = {};
+        orderInfo.title = `Order of $${symbol} is ${jsonResult.state}`;
+        orderInfo.message = (jsonResult.reject_reason)? `${jsonResult.reject_reason}` : (jsonResult.state === "filled")? `Your order to buy ${Number(jsonResult.quantity).toFixed(2)} shares of $${symbol} was executed at $${Number(jsonResult.price).toFixed(2)} per sahre` : "";
+        ipcRenderer.send('order', orderInfo);
+      }
+      //not yet removed and state changed
+      if( getState().ordersReducer.pendingOrders[jsonResult.id] && jsonResult.state !== getState().ordersReducer.pendingOrders[jsonResult.id].state) {
+        console.log(`pending order state: ${getState().ordersReducer.pendingOrders[jsonResult.id].state} => ${jsonResult.state}`);
+        dispatch(addToPendingOrders(jsonResult));
+        dispatch(askHistoricalsOrders());
+        dispatch(askOwnHistoricalsOrders(symbol, jsonResult.instrument));
+      }
+    })
+  })
+}
+
 export const cancelCurrentOrderSucceeded = () => ({
   type: ORDERS_CANCEL_CURRENT_ORDER_SUCCEEDED
 })
@@ -217,6 +254,7 @@ export const cancelOrder = (cancelLink, orderId, symbol, instrument) => (dispatc
   .then(jsonResult => {
     if(Object.keys(jsonResult).length === 0){
       dispatch(cancelCurrentOrderSucceeded());
+      dispatch(checkPendingOrders());
       dispatch(askCurrentOrder(orderId));
       dispatch(askHistoricalsOrders());
       //reload watchlist & positions after order cancelled
@@ -281,46 +319,6 @@ export const placeOrder = (order) => (dispatch, getState) => {
     console.log(reason);
     dispatch(orderDidntPlace(reason));
   });
-}
-
-export const checkPendingOrders = () => (dispatch, getState) => {
-  const pendingOrderIDs = Object.keys(getState().ordersReducer.pendingOrders);
-
-  if(pendingOrderIDs.length === 0) {
-    return;
-  }
-
-  //console.log("==whats in pending orders==");
-  //console.log(getState().ordersReducer.pendingOrders);
-
-  return Promise.all(pendingOrderIDs.map(orderID =>
-    fetch(`https://api.robinhood.com/orders/${orderID}/`, {
-      method: 'GET',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Authorization': getState().tokenReducer.token
-      })
-    }).then(response => response.json())
-  )).then(jsonResults => {
-    jsonResults.forEach((jsonResult) => {
-      let symbol = getState().instrumentsReducer.instruments[jsonResult.instrument].symbol;
-      if(jsonResult.state === "filled" || jsonResult.state === "rejected" || jsonResult.state === "cancelled" || jsonResult.state === "failed") {
-        dispatch(removeFromPendingOrders(jsonResult.id));
-        dispatch(askPositions());
-        let orderInfo = {};
-        orderInfo.title = `Order of $${symbol} is ${jsonResult.state}`;
-        orderInfo.message = (jsonResult.reject_reason)? `${jsonResult.reject_reason}` : (jsonResult.state === "filled")? `Your order to buy ${Number(jsonResult.quantity).toFixed(2)} shares of $${symbol} was executed at $${Number(jsonResult.price).toFixed(2)} per sahre` : "";
-        ipcRenderer.send('order', orderInfo);
-      }
-      //not yet removed and state changed
-      if( getState().ordersReducer.pendingOrders[jsonResult.id] && jsonResult.state !== getState().ordersReducer.pendingOrders[jsonResult.id].state) {
-        console.log(`pending order state: ${getState().ordersReducer.pendingOrders[jsonResult.id].state} => ${jsonResult.state}`);
-        dispatch(addToPendingOrders(jsonResult));
-        dispatch(askHistoricalsOrders());
-        dispatch(askOwnHistoricalsOrders(symbol, jsonResult.instrument));
-      }
-    })
-  })
 }
 
 export const deleteOwnHistoricalsOrders = (symbol) => ({
