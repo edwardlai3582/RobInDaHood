@@ -59,13 +59,14 @@ class News extends Component {
 
     return (
       <SectionWrapper SectionTitle={"Recent News"}>
-        {allNews.slice(0, 3)}
-        <div className="moreNewsWrapper">
-          <button className="moreNews" onClick={this.toggleModal}>
-            MORE
-          </button>
-        </div>
-
+        { allNews.slice(0, 3) }
+        { (allNews.length > 3)? (
+          <div className="moreNewsWrapper">
+            <button className="moreNews" onClick={this.toggleModal}>
+              MORE
+            </button>
+          </div>          
+        ) : null}
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.toggleModal}
