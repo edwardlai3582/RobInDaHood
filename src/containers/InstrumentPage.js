@@ -174,18 +174,23 @@ class InstrumentPage extends Component {
   getBuyingPowerForInstrument = () => {
     const { type, cash_balances, margin_balances } = this.props.account;
     if( type === "cash" ) {
-      return Number(cash_balances.buying_power);
+      return (cash_balances)? Number(cash_balances.buying_power) : null;
     }
     else {
-      let temp2 = this.getOvernightBuyingPowerForInstrument();
-      let temp1 = temp2;
-      if(this.isInstant()) {
-        temp1 = Math.min(temp2, this.getDayTradeBuyingPowerForInstrument());
+      if(!margin_balances) {
+        return null;
       }
-      if( margin_balances.margin_limit === null ) {
-        return temp1;
+      else {
+        let temp2 = this.getOvernightBuyingPowerForInstrument();
+        let temp1 = temp2;
+        if(this.isInstant()) {
+          temp1 = Math.min(temp2, this.getDayTradeBuyingPowerForInstrument());
+        }
+        if( margin_balances.margin_limit === null ) {
+          return temp1;
+        }
+        return Math.min(temp1, Number(margin_balances.unallocated_margin_cash));
       }
-      return Math.min(temp1, Number(margin_balances.unallocated_margin_cash));
     }
   }
 

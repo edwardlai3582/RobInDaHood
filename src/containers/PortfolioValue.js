@@ -50,26 +50,31 @@ class PortfolioValue extends Component {
     let cashValue = 0;
     if( account.type === "cash") {
       cashName = "Cash";
-      cashValue = account.cash_balances.buying_power;
+      cashValue = (account.cash_balances)? account.cash_balances.buying_power : "";
     }
     else {
-      let { margin_limit, unallocated_margin_cash, } = account.margin_balances;
-      goldUsed = ( Number(margin_limit) > Number(unallocated_margin_cash) )? true : false;
-
-      if( Number(margin_limit) === 0 ) {
-        cashName = "Cash";
-        cashValue = unallocated_margin_cash;
-      }
-      else if( goldUsed ) {
-        cashName = "Gold used";
-        cashValue = Number(margin_limit) - Number(unallocated_margin_cash);
+      if(!account.margin_balances) {
+        cashName = "";
+        cashValue = "";
       }
       else {
-        cashName = "Cash";
-        cashValue = Number(unallocated_margin_cash) - Number(margin_limit);
+        let { margin_limit, unallocated_margin_cash } = account.margin_balances;
+        goldUsed = ( Number(margin_limit) > Number(unallocated_margin_cash) )? true : false;
+
+        if( Number(margin_limit) === 0 ) {
+          cashName = "Cash";
+          cashValue = unallocated_margin_cash;
+        }
+        else if( goldUsed ) {
+          cashName = "Gold used";
+          cashValue = Number(margin_limit) - Number(unallocated_margin_cash);
+        }
+        else {
+          cashName = "Cash";
+          cashValue = Number(unallocated_margin_cash) - Number(margin_limit);
+        }
       }
     }
-
 
     //check all needed data exist
     for(let i=0; i< positions.length; i++) {

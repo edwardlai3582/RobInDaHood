@@ -75,7 +75,7 @@ class DashboardPage extends Component {
   }
 
   componentWillMount() {
-    //delete non existent tab's data
+    //delete nonexist tab's data
     this.props.onCleanUpEarnings();
     this.props.onCleanUpFundamentals();
     this.props.onCleanUpInstruments();
