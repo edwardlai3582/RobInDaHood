@@ -261,6 +261,7 @@ export const cancelOrder = (cancelLink, orderId, symbol, instrument) => (dispatc
       //reload watchlist & positions after order cancelled
       dispatch(askWatchlists());
       dispatch(askPositions());
+      dispatch(askAccount());
       dispatch(removeFromPendingOrders(orderId));
       if( symbol in getState().ordersReducer.ownHistoricalsOrders) {
         dispatch(askOwnHistoricalsOrders(symbol, instrument));
