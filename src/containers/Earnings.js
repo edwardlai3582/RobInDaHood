@@ -19,21 +19,23 @@ class Earnings extends Component {
   render() {
     const earnings = this.props.earnings;
 
-    if(!earnings) return null;
+    if(!earnings || earnings.length === 0) return null;
+
+    let localLast = (earnings.length > 2)? earnings.length-2 : earnings.length-1;
 
     let displayData = [];
-    for(let i = earnings.length-2; i > 0; i--) {
+    for(let i = localLast; i > 0; i--) {
       if( i === earnings.length-7 ){ break; }
       let tempEstimate = {}
       let tempActual = {}
 
-      tempEstimate.xIndex = 5 - (earnings.length-2 - i) ;
+      tempEstimate.xIndex = 5 - (localLast - i) ;
       tempEstimate.year = earnings[i].year;
       tempEstimate.quarter = `Q${earnings[i].quarter}`;
       tempEstimate.eps = ( earnings[i].eps.estimate )? Math.round(Number(earnings[i].eps.estimate) * 100) / 100 : null;
       tempEstimate.epsType = "estimate";
 
-      tempActual.xIndex = 5 - (earnings.length-2 - i) ;
+      tempActual.xIndex = 5 - (localLast - i) ;
       tempActual.year = earnings[i].year;
       tempActual.quarter = `Q${earnings[i].quarter}`;
       tempActual.eps = ( earnings[i].eps.actual )? Math.round(Number(earnings[i].eps.actual) * 100) / 100 : null;
@@ -51,23 +53,23 @@ class Earnings extends Component {
           <div>
             <h6 style={{color: "#BDBDBD"}} > Expected EPS &bull; </h6>
             <div>
-              {(earnings[earnings.length-2].eps.estimate)?
-                `${Number(earnings[earnings.length-2].eps.estimate) < 0 ? "-" : ""}US$${Math.abs(Number(earnings[earnings.length-2].eps.estimate)).toFixed(2)}`
+              {(earnings[localLast].eps.estimate)?
+                `${Number(earnings[localLast].eps.estimate) < 0 ? "-" : ""}US$${Math.abs(Number(earnings[localLast].eps.estimate)).toFixed(2)}`
               : "N/A"}
             </div>
           </div>
           <div>
             <h6 style={{color: "#40C9BD"}} > Actual EPS &bull; </h6>
             <div>
-              {(earnings[earnings.length-2].eps.actual)?
-                `${Number(earnings[earnings.length-2].eps.actual) < 0 ? "-" : ""}US$${Math.abs(Number(earnings[earnings.length-2].eps.actual)).toFixed(2)}`
-              : (earnings[earnings.length-2].report)? (
+              {(earnings[localLast].eps.actual)?
+                `${Number(earnings[localLast].eps.actual) < 0 ? "-" : ""}US$${Math.abs(Number(earnings[localLast].eps.actual)).toFixed(2)}`
+              : (earnings[localLast].report)? (
                   <div>
                     <div>
-                      {`${(earnings[earnings.length-2].report.verified)? "Available" : "Expected"} on ${earnings[earnings.length-2].report.date},`}
+                      {`${(earnings[localLast].report.verified)? "Available" : "Expected"} on ${earnings[localLast].report.date},`}
                     </div>
                     <div>
-                      {(earnings[earnings.length-2].report.timing === "am")? "Pre-market" : "After-hours"}
+                      {(earnings[localLast].report.timing === "am")? "Pre-market" : "After-hours"}
                     </div>
                   </div>
               ) : null }
