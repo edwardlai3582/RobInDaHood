@@ -3,6 +3,7 @@ const ipcRenderer = electron.ipcRenderer;
 
 import { askWatchlists } from './action_watchlists'
 import { askPositions }  from './action_positions'
+import { askAccount } from './action_login'
 ////////////ORDERS
 export const ORDERS_ADD_HIS_ORDERS = 'ORDERS_ADD_HIS_ORDERS'
 export const ORDERS_REFILL_HIS_ORDERS = 'ORDERS_REFILL_HIS_ORDERS'
@@ -302,7 +303,7 @@ export const placeOrder = (order) => (dispatch, getState) => {
       //reload watchlist & positions after order cancelled
       dispatch(askWatchlists());
       dispatch(askPositions());
-
+      dispatch(askAccount());
       //add to pendingOrders array
       if(jsonResult.state !== "filled" && jsonResult.state !== "rejected" && jsonResult.state !== "cancelled" && jsonResult.state !== "failed"){
         console.log("add to pending orders:");
