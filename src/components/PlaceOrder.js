@@ -211,8 +211,14 @@ class PlaceOrder extends Component {
     orderObj.instrument = instrumentUrl;
     orderObj.symbol = symbol;
     orderObj.type = type;
-    if(type === LIMIT){ orderObj.price = price; }
-    else{ orderObj.price = Number(currentPrice); }
+
+    if(type === LIMIT){
+      orderObj.price = ( Number(price) > 1 )? Math.round( Number(price) * 1e2 ) / 1e2 : Number(price) ;
+    }
+    else{
+      orderObj.price = ( Number(currentPrice) > 1 )? Math.round( Number(currentPrice) * 1e2 ) / 1e2 : Number(currentPrice) ;
+    }
+
     orderObj.time_in_force = time_in_force;
     orderObj.trigger = trigger;
     if(trigger === STOP){ orderObj.stop_price = stop_price; }
