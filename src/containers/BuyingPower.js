@@ -68,6 +68,12 @@ class BuyingPower extends Component {
 
   render() {
     if(!this.props.account) return null;
+    if(this.props.account.type === "cash"){
+      if(!this.props.account.cash_balances) return null;
+    }
+    else{
+      if(!this.props.account.margin_balances) return null;
+    }
 
     return (
       <SectionWrapper SectionTitle={"Buying Power"}>
