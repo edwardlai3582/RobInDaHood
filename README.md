@@ -31,3 +31,4 @@ npm run dist
 - [ ] refactor the code
 - [ ] RH Gold related
 - [x] own toFixed(2) => if smaller than 1, show all digit
+- [ ] order: ITEK is part of the SEC's Tick Size Pilot Program. Because of this, you can only place orders in increments of $0.05. Please update to the newest version of Robinhood to make market orders for ITEK.
