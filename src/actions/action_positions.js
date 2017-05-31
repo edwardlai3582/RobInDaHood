@@ -116,6 +116,27 @@ export const askPosition = (url) => (dispatch, getState) => {
   });
 }
 
+export const askPositionWithInstrument = (instrument) => (dispatch, getState) => {
+  let url = `https://api.robinhood.com/positions/${getState().accountReducer.accountNumber}/${getState().instrumentsReducer.instruments[instrument].id}`;
+
+  return fetch( url, {
+    method: 'GET',
+    headers: new Headers({
+      'Accept': 'application/json',
+      'Authorization': getState().tokenReducer.token
+    })
+  })
+  .then(response => response.json())
+  .then(jsonResult => {
+    if(jsonResult.hasOwnProperty("quantity")){
+      dispatch(addPosition(jsonResult));
+    }
+  })
+  .catch(function(reason) {
+    console.log(reason);
+  });
+}
+
 export const addPositionsWithZero = positions => ({
   type: ADD_POSITIONS_WITH_ZERO,
   positions

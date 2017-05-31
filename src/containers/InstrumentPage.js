@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {
          askAccount,
          askInstrument, deleteInstrument,
-         askPosition, askPositions,
+         askPosition, askPositions, askPositionWithInstrument,
          askHistoricalsQuotes, askQuote,
          askWatchlists, addToWatchlists, removeFromWatchlists,
          placeOrder,
@@ -65,6 +65,7 @@ class InstrumentPage extends Component {
       positions,
       watchlists,
       onAskPosition,
+      onAskPositionWithInstrument,
       onAskHistoricalsQuotes,
       onAskQuote,
       onAskOwnHistoricalsOrders
@@ -85,6 +86,7 @@ class InstrumentPage extends Component {
     for(let i=0; i< watchlists.length; i++){
       if(watchlists[i].instrument === instrument){
         this.setState({isInWatchLists:true});
+        onAskPositionWithInstrument(watchlists[i].instrument);
         break;
       }
     }
@@ -479,6 +481,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onAskPositions: () => {
     dispatch(askPositions());
+  },
+  onAskPositionWithInstrument : (instrument) => {
+    dispatch(askPositionWithInstrument(instrument));
   },
   onAskHistoricalsQuotes: (symbol, span, interval, bounds) => {
     dispatch(askHistoricalsQuotes(symbol, span, interval, bounds));
