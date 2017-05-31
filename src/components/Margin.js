@@ -23,7 +23,7 @@ class Margin extends Component {
         </div>
         <div className="marginEach">
           <div className="marginEachTitle"> {`Buying Power for ${ownInstrument.symbol}`}  </div>
-          <div className="marginEachValue"> {`$${buyingPower.toFixed(2)}`} </div>
+          <div className="marginEachValue"> {`$${(buyingPower <= 0)? 0 : buyingPower.toFixed(2)}`} </div>
         </div>
       </SectionWrapper>
     )
