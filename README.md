@@ -1,6 +1,5 @@
 # RobInDaHood
 A desktop app for Robinhood
-[Download](https://drive.google.com/open?id=0B2CuHilEdKOVa0pobnBMaTJTcmM)
 
 ![robindahood](http://i.imgur.com/6PT1tat.jpg)
 

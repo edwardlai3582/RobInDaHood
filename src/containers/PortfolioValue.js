@@ -115,7 +115,7 @@ class PortfolioValue extends Component {
       value: cashValue
     });
     */
-
+console.log(account.type);
     return (
       <SectionWrapper SectionTitle={"Account"}>
         <div className="PortfolioValueWrapper">
@@ -148,7 +148,7 @@ class PortfolioValue extends Component {
           <div className="valueWrapper">
             <div className="eachValue">
               <div className="valueName"> {(goldUsed)? "Portfolio" : "Stocks" } </div>
-              <div className="valueValue"> {`$${equity}`} </div>
+              <div className="valueValue"> {(account.type === "cash" || !goldUsed)? `$${Number(market_value).toFixed(2)}` : `$${equity}`} </div>
             </div>
             <div className="eachValue">
               <div className="valueName"> {`${cashName}`} </div>
@@ -156,7 +156,7 @@ class PortfolioValue extends Component {
             </div>
             <div className="eachValue">
               <div className="valueName"> Total market value </div>
-              <div className="valueValue"> {`$${ Number(market_value).toFixed(2) }`} </div>
+              <div className="valueValue"> {(account.type === "cash" || !goldUsed)? `$${equity}` : `$${Number(market_value).toFixed(2)}`} </div>
             </div>
           </div>
         </div>
