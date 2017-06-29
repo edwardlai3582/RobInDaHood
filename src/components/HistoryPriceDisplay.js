@@ -75,7 +75,7 @@ class HistoryPriceDisplay extends Component {
       let firstDayPrice = data[0].adjusted_open_equity || data[0].close_price ;
       //let lastDayPrice = data[data.length-1].close_price || data[data.length-1].adjusted_open_equity;
       console.log(last_trade_price);
-console.log(data[0]);
+      console.log(data[0]);
       displayBlock = (
         <p>
           <span className={

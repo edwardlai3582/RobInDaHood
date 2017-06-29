@@ -198,6 +198,7 @@ class PortfolioPage extends Component {
           historicals={historicalsPortfolios[span+interval].equity_historicals}
           selectedButtonName={selectedButton}
           previous_close={portfolios.adjusted_equity_previous_close}
+          last_equity={(portfolios.extended_hours_equity)? Number(portfolios.extended_hours_equity) : Number(portfolios.equity)}
       />): <DummyQuotes />;
 
     let portfolioValueBlock = ( portfolios )? (

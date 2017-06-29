@@ -295,6 +295,10 @@ class InstrumentPage extends Component {
       (<Quotes historicals={ historicals }
                selectedButtonName={selectedButtonName}
                previous_close={ownQuote.previous_close}
+               last_price={ (ownQuote.last_extended_hours_trade_price)?
+                  Number(ownQuote.last_extended_hours_trade_price) :
+                  Number(ownQuote.last_trade_price)
+                }
       />): <DummyQuotes />;
 
     let ordersBlock = (ownHistoricalsOrder && ownHistoricalsOrder.orders.length > 0 )? (
